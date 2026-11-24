@@ -1,6 +1,6 @@
 # Gestprojet: briefing do produto
 
-Status: aguardando aprovação · Data: 24/11/2026
+Status: aprovado pelo dono (24/11/2026) · Data: 24/11/2026
 
 ## 1. Problema
 
