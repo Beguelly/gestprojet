@@ -36,7 +36,7 @@ Toda tarefa de código só vira `[x]` depois de **testador** e **seguranca** apr
 - [x] ⭐ T-007 · Escrever o PRD (`docs/01-prd.md`) a partir do briefing, com RF/RN e critérios de aceite · analista-produto · Dep.: T-006 · Pronto quando: lista de verificação do prd-builder completa
 - [x] ⭐ T-008 · 🛑 **DECISÃO** · Aprovar o PRD · usuário · Dep.: T-007
 - [~] ⭐ T-009 · Requisitos de segurança e LGPD (`docs/06-seguranca.md`): inventário de dados, matriz de permissões (líder concede acesso), RLS, auditoria, segurança da IA · seguranca · Dep.: T-008
-- [ ] ⭐ T-010 · 🛑 **DECISÃO** · Stack: confirmar Next.js + Supabase + hospedagem (proposta: Vercel) · usuário · Dep.: T-008
+- [x] ⭐ T-010 · 🛑 **DECISÃO** · Stack: confirmar Next.js + Supabase + hospedagem (proposta: Vercel) · usuário · Dep.: T-008
 - [ ] ⭐ T-011 · 🛑 **DECISÃO** · Como as regras do edital entram: (a) o líder cadastra; (b) a IA lê o PDF e o líder confere; (c) as duas formas · usuário · Dep.: T-008
 - [ ] ⭐ T-012 · 🛑 **DECISÃO** · Como os dados da conta entram na 1ª versão: (a) lançamento manual; (b) importação de extrato (OFX/CSV); (c) integração bancária · usuário · Dep.: T-008
 - [ ] ⭐ T-013 · Escrever a SPEC (`docs/02-spec.md`) + ADRs: arquitetura, modelo de dados, APIs, IA · desenvolvedor · Dep.: T-009, T-010, T-011, T-012
@@ -162,3 +162,4 @@ Toda tarefa de código só vira `[x]` depois de **testador** e **seguranca** apr
 | 24/11/2026 | T-007 | PRD v0.1 escrito pelo analista-produto e **revisado pelo orquestrador**: 59 RFs (44 Must, 11 Should, 4 Could), 24 RNs, 14 RNFs, 21 suposições [SUPOSIÇÃO], 21 questões em aberto. Caso real do briefing = RF-062 (4 critérios de aceite). Nenhuma decisão pendente (T-011, T-012, T-019, T-701, T-801, T-802) foi tomada; nenhuma funcionalidade da 2ª versão virou Must. Questão Q-21 resolvida: status do briefing corrigido para aprovado. | `docs/01-prd.md` (736 linhas) |
 | 24/11/2026 | T-008 | **PRD aprovado pelo dono** (opção a: como está; as 21 suposições valem até serem corrigidas). | mensagem do dono |
 | 24/11/2026 | T-009, T-015, T-016 | Iniciadas em paralelo (só dependem do PRD): seguranca → `docs/06-seguranca.md`; analista-produto → `docs/04-workflows.md`; designer → `docs/03-ux.md`. | — |
+| 24/11/2026 | T-010 | Dono escolheu **Next.js + Supabase hospedado na Vercel** (opção a). Pergunta sobre exigência de dados no Brasil ficou sem resposta: pendente, vale como suposição "sem exigência" até o dono dizer o contrário (afeta a região do Supabase, a definir na T-101). | mensagem do dono |
