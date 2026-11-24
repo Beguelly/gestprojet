@@ -41,7 +41,7 @@ Toda tarefa de código só vira `[x]` depois de **testador** e **seguranca** apr
 - [ ] ⭐ T-012 · 🛑 **DECISÃO** · Como os dados da conta entram na 1ª versão: (a) lançamento manual; (b) importação de extrato (OFX/CSV); (c) integração bancária · usuário · Dep.: T-008
 - [ ] ⭐ T-013 · Escrever a SPEC (`docs/02-spec.md`) + ADRs: arquitetura, modelo de dados, APIs, IA · desenvolvedor · Dep.: T-009, T-010, T-011, T-012
 - [ ] ⭐ T-014 · 🛑 **DECISÃO** · Aprovar a SPEC · usuário · Dep.: T-013
-- [~] ⭐ T-015 · Fluxos do produto (`docs/04-workflows.md`, modo processo): plano de trabalho, despesa com checagem, conta e rendimentos, TRL/MRL, entrada e saída de membros · analista-produto · Dep.: T-008
+- [x] ⭐ T-015 · Fluxos do produto (`docs/04-workflows.md`, modo processo): plano de trabalho, despesa com checagem, conta e rendimentos, TRL/MRL, entrada e saída de membros · analista-produto · Dep.: T-008
 - [~] ⭐ T-016 · Guia de UX (`docs/03-ux.md`): tokens azul-marinho/verde, navegação, mapa de telas, dashboards · designer · Dep.: T-008
 - [ ] ⭐ T-017 · 🛑 **DECISÃO** · Aprovar identidade visual e telas principais (protótipo) · usuário · Dep.: T-016
 - [ ] ⭐ T-018 · Criar as 7 skills de domínio (regras-de-edital, checagem-pre-compra, execucao-financeira-pdi, trl-mrl, iso-21500, busca-cientifica, assinatura-por-projeto), com `evals/` · analista-produto (via agent-skill-builder) · Dep.: T-008
@@ -163,3 +163,4 @@ Toda tarefa de código só vira `[x]` depois de **testador** e **seguranca** apr
 | 24/11/2026 | T-008 | **PRD aprovado pelo dono** (opção a: como está; as 21 suposições valem até serem corrigidas). | mensagem do dono |
 | 24/11/2026 | T-009, T-015, T-016 | Iniciadas em paralelo (só dependem do PRD): seguranca → `docs/06-seguranca.md`; analista-produto → `docs/04-workflows.md`; designer → `docs/03-ux.md`. | — |
 | 24/11/2026 | T-010 | Dono escolheu **Next.js + Supabase hospedado na Vercel** (opção a). Pergunta sobre exigência de dados no Brasil ficou sem resposta: pendente, vale como suposição "sem exigência" até o dono dizer o contrário (afeta a região do Supabase, a definir na T-101). | mensagem do dono |
+| 24/11/2026 | T-015 | `docs/04-workflows.md` escrito pelo analista-produto e revisado pelo orquestrador: 7 fluxos da 1ª versão, 10 diagramas stateDiagram-v2, catálogo de eventos de auditoria, 17 divergências/ambiguidades do PRD (D1 a D17, seção 10) para decidir com o dono. Nada da 2ª versão foi modelado; nenhuma decisão aberta foi tomada. **Ressalva:** os diagramas Mermaid só tiveram a abertura/fechamento dos blocos conferida; a renderização foi bloqueada pelo classificador de permissões e **não foi validada**. | `docs/04-workflows.md` (948 linhas) |
