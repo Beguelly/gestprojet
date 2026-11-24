@@ -1,0 +1,82 @@
+{
+  "version": 2,
+  "skills": {
+    "grill-me": {
+      "source": "mattpocock/skills",
+      "commit": "abeeaf95660ba9e8b7c753eb38f441ca707a8823",
+      "sourceType": "github",
+      "skillPath": "skills/productivity/grill-me/SKILL.md",
+      "computedHash": "ab1acb9fbd9eaee03da254abb8a8de228d1e7a07475fe959da4a5eefa34ea4b9"
+    },
+    "impeccable": {
+      "source": "pbakaus/impeccable",
+      "commit": "b49177d32788f2dc585c42831d845dacf1ebed2c",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/impeccable/SKILL.md",
+      "computedHash": "08bd5bf141cb507f46bd8347890cd985865606f15adf88295ed3a73bc9ad5d96"
+    },
+    "improve-codebase-architecture": {
+      "source": "mattpocock/skills",
+      "commit": "abeeaf95660ba9e8b7c753eb38f441ca707a8823",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/improve-codebase-architecture/SKILL.md",
+      "computedHash": "f0820b18426a7d9a6c823a890988ba0ac70bf0fd596d30d7ef07c88558728c23"
+    },
+    "supabase": {
+      "source": "supabase/agent-skills",
+      "commit": "c9be0e931b7930f7d02126d04774d904c381e7d7",
+      "sourceType": "github",
+      "skillPath": "skills/supabase/SKILL.md",
+      "computedHash": "2fbff32fd63b7d31585cacf0ed43e5bf8d05dd20d6c0c751d256cb967a00eec1"
+    },
+    "supabase-postgres-best-practices": {
+      "source": "supabase/agent-skills",
+      "commit": "c9be0e931b7930f7d02126d04774d904c381e7d7",
+      "sourceType": "github",
+      "skillPath": "skills/supabase-postgres-best-practices/SKILL.md",
+      "computedHash": "3eb972c2d7c818e544e35cc33ea8d7147d4d78ae08142ef40037b0fbac7a2505"
+    },
+    "tavily-entity": {
+      "source": "tavily-ai/skills",
+      "commit": "90de383ad775f769692656ee8da4f935c2fb630b",
+      "sourceType": "github",
+      "skillPath": "skills/tasks/tavily-entity/SKILL.md",
+      "computedHash": "592f6bbb577b2c3bc27a9fd624450cd94df2abe2d8487aabce3aa4b8bc3abc76"
+    },
+    "tavily-list": {
+      "source": "tavily-ai/skills",
+      "commit": "90de383ad775f769692656ee8da4f935c2fb630b",
+      "sourceType": "github",
+      "skillPath": "skills/tasks/tavily-list/SKILL.md",
+      "computedHash": "295b833c822db021a74c79cf1117f1d276983a76de8efecbab52bce9c8d9c126"
+    },
+    "tavily-monitor": {
+      "source": "tavily-ai/skills",
+      "commit": "90de383ad775f769692656ee8da4f935c2fb630b",
+      "sourceType": "github",
+      "skillPath": "skills/tasks/tavily-monitor/SKILL.md",
+      "computedHash": "cbfe58db9e7c741e739f17d4d02e4f9b38e699db77418b2fa6111faa86a58cf0"
+    },
+    "tavily-research": {
+      "source": "tavily-ai/skills",
+      "commit": "90de383ad775f769692656ee8da4f935c2fb630b",
+      "sourceType": "github",
+      "skillPath": "skills/tasks/tavily-research/SKILL.md",
+      "computedHash": "7d9e8dfbd8e2461486fe46ae0784bc27e3421b5bee72b1cb83c89cc0b55676ff"
+    },
+    "tavily-sdk": {
+      "source": "tavily-ai/skills",
+      "commit": "90de383ad775f769692656ee8da4f935c2fb630b",
+      "sourceType": "github",
+      "skillPath": "skills/developers/tavily-sdk/SKILL.md",
+      "computedHash": "acfac8096f9d944511fe66c40c4f3fdeb446a43abc2c4cfb15aa25180e6c2b70"
+    },
+    "tavily-search": {
+      "source": "tavily-ai/skills",
+      "commit": "90de383ad775f769692656ee8da4f935c2fb630b",
+      "sourceType": "github",
+      "skillPath": "skills/core/tavily-search/SKILL.md",
+      "computedHash": "436935b29bc4265894782a7b78e566249e04679f49596a1bef9367bb54267c2e"
+    }
+  }
+}
