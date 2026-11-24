@@ -1,6 +1,6 @@
 ---
 name: agent-skill-builder
-description: Cria e revisa agentes e skills especializados da Gestprojet — tanto skills de apoio ao desenvolvimento (em .claude/skills) quanto os agentes de IA do produto, como avaliação de TRL/MRL, análise de editais, inteligência científica, prestação de contas e relatórios técnicos. Use quando o pedido for criar uma nova skill ou agente, definir o escopo e os limites de um agente, escrever seu SKILL.md, ou montar casos de teste para avaliar sua qualidade.
+description: "Cria e revisa agentes e skills especializados da Gestprojet — tanto skills de apoio ao desenvolvimento (em .claude/skills) quanto os agentes de IA do produto, como avaliação de TRL/MRL, análise de editais, inteligência científica, prestação de contas e relatórios técnicos. Use quando o pedido for criar uma nova skill ou agente, definir o escopo e os limites de um agente, escrever seu SKILL.md, ou montar casos de teste para avaliar sua qualidade."
 ---
 
 # agent-skill-builder: agentes e skills da Gestprojet

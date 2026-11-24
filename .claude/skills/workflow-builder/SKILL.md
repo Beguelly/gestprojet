@@ -1,6 +1,6 @@
 ---
 name: workflow-builder
-description: Modela os fluxos de trabalho da Gestprojet (ciclo de vida do projeto, tarefas, aprovações, remanejamentos, prestação de contas, automações e notificações) e também gera o plano de implementação em lista de tarefas para o time de desenvolvimento. Use para desenhar processos e máquinas de estado, definir quem aprova o quê, criar automações e alertas, ou quebrar o PRD/spec em backlog e sprints.
+description: "Modela os fluxos de trabalho da Gestprojet (ciclo de vida do projeto, tarefas, aprovações, remanejamentos, prestação de contas, automações e notificações) e também gera o plano de implementação em lista de tarefas para o time de desenvolvimento. Use para desenhar processos e máquinas de estado, definir quem aprova o quê, criar automações e alertas, ou quebrar o PRD/spec em backlog e sprints."
 ---
 
 # workflow-builder: fluxos e plano de trabalho da Gestprojet

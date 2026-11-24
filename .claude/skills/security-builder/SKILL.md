@@ -1,6 +1,6 @@
 ---
 name: security-builder
-description: Cuida da segurança e conformidade da Gestprojet — LGPD, controle de acesso por papel e por projeto, proteção de dados financeiros e pessoais, trilha de auditoria, segurança dos agentes de IA e revisão de segurança do código. Use ao definir requisitos de segurança, montar a matriz de permissões, fazer análise de ameaças, revisar um diff ou pull request, preparar documentação LGPD (inventário de dados, RIPD) ou planejar resposta a incidentes.
+description: "Cuida da segurança e conformidade da Gestprojet — LGPD, controle de acesso por papel e por projeto, proteção de dados financeiros e pessoais, trilha de auditoria, segurança dos agentes de IA e revisão de segurança do código. Use ao definir requisitos de segurança, montar a matriz de permissões, fazer análise de ameaças, revisar um diff ou pull request, preparar documentação LGPD (inventário de dados, RIPD) ou planejar resposta a incidentes."
 ---
 
 # security-builder: segurança e conformidade da Gestprojet

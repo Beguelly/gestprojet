@@ -1,6 +1,6 @@
 ---
 name: uxdesign-builder
-description: Define a experiência do usuário da Gestprojet — identidade visual, tokens de design (cores, tipografia, espaçamento), navegação, mapa de telas, dashboards e componentes de interface. Use para criar ou revisar o guia de UX/UI, desenhar fluxos de tela, wireframes, painéis de acompanhamento de projeto, financeiro e TRL/MRL, ou avaliar acessibilidade.
+description: "Define a experiência do usuário da Gestprojet — identidade visual, tokens de design (cores, tipografia, espaçamento), navegação, mapa de telas, dashboards e componentes de interface. Use para criar ou revisar o guia de UX/UI, desenhar fluxos de tela, wireframes, painéis de acompanhamento de projeto, financeiro e TRL/MRL, ou avaliar acessibilidade."
 ---
 
 # uxdesign-builder: experiência do usuário da Gestprojet

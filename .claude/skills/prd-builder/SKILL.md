@@ -1,6 +1,6 @@
 ---
 name: prd-builder
-description: Constrói e mantém o documento mestre de requisitos do produto (PRD) da Gestprojet, a plataforma de gestão de projetos de pesquisa. Use quando o pedido envolver funcionalidades, público-alvo, personas, regras de negócio, modelo de assinatura por projeto, escopo de MVP, priorização ou critérios de aceite. É a primeira etapa do fluxo; as skills spec-builder, uxdesign-builder, workflow-builder, agent-skill-builder e security-builder partem do PRD.
+description: "Constrói e mantém o documento mestre de requisitos do produto (PRD) da Gestprojet, a plataforma de gestão de projetos de pesquisa. Use quando o pedido envolver funcionalidades, público-alvo, personas, regras de negócio, modelo de assinatura por projeto, escopo de MVP, priorização ou critérios de aceite. É a primeira etapa do fluxo; as skills spec-builder, uxdesign-builder, workflow-builder, agent-skill-builder e security-builder partem do PRD."
 ---
 
 # prd-builder: requisitos do produto da Gestprojet
