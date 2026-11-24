@@ -35,3 +35,18 @@ A segurança entra desde a etapa 1: rode `security-builder` logo após o PRD par
 - **Modelo de contratação:** valor por mês de projeto.
 - **Segurança e governança:** conformidade, rastreabilidade e autorização de uso de recursos.
 - **Identidade visual de partida:** azul-marinho como cor principal e verde como acento (logotipo com "G" estilizado e frasco de laboratório); menu lateral com Projetos, Planejamento, TRL/MRL, Financeiro, Prestação de contas, Relatórios; cards de TRL e MRL com nível atual, barra de progresso do projeto e selo ISO 21500. O `uxdesign-builder` parte disso e verifica contraste.
+
+## Time (subagentes em .claude/agents)
+
+A sessão principal roda como `orquestrador` (`.claude/settings.json`). Ele coordena e delega; nunca escreve código.
+
+| Agente | Papel | Escreve em |
+|---|---|---|
+| orquestrador | Coordena o TASKS.md, mantém o diário, commit/push | TASKS.md, CLAUDE.md |
+| analista-produto | PRD, regras, fluxos, domínio, skills de domínio | docs/, .claude/skills/ |
+| desenvolvedor | SPEC, ADRs, banco, backend, frontend | código, docs/02-spec.md, docs/adr/ |
+| designer | UX, identidade, telas, componentes visuais | interface, docs/03-ux.md |
+| testador | Testes automatizados e relatório de falhas | pastas de teste |
+| seguranca | Requisitos LGPD/segurança e revisões | docs/06-seguranca.md, docs/revisoes/ |
+
+Toda entrega de código passa por testador e seguranca antes de ser concluída. Tarefas 🛑/🔑 do TASKS.md exigem parar e perguntar ao dono do projeto.

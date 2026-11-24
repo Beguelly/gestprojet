@@ -31,9 +31,9 @@ Toda tarefa de código só vira `[x]` depois de **testador** e **seguranca** apr
 - [x] T-002 · Instalar skills externas (Supabase, Tavily, Impeccable, grill-me, improve-codebase-architecture) · — ✔
 - [x] T-003 · Briefing do produto (entrevista) · — · `docs/00-briefing.md` ✔
 - [x] ⭐ T-004 · 🛑 **DECISÃO + 🔑 CHAVE** · Criar o repositório no GitHub e informar o nome; conectar e enviar o histórico · orquestrador · Dep.: — · Pronto quando: `git push` feito. *Enquanto isso não acontece, todo o trabalho fica só no container temporário.*
-- [ ] ⭐ T-005 · 🛑 **DECISÃO** · Validar o time de agentes proposto (6 papéis) · usuário · Dep.: — · Pronto quando: aprovação registrada no diário
-- [ ] ⭐ T-006 · Criar `.claude/agents/*.md` (6 agentes) e `.claude/settings.json` com `"agent": "orquestrador"` · orquestrador → desenvolvedor · Dep.: T-005 · Pronto quando: agentes listados em `/agents`
-- [ ] ⭐ T-007 · Escrever o PRD (`docs/01-prd.md`) a partir do briefing, com RF/RN e critérios de aceite · analista-produto · Dep.: T-006 · Pronto quando: lista de verificação do prd-builder completa
+- [x] ⭐ T-005 · 🛑 **DECISÃO** · Validar o time de agentes proposto (6 papéis) · usuário · Dep.: — · Pronto quando: aprovação registrada no diário
+- [x] ⭐ T-006 · Criar `.claude/agents/*.md` (6 agentes) e `.claude/settings.json` com `"agent": "orquestrador"` · orquestrador → desenvolvedor · Dep.: T-005 · Pronto quando: agentes listados em `/agents`
+- [~] ⭐ T-007 · Escrever o PRD (`docs/01-prd.md`) a partir do briefing, com RF/RN e critérios de aceite · analista-produto · Dep.: T-006 · Pronto quando: lista de verificação do prd-builder completa
 - [ ] ⭐ T-008 · 🛑 **DECISÃO** · Aprovar o PRD · usuário · Dep.: T-007
 - [ ] ⭐ T-009 · Requisitos de segurança e LGPD (`docs/06-seguranca.md`): inventário de dados, matriz de permissões (líder concede acesso), RLS, auditoria, segurança da IA · seguranca · Dep.: T-008
 - [ ] ⭐ T-010 · 🛑 **DECISÃO** · Stack: confirmar Next.js + Supabase + hospedagem (proposta: Vercel) · usuário · Dep.: T-008
@@ -157,3 +157,6 @@ Toda tarefa de código só vira `[x]` depois de **testador** e **seguranca** apr
 | 24/11/2026 | — | TASKS.md criado; aguardando revisão do plano | commit f677296 |
 | 24/11/2026 | T-004 | Repositório Beguelly/gestprojet criado e ligado como `origin`. **Envio recusado (403):** o app Claude do GitHub não tem acesso ao repositório. Aguardando o dono instalar o app ou reconectar o GitHub. | `git push` → 403 |
 | 24/11/2026 | T-004 | Acesso liberado; 7 commits enviados para `Beguelly/gestprojet` (branch `main`). **Concluída.** | `git push` ok, `origin/main` = local |
+| 24/11/2026 | T-005 | Dono escolheu **subagentes** (opção b). | mensagem do dono |
+| 24/11/2026 | T-006 | 6 agentes criados em `.claude/agents/`, `settings.json` com `"agent": "orquestrador"`, time registrado no CLAUDE.md. Revisão: YAML válido, todas as skills citadas existem; skills de domínio serão adicionadas na T-018. Observação: o limite de pastas de cada agente é garantido pelas instruções, não por bloqueio técnico. | validação automática dos 6 arquivos |
+| 24/11/2026 | T-007 | Iniciada: PRD delegado ao analista-produto. | — |
