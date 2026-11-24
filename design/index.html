@@ -1,0 +1,1283 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Gestprojet: protótipo de interface</title>
+<meta name="description" content="Protótipo estático navegável da Gestprojet (T-016). Todos os dados são fictícios, apenas para avaliação visual.">
+<style>
+/* =========================================================
+   TOKENS (fonte única; espelhados em docs/03-ux.md, seção 2)
+   Tema claro é o padrão; escuro por preferência do sistema
+   ou pelo botão de tema (data-theme).
+   ========================================================= */
+:root {
+  color-scheme: light;
+  --c-bg: #F4F7FB;
+  --c-surface: #FFFFFF;
+  --c-surface-2: #EAF0F8;
+  --c-border: #C9D4E3;
+  --c-border-strong: #6A7B95;
+  --c-text: #0E1A33;
+  --c-text-muted: #475671;
+  --c-primary: #0B2A5B;
+  --c-on-primary: #FFFFFF;
+  --c-primary-hover: #143E82;
+  --c-link: #0B4FA8;
+  --c-accent: #0A6B41;
+  --c-on-accent: #FFFFFF;
+  --c-accent-hover: #07583A;
+  --c-accent-text: #07583A;
+  --c-accent-soft: #E0F3E8;
+  --c-ok-fg: #075E3A;   --c-ok-bg: #E1F4EA;   --c-ok-bd: #075E3A;
+  --c-warn-fg: #734000; --c-warn-bg: #FFF0CC; --c-warn-bd: #9A5B00;
+  --c-err-fg: #9E1717;  --c-err-bg: #FDE8E8;  --c-err-bd: #9E1717;
+  --c-info-fg: #12508F; --c-info-bg: #E4EEFA; --c-info-bd: #12508F;
+  --c-nav-bg: #0B2A5B;
+  --c-nav-text: #FFFFFF;
+  --c-nav-muted: #C4D2EA;
+  --c-nav-active: rgba(255,255,255,.14);
+  --c-focus: #0B57D0;
+  --c-focus-nav: #8FE3B5;
+  --c-bar-fill: #0B4FA8;
+  --c-bar-track: #D5DEEB;
+  --c-bar-over: #9E1717;
+  --shadow-1: 0 1px 2px rgba(11,42,91,.10), 0 1px 1px rgba(11,42,91,.06);
+  --shadow-2: 0 8px 24px rgba(11,42,91,.14);
+
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --fs-sm: .875rem;   /* 14 */
+  --fs-md: 1rem;      /* 16 */
+  --fs-lg: 1.125rem;  /* 18 */
+  --fs-xl: 1.25rem;   /* 20 */
+  --fs-2xl: 1.5rem;   /* 24 */
+  --fs-3xl: 1.875rem; /* 30 */
+  --fs-4xl: 2.25rem;  /* 36 */
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 64px;
+  --r-sm: 6px; --r-md: 10px; --r-lg: 16px;
+  --tap: 44px;
+  --sidebar: 272px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --c-bg: #0A1120;
+    --c-surface: #111B30;
+    --c-surface-2: #18253F;
+    --c-border: #2A3A57;
+    --c-border-strong: #7D8DA8;
+    --c-text: #E8EEF8;
+    --c-text-muted: #A6B4CC;
+    --c-primary: #8DB4FF;
+    --c-on-primary: #0A1B3D;
+    --c-primary-hover: #B3CDFF;
+    --c-link: #9CC0FF;
+    --c-accent: #4FD08F;
+    --c-on-accent: #04210F;
+    --c-accent-hover: #7BE0AE;
+    --c-accent-text: #6FE0A3;
+    --c-accent-soft: #0F2E22;
+    --c-ok-fg: #6FE0A3;   --c-ok-bg: #0F2E22;   --c-ok-bd: #6FE0A3;
+    --c-warn-fg: #FFCB66; --c-warn-bg: #33260A; --c-warn-bd: #C98A1B;
+    --c-err-fg: #FF9B9B;  --c-err-bg: #3A1414;  --c-err-bd: #FF9B9B;
+    --c-info-fg: #8CC2FF; --c-info-bg: #10243F; --c-info-bd: #8CC2FF;
+    --c-nav-bg: #070D1A;
+    --c-nav-text: #FFFFFF;
+    --c-nav-muted: #B4C3DD;
+    --c-nav-active: rgba(255,255,255,.12);
+    --c-focus: #8DB4FF;
+    --c-focus-nav: #8FE3B5;
+    --c-bar-fill: #8DB4FF;
+    --c-bar-track: #26354F;
+    --c-bar-over: #FF9B9B;
+    --shadow-1: 0 1px 2px rgba(0,0,0,.5);
+    --shadow-2: 0 8px 24px rgba(0,0,0,.55);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --c-bg: #0A1120;
+  --c-surface: #111B30;
+  --c-surface-2: #18253F;
+  --c-border: #2A3A57;
+  --c-border-strong: #7D8DA8;
+  --c-text: #E8EEF8;
+  --c-text-muted: #A6B4CC;
+  --c-primary: #8DB4FF;
+  --c-on-primary: #0A1B3D;
+  --c-primary-hover: #B3CDFF;
+  --c-link: #9CC0FF;
+  --c-accent: #4FD08F;
+  --c-on-accent: #04210F;
+  --c-accent-hover: #7BE0AE;
+  --c-accent-text: #6FE0A3;
+  --c-accent-soft: #0F2E22;
+  --c-ok-fg: #6FE0A3;   --c-ok-bg: #0F2E22;   --c-ok-bd: #6FE0A3;
+  --c-warn-fg: #FFCB66; --c-warn-bg: #33260A; --c-warn-bd: #C98A1B;
+  --c-err-fg: #FF9B9B;  --c-err-bg: #3A1414;  --c-err-bd: #FF9B9B;
+  --c-info-fg: #8CC2FF; --c-info-bg: #10243F; --c-info-bd: #8CC2FF;
+  --c-nav-bg: #070D1A;
+  --c-nav-text: #FFFFFF;
+  --c-nav-muted: #B4C3DD;
+  --c-nav-active: rgba(255,255,255,.12);
+  --c-focus: #8DB4FF;
+  --c-focus-nav: #8FE3B5;
+  --c-bar-fill: #8DB4FF;
+  --c-bar-track: #26354F;
+  --c-bar-over: #FF9B9B;
+  --shadow-1: 0 1px 2px rgba(0,0,0,.5);
+  --shadow-2: 0 8px 24px rgba(0,0,0,.55);
+}
+
+/* =========================================================
+   BASE
+   ========================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--c-bg);
+  color: var(--c-text);
+  font-family: var(--font);
+  font-size: var(--fs-md);
+  line-height: 1.5;
+}
+h1, h2, h3, h4 { margin: 0; line-height: 1.25; font-weight: 700; letter-spacing: -.005em; }
+h1 { font-size: var(--fs-2xl); }
+h2 { font-size: var(--fs-xl); }
+h3 { font-size: var(--fs-lg); }
+p { margin: 0; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+a { color: var(--c-link); text-underline-offset: 3px; }
+a:hover { text-decoration-thickness: 2px; }
+.num, td.num, th.num { font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+.muted { color: var(--c-text-muted); }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+svg.i { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+:focus-visible { outline: 3px solid var(--c-focus); outline-offset: 2px; border-radius: 4px; }
+.sidebar :focus-visible { outline-color: var(--c-focus-nav); }
+.skip { position: absolute; left: var(--s-3); top: -100px; background: var(--c-surface); color: var(--c-text); padding: var(--s-2) var(--s-4); border-radius: var(--r-sm); z-index: 100; border: 2px solid var(--c-border-strong); }
+.skip:focus { top: var(--s-3); }
+
+/* =========================================================
+   LAYOUT
+   ========================================================= */
+.example-bar {
+  background: var(--c-warn-bg); color: var(--c-warn-fg);
+  border-bottom: 2px solid var(--c-warn-bd);
+  padding: var(--s-2) var(--s-4);
+  font-size: var(--fs-sm); font-weight: 600;
+  display: flex; gap: var(--s-2); align-items: center; justify-content: center; text-align: center;
+}
+.app { display: grid; grid-template-columns: var(--sidebar) minmax(0,1fr); min-height: calc(100vh - 40px); }
+.sidebar {
+  background: var(--c-nav-bg); color: var(--c-nav-text);
+  padding: var(--s-5) var(--s-4);
+  display: flex; flex-direction: column; gap: var(--s-5);
+  position: sticky; top: 0; align-self: start; height: 100vh; overflow-y: auto;
+}
+.brand { display: flex; align-items: center; gap: var(--s-3); color: var(--c-nav-text); text-decoration: none; }
+.brand svg { width: 40px; height: 40px; flex: none; }
+.brand b { font-size: var(--fs-xl); letter-spacing: -.01em; display: block; line-height: 1.1; }
+.brand small { color: var(--c-nav-muted); font-size: var(--fs-sm); display: block; line-height: 1.25; }
+.nav-group { display: flex; flex-direction: column; gap: 2px; }
+.nav-title { font-size: var(--fs-sm); color: var(--c-nav-muted); padding: 0 var(--s-3); margin-bottom: var(--s-1); font-weight: 600; }
+.nav a {
+  display: flex; align-items: center; gap: var(--s-3);
+  min-height: var(--tap); padding: var(--s-2) var(--s-3);
+  color: var(--c-nav-text); text-decoration: none; border-radius: var(--r-md);
+  border-left: 4px solid transparent;
+}
+.nav a:hover { background: var(--c-nav-active); }
+.nav a[aria-current="page"] { background: var(--c-nav-active); border-left-color: var(--c-focus-nav); font-weight: 700; }
+.nav a .soon { margin-left: auto; font-size: var(--fs-sm); color: var(--c-nav-muted); }
+.nav .cta {
+  background: var(--c-accent); color: var(--c-on-accent); font-weight: 700; margin-bottom: var(--s-2); border-left-color: transparent;
+}
+.nav .cta:hover { background: var(--c-accent-hover); }
+.nav .cta[aria-current="page"] { outline: 2px solid var(--c-nav-text); outline-offset: -2px; background: var(--c-accent); }
+.sidebar-foot { margin-top: auto; font-size: var(--fs-sm); color: var(--c-nav-muted); }
+
+.scrim { display: none; }
+.main-col { min-width: 0; display: flex; flex-direction: column; }
+.topbar {
+  display: flex; align-items: center; gap: var(--s-3); flex-wrap: wrap;
+  background: var(--c-surface); border-bottom: 1px solid var(--c-border);
+  padding: var(--s-3) var(--s-5); min-height: 64px;
+}
+.btn.menu-btn { display: none; }
+[hidden] { display: none !important; }
+.proj-switch { display: flex; flex-direction: column; min-width: 0; flex: 1 1 240px; }
+.proj-switch b { font-size: var(--fs-md); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.proj-switch span { font-size: var(--fs-sm); color: var(--c-text-muted); }
+.topbar-actions { display: flex; gap: var(--s-2); align-items: center; }
+.role-chip { font-size: var(--fs-sm); border: 1px solid var(--c-border-strong); border-radius: 999px; padding: 2px var(--s-3); color: var(--c-text); background: var(--c-surface-2); }
+main { padding: var(--s-5); max-width: 1180px; width: 100%; }
+.screen { display: none; }
+.screen.on { display: block; }
+.screen > header { margin-bottom: var(--s-5); display: flex; flex-wrap: wrap; gap: var(--s-3); align-items: flex-end; justify-content: space-between; }
+.screen > header p { color: var(--c-text-muted); margin-top: var(--s-1); max-width: 62ch; }
+.screen h1:focus { outline: none; }
+.crumb { font-size: var(--fs-sm); color: var(--c-text-muted); margin-bottom: var(--s-1); }
+.grid { display: grid; gap: var(--s-4); }
+.g-2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+.g-3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
+.g-4 { grid-template-columns: repeat(4, minmax(0,1fr)); }
+.stack { display: flex; flex-direction: column; gap: var(--s-4); }
+.row { display: flex; gap: var(--s-3); align-items: center; flex-wrap: wrap; }
+
+/* =========================================================
+   COMPONENTES
+   ========================================================= */
+.card { background: var(--c-surface); border: 1px solid var(--c-border); border-radius: var(--r-lg); padding: var(--s-5); box-shadow: var(--shadow-1); min-width: 0; }
+.card > h2, .card > h3 { margin-bottom: var(--s-3); }
+.card-head { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--s-3); margin-bottom: var(--s-3); flex-wrap: wrap; }
+.card-head h2, .card-head h3 { margin: 0; }
+.src { font-size: var(--fs-sm); color: var(--c-text-muted); margin-top: var(--s-3); display: flex; gap: var(--s-2); align-items: flex-start; }
+.src svg { margin-top: 2px; width: 16px; height: 16px; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2);
+  min-height: var(--tap); padding: var(--s-2) var(--s-4);
+  border-radius: var(--r-md); border: 2px solid transparent;
+  font: inherit; font-weight: 700; text-decoration: none; cursor: pointer;
+  background: var(--c-primary); color: var(--c-on-primary);
+}
+.btn:hover { background: var(--c-primary-hover); }
+.btn.accent { background: var(--c-accent); color: var(--c-on-accent); }
+.btn.accent:hover { background: var(--c-accent-hover); }
+.btn.ghost { background: transparent; color: var(--c-text); border-color: var(--c-border-strong); }
+.btn.ghost:hover { background: var(--c-surface-2); }
+.btn.lg { min-height: 52px; font-size: var(--fs-lg); padding-inline: var(--s-5); }
+.icon-btn { min-width: var(--tap); padding-inline: var(--s-3); }
+
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: var(--fs-sm); font-weight: 700; line-height: 1.2;
+  padding: 3px 10px 3px 8px; border-radius: 999px; border: 1.5px solid; max-width: 100%;
+}
+.badge svg { width: 16px; height: 16px; }
+.b-ok { color: var(--c-ok-fg); background: var(--c-ok-bg); border-color: var(--c-ok-bd); }
+.b-warn { color: var(--c-warn-fg); background: var(--c-warn-bg); border-color: var(--c-warn-bd); }
+.b-err { color: var(--c-err-fg); background: var(--c-err-bg); border-color: var(--c-err-bd); }
+.b-info { color: var(--c-info-fg); background: var(--c-info-bg); border-color: var(--c-info-bd); }
+.b-neutral { color: var(--c-text); background: var(--c-surface-2); border-color: var(--c-border-strong); }
+.badge.dashed { border-style: dashed; }
+.tag-example { font-size: var(--fs-sm); font-weight: 700; color: var(--c-warn-fg); background: var(--c-warn-bg); border: 1.5px dashed var(--c-warn-bd); border-radius: var(--r-sm); padding: 1px 8px; }
+
+/* KPI */
+.kpi { display: flex; flex-direction: column; gap: var(--s-1); }
+.kpi .label { font-size: var(--fs-sm); color: var(--c-text-muted); font-weight: 600; }
+.kpi .value { font-size: var(--fs-2xl); font-weight: 800; letter-spacing: -.02em; font-variant-numeric: tabular-nums; line-height: 1.15; }
+.kpi .hint { font-size: var(--fs-sm); color: var(--c-text-muted); }
+
+/* Barras de progresso (sempre com o valor em texto) */
+.bar { height: 12px; border-radius: 999px; background: var(--c-bar-track); border: 1px solid var(--c-border-strong); overflow: hidden; }
+.bar > i { display: block; height: 100%; background: var(--c-bar-fill); }
+.bar.over > i { background: repeating-linear-gradient(135deg, var(--c-bar-over) 0 6px, transparent 6px 10px); border-right: 3px solid var(--c-bar-over); }
+.bar-row { display: flex; flex-direction: column; gap: var(--s-1); }
+.bar-row .meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s-1) var(--s-3); font-size: var(--fs-sm); }
+
+/* Escala de níveis (TRL/MRL): segmentos numerados, marcador de meta em texto */
+.scale { display: grid; grid-template-columns: repeat(9, 1fr); gap: 3px; margin: var(--s-3) 0 var(--s-2); }
+.scale li { height: 30px; border: 1.5px solid var(--c-border-strong); border-radius: 4px; display: grid; place-items: center; font-size: var(--fs-sm); font-weight: 700; background: var(--c-surface); color: var(--c-text); position: relative; }
+.scale li.done { background: var(--c-bar-fill); color: var(--c-surface); border-color: var(--c-bar-fill); }
+.scale li.cur { outline: 3px solid var(--c-text); outline-offset: 1px; }
+.scale li.goal { border-style: dashed; border-width: 2px; }
+.scale li.prop { background: repeating-linear-gradient(135deg, var(--c-info-bg) 0 5px, var(--c-surface) 5px 9px); }
+
+/* Tabelas */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: var(--fs-md); }
+caption { text-align: left; font-weight: 700; padding-bottom: var(--s-2); }
+th, td { padding: var(--s-3) var(--s-3); border-bottom: 1px solid var(--c-border); vertical-align: top; text-align: left; }
+th { font-size: var(--fs-sm); color: var(--c-text-muted); font-weight: 700; white-space: nowrap; }
+tfoot td, tfoot th { font-weight: 800; border-top: 2px solid var(--c-border-strong); border-bottom: 0; color: var(--c-text); }
+td.num, th.num { text-align: right; }
+tr.flag td { background: var(--c-err-bg); }
+
+/* Listas de pendências */
+.todo li { display: flex; gap: var(--s-3); align-items: flex-start; padding: var(--s-3) 0; border-bottom: 1px solid var(--c-border); }
+.todo li:last-child { border-bottom: 0; }
+.todo .txt { flex: 1; min-width: 0; }
+.todo .txt a { font-weight: 600; }
+.todo .txt small { display: block; color: var(--c-text-muted); font-size: var(--fs-sm); }
+
+/* Formulário */
+.field { display: flex; flex-direction: column; gap: var(--s-1); }
+.field label, .field .lbl { font-weight: 700; font-size: var(--fs-md); }
+.field .help { font-size: var(--fs-sm); color: var(--c-text-muted); }
+input, select, textarea {
+  font: inherit; color: var(--c-text); background: var(--c-surface);
+  min-height: var(--tap); padding: var(--s-2) var(--s-3);
+  border: 2px solid var(--c-border-strong); border-radius: var(--r-md); width: 100%;
+}
+input:focus-visible, select:focus-visible { outline: 3px solid var(--c-focus); outline-offset: 2px; }
+.form-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: var(--s-4); }
+.form-grid .full { grid-column: 1 / -1; }
+.quote { display: grid; grid-template-columns: 1.4fr 1fr 1fr auto; gap: var(--s-3); align-items: center; padding: var(--s-3); border: 1px solid var(--c-border); border-radius: var(--r-md); background: var(--c-surface-2); }
+.quote .qn { font-weight: 700; }
+
+/* ---------- RESULTADO DA CHECAGEM ---------- */
+.result {
+  border: 3px solid; border-radius: var(--r-lg); padding: var(--s-5);
+  display: grid; grid-template-columns: auto 1fr; gap: var(--s-4); align-items: center;
+}
+.result .glyph { width: 64px; height: 64px; display: grid; place-items: center; }
+.result .glyph svg { width: 64px; height: 64px; stroke-width: 1.75; }
+.result .word { font-size: var(--fs-4xl); font-weight: 900; letter-spacing: .02em; line-height: 1.05; }
+.result .sub { font-size: var(--fs-lg); margin-top: var(--s-1); font-weight: 600; }
+.result.ok { color: var(--c-ok-fg); background: var(--c-ok-bg); border-color: var(--c-ok-bd); border-style: solid; }
+.result.err { color: var(--c-err-fg); background: var(--c-err-bg); border-color: var(--c-err-bd); border-style: solid; }
+.result.warn { color: var(--c-warn-fg); background: var(--c-warn-bg); border-color: var(--c-warn-bd); border-style: dashed; }
+.checks { display: flex; flex-direction: column; gap: var(--s-3); }
+.check { display: grid; grid-template-columns: 28px 1fr; gap: var(--s-3); padding: var(--s-4); border: 1px solid var(--c-border); border-left-width: 6px; border-radius: var(--r-md); background: var(--c-surface); }
+.check.ok { border-left-color: var(--c-ok-bd); }
+.check.err { border-left-color: var(--c-err-bd); }
+.check.warn { border-left-color: var(--c-warn-bd); border-left-style: dashed; }
+.check.na { border-left-color: var(--c-border-strong); }
+.check .ico { padding-top: 2px; }
+.check.ok .ico { color: var(--c-ok-fg); } .check.err .ico { color: var(--c-err-fg); } .check.warn .ico { color: var(--c-warn-fg); } .check.na .ico { color: var(--c-text-muted); }
+.check .top { display: flex; gap: var(--s-2) var(--s-3); flex-wrap: wrap; align-items: center; justify-content: space-between; }
+.check h3 { font-size: var(--fs-md); }
+.check .why { margin-top: var(--s-1); }
+.check .rule { margin-top: var(--s-2); font-size: var(--fs-sm); color: var(--c-text-muted); display: flex; gap: var(--s-2); align-items: flex-start; }
+.check .rule svg { width: 16px; height: 16px; margin-top: 2px; }
+.next { border: 2px solid var(--c-border-strong); border-radius: var(--r-lg); padding: var(--s-5); background: var(--c-surface); }
+.next ol { list-style: decimal; padding-left: 1.4em; display: flex; flex-direction: column; gap: var(--s-2); margin-top: var(--s-2); }
+.seg { display: flex; gap: var(--s-2); flex-wrap: wrap; }
+.seg a { display: inline-flex; align-items: center; gap: var(--s-2); min-height: var(--tap); padding: var(--s-2) var(--s-4); border: 2px solid var(--c-border-strong); border-radius: 999px; text-decoration: none; color: var(--c-text); font-weight: 600; background: var(--c-surface); }
+.seg a[aria-current="true"] { background: var(--c-primary); color: var(--c-on-primary); border-color: var(--c-primary); }
+dl.facts { display: grid; grid-template-columns: max-content 1fr; gap: var(--s-2) var(--s-4); margin: 0; }
+dl.facts dt { color: var(--c-text-muted); font-size: var(--fs-sm); padding-top: 2px; }
+dl.facts dd { margin: 0; font-weight: 600; }
+.record { font-size: var(--fs-sm); color: var(--c-text-muted); display: flex; gap: var(--s-2); align-items: flex-start; }
+.record svg { width: 16px; height: 16px; margin-top: 2px; }
+
+/* Estados: vazio, carregando, erro */
+.state { border: 2px dashed var(--c-border-strong); border-radius: var(--r-lg); padding: var(--s-5); text-align: left; display: flex; flex-direction: column; gap: var(--s-3); align-items: flex-start; }
+.state.error { border-style: solid; border-color: var(--c-err-bd); background: var(--c-err-bg); color: var(--c-err-fg); }
+.skel { background: linear-gradient(90deg, var(--c-bar-track) 25%, var(--c-surface-2) 50%, var(--c-bar-track) 75%); background-size: 200% 100%; animation: sk 1.4s linear infinite; border-radius: 6px; height: 16px; width: 100%; }
+@keyframes sk { to { background-position: -200% 0; } }
+
+.iso-seal { display: inline-flex; align-items: center; gap: var(--s-2); font-size: var(--fs-sm); font-weight: 700; color: var(--c-accent-text); background: var(--c-accent-soft); border: 1.5px solid var(--c-accent-text); border-radius: 999px; padding: 3px 12px 3px 8px; }
+.iso-seal svg { width: 16px; height: 16px; }
+.mobile-cta { display: none; }
+.theme-btn svg { width: 20px; height: 20px; }
+
+/* =========================================================
+   RESPONSIVO (mobile first desde 360 px, sem rolagem horizontal)
+   ========================================================= */
+@media (max-width: 1100px) {
+  .g-4 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .g-3 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+@media (max-width: 1023px) {
+  .app { grid-template-columns: minmax(0,1fr); }
+  .sidebar { position: fixed; inset: 0 auto 0 0; width: min(86vw, 320px); z-index: 50; transform: translateX(-105%); transition: transform .2s ease; box-shadow: var(--shadow-2); }
+  .sidebar.open { transform: none; }
+  .scrim { position: fixed; inset: 0; background: rgba(5,10,25,.6); z-index: 40; display: none; }
+  .scrim.on { display: block; }
+  .btn.menu-btn { display: inline-flex; }
+  .topbar { padding-inline: var(--s-4); }
+  main { padding: var(--s-4); }
+}
+@media (max-width: 719px) {
+  .g-2, .g-3, .g-4, .form-grid { grid-template-columns: minmax(0,1fr); }
+  h1 { font-size: var(--fs-xl); }
+  .card { padding: var(--s-4); }
+  .result { grid-template-columns: 1fr; padding: var(--s-4); gap: var(--s-2); }
+  .result .glyph, .result .glyph svg { width: 48px; height: 48px; }
+  .result .word { font-size: var(--fs-3xl); }
+  .quote { grid-template-columns: 1fr 1fr; }
+  .quote .qn { grid-column: 1 / -1; }
+  dl.facts { grid-template-columns: 1fr; gap: 0; }
+  dl.facts dd { margin-bottom: var(--s-2); }
+  .topbar-actions .role-chip { display: none; }
+  .mobile-cta { display: block; position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; padding: var(--s-3) var(--s-4); background: var(--c-surface); border-top: 1px solid var(--c-border-strong); }
+  .mobile-cta .btn { width: 100%; }
+  body.on-comprar .mobile-cta { display: none; }
+  main { padding-bottom: 96px; }
+  /* tabelas viram cartões */
+  table.stack-m thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+  table.stack-m, table.stack-m tbody, table.stack-m tr, table.stack-m td, table.stack-m tfoot, table.stack-m th { display: block; width: 100%; }
+  table.stack-m tr { border: 1px solid var(--c-border); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); margin-bottom: var(--s-3); background: var(--c-surface); }
+  table.stack-m td, table.stack-m tfoot th { border: 0; padding: var(--s-1) 0; display: flex; justify-content: space-between; gap: var(--s-3); text-align: right; }
+  table.stack-m td::before { content: attr(data-label); font-size: var(--fs-sm); color: var(--c-text-muted); font-weight: 700; text-align: left; flex: none; max-width: 45%; }
+  table.stack-m td:first-child { font-weight: 700; text-align: left; justify-content: flex-start; padding-bottom: var(--s-2); }
+  table.stack-m td:first-child::before { display: none; }
+  table.stack-m tfoot tr { background: var(--c-surface-2); }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+@media (forced-colors: active) {
+  .btn, .badge, .result, .check, .card { border: 2px solid CanvasText; }
+  .bar > i, .scale li.done { background: Highlight; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#conteudo">Pular para o conteúdo</a>
+
+<!-- Ícones (sempre acompanhados de texto; decorativos para leitor de tela) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M7.8 12.4l3 3 5.6-6.2"/></symbol>
+    <symbol id="i-stop" viewBox="0 0 24 24"><polygon points="8,2.5 16,2.5 21.5,8 21.5,16 16,21.5 8,21.5 2.5,16 2.5,8"/><path d="M9 9l6 6M15 9l-6 6"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M12 6.8V12l3.4 2"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3L22 20.5H2z"/><path d="M12 10v5M12 17.8v.2"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5.5M12 7.6v.2"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M8 12h8"/></symbol>
+    <symbol id="i-doc" viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M10 12h5M10 16h5"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5z"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></symbol>
+    <symbol id="i-plan" viewBox="0 0 24 24"><path d="M4 6h3M4 12h3M4 18h3M10 6h10M10 12h10M10 18h10"/></symbol>
+    <symbol id="i-bag" viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></symbol>
+    <symbol id="i-coin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M14.8 9.2c-.6-.9-1.6-1.3-2.8-1.3-1.6 0-2.7.8-2.7 2 0 3 5.7 1.4 5.7 4.3 0 1.2-1.2 2-2.9 2-1.3 0-2.4-.5-3-1.5M12 6v1.9M12 16.3v1.8"/></symbol>
+    <symbol id="i-gauge" viewBox="0 0 24 24"><path d="M3.5 17a8.5 8.5 0 1 1 17 0"/><path d="M12 17l4-6"/></symbol>
+    <symbol id="i-rules" viewBox="0 0 24 24"><path d="M6 3h12v18H6z"/><path d="M9 8h6M9 12h6M9 16h3"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5.5C6 4.5 9 4.5 12 6c3-1.5 6-1.5 8-.5V19c-2-1-5-1-8 .5-3-1.500-6-1.500-8-.5z"/><path d="M12 6v13.5"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.5-4 3-6 6.500-6s6 2 6.500 6"/><path d="M16 4.700a3.500 3.500 0 0 1 0 6.600M18 14.500c2 .8 3.200 2.600 3.500 5.500"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.500 8-8 9-4.500-1-8-4-8-9V6z"/><path d="M8.500 12l2.500 2.500 4.500-5"/></symbol>
+    <symbol id="i-card" viewBox="0 0 24 24"><rect x="2.500" y="5" width="19" height="14" rx="2.500"/><path d="M2.500 10h19M6 15h4"/></symbol>
+    <symbol id="i-flask" viewBox="0 0 24 24"><path d="M9.500 3h5M10.500 3v6L5 18.500A2 2 0 0 0 6.800 21.500h10.400A2 2 0 0 0 19 18.500L13.500 9V3"/></symbol>
+  </defs>
+</svg>
+
+<div class="example-bar" role="note">
+  <svg class="i" aria-hidden="true"><use href="#i-info"/></svg>
+  <span>Protótipo para avaliação visual (T-017). Todos os dados, nomes, valores, editais e cláusulas são fictícios, marcados como EXEMPLO.</span>
+</div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar" aria-label="Menu principal">
+    <a class="brand" href="#/painel" aria-label="Gestprojet: início do projeto">
+      <svg viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+        <path d="M31.500 12.500A13 13 0 1 0 33 22H21.500" fill="none" stroke="currentColor" stroke-width="3.600" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M17.500 14.500h5M18.700 14.500v5L15.200 26a1.200 1.200 0 0 0 1.100 1.800h7.400a1.200 1.200 0 0 0 1.100-1.800L21.300 19.500v-5" fill="#4FD08F" stroke="#4FD08F" stroke-width="1.400" stroke-linejoin="round"/>
+      </svg>
+      <span><b>Gestprojet</b><small>Plataforma de Gestão de Projetos de Pesquisa</small></span>
+    </a>
+
+    <nav class="nav nav-group" aria-label="Seções do projeto">
+      <a class="cta" href="#/comprar" data-route="comprar"><svg class="i" aria-hidden="true"><use href="#i-bag"/></svg>Vou comprar</a>
+      <a href="#/painel" data-route="painel"><svg class="i" aria-hidden="true"><use href="#i-home"/></svg>Painel do projeto</a>
+      <a href="#/planejamento" data-route="planejamento"><svg class="i" aria-hidden="true"><use href="#i-plan"/></svg>Planejamento</a>
+      <a href="#/maturidade" data-route="maturidade"><svg class="i" aria-hidden="true"><use href="#i-gauge"/></svg>TRL / MRL</a>
+      <a href="#/financeiro" data-route="financeiro"><svg class="i" aria-hidden="true"><use href="#i-coin"/></svg>Financeiro</a>
+      <a href="#/regras" data-route="regras"><svg class="i" aria-hidden="true"><use href="#i-rules"/></svg>Regras e documentos</a>
+      <a href="#/publicacoes" data-route="publicacoes"><svg class="i" aria-hidden="true"><use href="#i-book"/></svg>Publicações</a>
+      <a href="#/equipe" data-route="equipe"><svg class="i" aria-hidden="true"><use href="#i-users"/></svg>Equipe</a>
+      <a href="#/auditoria" data-route="auditoria"><svg class="i" aria-hidden="true"><use href="#i-shield"/></svg>Auditoria</a>
+      <a href="#/assinatura" data-route="assinatura"><svg class="i" aria-hidden="true"><use href="#i-card"/></svg>Assinatura</a>
+    </nav>
+
+    <nav class="nav nav-group" aria-label="Apoio ao protótipo">
+      <p class="nav-title">Só no protótipo</p>
+      <a href="#/estados" data-route="estados"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Estados: vazio, carregando, erro</a>
+    </nav>
+
+    <p class="sidebar-foot">Prestação de contas e relatórios chegam na 2ª versão e não aparecem no menu da 1ª.</p>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+
+  <div class="main-col">
+    <header class="topbar">
+      <button class="btn ghost icon-btn menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="sidebar">
+        <svg class="i" aria-hidden="true"><use href="#i-menu"/></svg><span>Menu</span>
+      </button>
+      <div class="proj-switch">
+        <b>Projeto Exemplo: biofertilizante de resíduos</b>
+        <span>Financiador de exemplo · Edital de exemplo 00/2026 · vigência 01/03/2026 a 28/02/2028</span>
+      </div>
+      <div class="topbar-actions">
+        <span class="role-chip">Você: líder (exemplo)</span>
+        <button class="btn ghost icon-btn theme-btn" id="themeBtn" type="button" aria-pressed="false">
+          <svg class="i" aria-hidden="true"><use href="#i-moon"/></svg><span id="themeLbl">Tema escuro</span>
+        </button>
+      </div>
+    </header>
+
+    <main id="conteudo">
+
+<!-- =====================================================
+     1. PAINEL DO PROJETO
+     ===================================================== -->
+<section class="screen" id="s-painel" data-title="Painel do projeto" aria-labelledby="h-painel">
+  <header>
+    <div>
+      <p class="crumb">Projeto Exemplo · <span class="tag-example">EXEMPLO</span></p>
+      <h1 id="h-painel" tabindex="-1">Painel do projeto</h1>
+      <p>Situação em 24/11/2026: vigência, execução financeira, plano de trabalho e o que precisa da sua atenção.</p>
+    </div>
+    <a class="btn accent lg" href="#/comprar"><svg class="i" aria-hidden="true"><use href="#i-bag"/></svg>Vou comprar</a>
+  </header>
+
+  <div class="stack">
+    <div class="grid g-4">
+      <div class="card kpi">
+        <span class="label">Vigência</span>
+        <span class="value">15 meses e 4 dias</span>
+        <span class="hint">restam até 28/02/2028 · 37% do tempo decorrido</span>
+      </div>
+      <div class="card kpi">
+        <span class="label">Execução financeira</span>
+        <span class="value">65,0%</span>
+        <span class="hint">R$ 65.030,40 de R$ 100.000,00</span>
+      </div>
+      <div class="card kpi">
+        <span class="label">Plano de trabalho</span>
+        <span class="value">62%</span>
+        <span class="hint">11 de 18 tarefas concluídas · 1 atrasada</span>
+      </div>
+      <div class="card kpi">
+        <span class="label">Checagem prévia</span>
+        <span class="value">90%</span>
+        <span class="hint">9 de 10 despesas com checagem vinculada</span>
+      </div>
+    </div>
+
+    <div class="grid g-2">
+      <section class="card" aria-labelledby="h-pend">
+        <div class="card-head">
+          <h2 id="h-pend">Pendências <span class="badge b-warn">5 itens</span></h2>
+        </div>
+        <ul class="todo">
+          <li>
+            <span class="badge b-err"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>Atenção</span>
+            <div class="txt"><a href="#/financeiro">Rubrica com saldo negativo: serviços (exemplo)</a><small>Saldo de −R$ 1.200,00. Confira a despesa e as regras.</small></div>
+          </li>
+          <li>
+            <span class="badge b-err"><svg class="i" aria-hidden="true"><use href="#i-stop"/></svg>Bloqueada</span>
+            <div class="txt"><a href="#/financeiro">Despesa comprada com checagem bloqueada</a><small>Lançada em 20/11/2026 · R$ 3.200,00 · fica registrada na auditoria</small></div>
+          </li>
+          <li>
+            <span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Pendente</span>
+            <div class="txt"><a href="#/comprar/pendente">Checagem pendente: item fora das regras</a><small>Você precisa enquadrar o item antes de decidir.</small></div>
+          </li>
+          <li>
+            <span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-doc"/></svg>Sem fonte</span>
+            <div class="txt"><a href="#/regras">2 regras sem fonte (documento, cláusula, página)</a><small>Regras sem fonte não são confirmadas.</small></div>
+          </li>
+          <li>
+            <span class="badge b-info"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Prazo</span>
+            <div class="txt"><a href="#/planejamento">Tarefa atrasada: relatório de ensaio</a><small>Prazo era 15/11/2026 · responsável: Bia (exemplo)</small></div>
+          </li>
+        </ul>
+        <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Fonte: plano de trabalho, regras, checagens e lançamentos do projeto.</p>
+      </section>
+
+      <section class="card" aria-labelledby="h-prazos">
+        <div class="card-head"><h2 id="h-prazos">Próximos prazos</h2></div>
+        <ul class="todo">
+          <li><div class="txt"><b>04/12/2026</b> · Marco: entrega do protótipo ao financiador<small>Meta 2 · em 10 dias</small></div></li>
+          <li><div class="txt"><b>15/12/2026</b> · Tarefa: ensaio de campo, lote 2<small>Meta 2 · responsável: Caio (exemplo)</small></div></li>
+          <li><div class="txt"><b>30/01/2027</b> · Tarefa: análise de resultados<small>Meta 3</small></div></li>
+        </ul>
+        <div class="bar-row" style="margin-top:var(--s-4)">
+          <div class="meta"><span>Progresso do projeto</span><b class="num">62%</b></div>
+          <div class="bar" role="img" aria-label="Progresso do projeto: 62%"><i style="width:62%"></i></div>
+          <div><span class="iso-seal"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Estrutura alinhada à ISO 21500</span></div>
+        </div>
+        <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Fonte: marcos e tarefas do plano de trabalho. Último ajuste do plano: 12/11/2026.</p>
+      </section>
+    </div>
+
+    <div class="grid g-2">
+      <section class="card" aria-labelledby="h-saldo">
+        <div class="card-head"><h2 id="h-saldo">Saldo por rubrica</h2><a href="#/financeiro">Ver financeiro</a></div>
+        <div class="stack">
+          <div class="bar-row">
+            <div class="meta"><span>Custeio: material de consumo</span><b class="num">saldo R$ 8.649,60</b></div>
+            <div class="bar" role="img" aria-label="71,2% executado"><i style="width:71.2%"></i></div>
+            <div class="meta muted"><span>71,2% executado</span><span class="num">previsto R$ 30.000,00</span></div>
+          </div>
+          <div class="bar-row">
+            <div class="meta"><span>Custeio: serviços</span><b class="num" style="color:var(--c-err-fg)">saldo −R$ 1.200,00</b></div>
+            <div class="bar over" role="img" aria-label="104,0% executado, acima do previsto"><i style="width:100%"></i></div>
+            <div class="meta"><span class="badge b-err"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>Acima do previsto</span><span class="num muted">104,0% de R$ 30.000,00</span></div>
+          </div>
+          <div class="bar-row">
+            <div class="meta"><span>Capital: equipamentos</span><b class="num">saldo R$ 27.520,00</b></div>
+            <div class="bar" role="img" aria-label="31,2% executado"><i style="width:31.2%"></i></div>
+            <div class="meta muted"><span>31,2% executado</span><span class="num">previsto R$ 40.000,00</span></div>
+          </div>
+        </div>
+        <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Fonte: orçamento por rubrica e lançamentos da conta do projeto.</p>
+      </section>
+
+      <section class="card" aria-labelledby="h-mat">
+        <div class="card-head"><h2 id="h-mat">Maturidade</h2><a href="#/maturidade">Ver detalhes</a></div>
+        <div class="grid g-2">
+          <div>
+            <p class="muted" style="font-size:var(--fs-sm);font-weight:700">TRL (tecnologia)</p>
+            <p class="kpi"><span class="value">4 <small class="muted" style="font-size:var(--fs-md)">→ meta 6</small></span></p>
+            <div class="bar" role="img" aria-label="TRL 4 de meta 6"><i style="width:66%"></i></div>
+            <p class="hint muted" style="font-size:var(--fs-sm);margin-top:4px">Oficial em 10/09/2026</p>
+          </div>
+          <div>
+            <p class="muted" style="font-size:var(--fs-sm);font-weight:700">MRL (manufatura)</p>
+            <p class="kpi"><span class="value">3 <small class="muted" style="font-size:var(--fs-md)">→ meta 5</small></span></p>
+            <div class="bar" role="img" aria-label="MRL 3 de meta 5"><i style="width:60%"></i></div>
+            <p class="hint muted" style="font-size:var(--fs-sm);margin-top:4px">Oficial em 10/09/2026</p>
+          </div>
+        </div>
+        <p style="margin-top:var(--s-4)"><span class="badge b-info dashed"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Proposta de TRL 5 aguardando sua confirmação</span></p>
+        <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Fonte: evidências ligadas aos critérios de cada nível.</p>
+      </section>
+    </div>
+
+    <div class="grid g-2">
+      <section class="card" aria-labelledby="h-pub">
+        <div class="card-head"><h2 id="h-pub">Publicações do tema</h2></div>
+        <p><b>3 novas publicações</b> desde a última semana. <a href="#/publicacoes">Abrir lista</a></p>
+        <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Fonte: busca nas fontes configuradas, em 23/11/2026. Cada item tem DOI ou link da fonte.</p>
+      </section>
+      <section class="card" aria-labelledby="h-plano">
+        <div class="card-head"><h2 id="h-plano">Atualização do plano</h2></div>
+        <p class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Plano sem atualização há 12 dias</p>
+        <p class="muted" style="margin-top:var(--s-2)">O aviso aparece quando passam 30 dias sem alteração.</p>
+        <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Fonte: histórico de alterações do plano de trabalho.</p>
+      </section>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================
+     2. VOU COMPRAR: FORMULÁRIO
+     ===================================================== -->
+<section class="screen" id="s-comprar" data-title="Vou comprar" aria-labelledby="h-comprar">
+  <header>
+    <div>
+      <p class="crumb">Projeto Exemplo · <span class="tag-example">EXEMPLO</span></p>
+      <h1 id="h-comprar" tabindex="-1">Vou comprar</h1>
+      <p>Confira antes de gastar. A plataforma diz se o item é permitido pelo edital, em qual rubrica entra e se as cotações exigidas foram anexadas.</p>
+    </div>
+  </header>
+
+  <form class="card" id="formCompra" aria-labelledby="h-comprar" novalidate>
+    <div class="form-grid">
+      <div class="field full">
+        <label for="f-item">O que você vai comprar?</label>
+        <input id="f-item" name="item" value="Material X (exemplo)" autocomplete="off">
+        <span class="help">Descreva o item como está na nota ou na cotação.</span>
+      </div>
+      <div class="field">
+        <label for="f-cat">Categoria do item</label>
+        <select id="f-cat" name="cat">
+          <option>Material X (exemplo): vedado no edital de exemplo</option>
+          <option>Item de exemplo A: permitido em custeio</option>
+          <option>Não encontrei a categoria</option>
+        </select>
+        <span class="help">A lista vem das regras confirmadas pelo líder.</span>
+      </div>
+      <div class="field">
+        <label for="f-rub">Rubrica pretendida</label>
+        <select id="f-rub" name="rub">
+          <option>Custeio: material de consumo</option>
+          <option>Custeio: serviços</option>
+          <option>Capital: equipamentos</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="f-qtd">Quantidade</label>
+        <input id="f-qtd" name="qtd" inputmode="numeric" value="2">
+      </div>
+      <div class="field">
+        <label for="f-val">Valor estimado (R$)</label>
+        <input id="f-val" name="val" inputmode="decimal" value="3.200,00" aria-describedby="f-val-h">
+        <span class="help" id="f-val-h">Valor total da compra, em reais. Exemplo: 1.234,56</span>
+      </div>
+      <div class="field">
+        <label for="f-data">Data prevista da compra</label>
+        <input id="f-data" name="data" inputmode="numeric" value="26/11/2026" aria-describedby="f-data-h">
+        <span class="help" id="f-data-h">Formato DD/MM/AAAA.</span>
+      </div>
+      <div class="field">
+        <label for="f-forn">Fornecedor escolhido</label>
+        <input id="f-forn" name="forn" value="Fornecedor A (exemplo)" autocomplete="off">
+      </div>
+    </div>
+
+    <div class="field" style="margin-top:var(--s-5)">
+      <span class="lbl" id="l-cot">Cotações anexadas (1)</span>
+      <span class="help">Cada cotação precisa de arquivo, fornecedor, valor e data. No celular, você pode fotografar.</span>
+      <div class="stack" role="group" aria-labelledby="l-cot" style="margin-top:var(--s-2)">
+        <div class="quote">
+          <span class="qn">Cotação 1 · Fornecedor A (exemplo)</span>
+          <span class="num">R$ 3.200,00</span>
+          <span class="num">20/11/2026</span>
+          <span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Válida</span>
+        </div>
+        <div class="row">
+          <button class="btn ghost" type="button"><svg class="i" aria-hidden="true"><use href="#i-doc"/></svg>Anexar cotação (arquivo ou foto)</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top:var(--s-5)">
+      <a class="btn accent lg" href="#/comprar/bloqueado" id="btnConferir"><svg class="i" aria-hidden="true"><use href="#i-shield"/></svg>Conferir antes de comprar</a>
+      <span class="muted">Resposta em poucos segundos. O pedido fica registrado e não pode ser alterado.</span>
+    </div>
+  </form>
+  <p class="muted" style="margin-top:var(--s-4)">Já viu como funciona? Veja direto um dos três resultados:
+    <a href="#/comprar/permitido">permitido</a> · <a href="#/comprar/bloqueado">bloqueado</a> · <a href="#/comprar/pendente">pendente</a>.</p>
+</section>
+
+<!-- =====================================================
+     3. VOU COMPRAR: RESULTADOS
+     ===================================================== -->
+<section class="screen" id="s-resultado" data-title="Resultado da checagem" aria-labelledby="h-res">
+  <header>
+    <div>
+      <p class="crumb"><a href="#/comprar">Vou comprar</a> · Resultado · <span class="tag-example">EXEMPLO</span></p>
+      <h1 id="h-res" tabindex="-1">Resultado da checagem</h1>
+    </div>
+    <nav aria-label="Exemplos de resultado" class="seg" id="seg">
+      <a href="#/comprar/permitido" data-r="permitido">Exemplo: permitido</a>
+      <a href="#/comprar/bloqueado" data-r="bloqueado">Exemplo: bloqueado</a>
+      <a href="#/comprar/pendente" data-r="pendente">Exemplo: pendente</a>
+    </nav>
+  </header>
+
+  <!-- ---------- BLOQUEADO (caso RF-062) ---------- -->
+  <div class="stack res" id="r-bloqueado" hidden>
+    <section class="result err" role="region" aria-labelledby="w-bloq">
+      <div class="glyph"><svg class="i" aria-hidden="true"><use href="#i-stop"/></svg></div>
+      <div>
+        <div class="word" id="w-bloq">BLOQUEADO</div>
+        <p class="sub">Não compre ainda: 2 motivos impedem esta compra.</p>
+      </div>
+    </section>
+
+    <section class="next" aria-labelledby="n-bloq">
+      <h2 id="n-bloq">O que fazer</h2>
+      <ol>
+        <li><b>Item vedado:</b> escolha outro item ou obtenha autorização do financiador antes de comprar.</li>
+        <li><b>Cotações:</b> anexe mais 2 cotações para completar as 3 exigidas. Atenção: anexar cotações <b>não libera</b> item vedado; sem elas, porém, o bloqueio por cotações também continua.</li>
+      </ol>
+      <div class="row" style="margin-top:var(--s-4)">
+        <a class="btn" href="#/comprar"><svg class="i" aria-hidden="true"><use href="#i-doc"/></svg>Anexar cotações e conferir de novo</a>
+        <a class="btn ghost" href="#/financeiro">Já comprei: lançar despesa</a>
+      </div>
+      <p class="muted" style="font-size:var(--fs-sm);margin-top:var(--s-2)">Se você lançar a despesa mesmo assim, ela fica marcada &quot;comprada com checagem bloqueada&quot;, aparece nas pendências do líder e na auditoria.</p>
+    </section>
+
+    <section aria-labelledby="v-bloq">
+      <h2 id="v-bloq" style="margin-bottom:var(--s-3)">Verificações</h2>
+      <ul class="checks">
+        <li class="check err">
+          <span class="ico"><svg class="i" aria-hidden="true"><use href="#i-stop"/></svg></span>
+          <div>
+            <div class="top"><h3>Item</h3><span class="badge b-err"><svg class="i" aria-hidden="true"><use href="#i-stop"/></svg>Bloqueia</span></div>
+            <p class="why">Item vedado pelo edital: &quot;Material X (exemplo)&quot; não pode ser comprado com os recursos deste projeto.</p>
+            <p class="rule"><svg class="i" aria-hidden="true"><use href="#i-doc"/></svg><span>Fonte: Termo de outorga de exemplo, cláusula 7.3, página 12 · regras v3 · <a href="#/regras">abrir o documento na página 12</a></span></p>
+          </div>
+        </li>
+        <li class="check err">
+          <span class="ico"><svg class="i" aria-hidden="true"><use href="#i-stop"/></svg></span>
+          <div>
+            <div class="top"><h3>Cotações</h3><span class="badge b-err"><svg class="i" aria-hidden="true"><use href="#i-stop"/></svg>Bloqueia</span></div>
+            <p class="why">Cotações anexadas: <b>1 de 3 exigidas</b>. Faltam 2.</p>
+            <p class="rule"><svg class="i" aria-hidden="true"><use href="#i-doc"/></svg><span>Fonte: Edital de exemplo 00/2026, item 9.2, página 8 · compras nesta faixa de valor exigem 3 cotações · regras v3</span></p>
+          </div>
+        </li>
+        <li class="check ok">
+          <span class="ico"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span>
+          <div>
+            <div class="top"><h3>Rubrica</h3><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Atende</span></div>
+            <p class="why">A rubrica escolhida, custeio: material de consumo, é admitida pelo edital.</p>
+          </div>
+        </li>
+        <li class="check ok">
+          <span class="ico"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span>
+          <div>
+            <div class="top"><h3>Saldo</h3><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Atende</span></div>
+            <p class="why">Valor de R$ 3.200,00 cabe no saldo da rubrica, que é de R$ 8.649,60.</p>
+          </div>
+        </li>
+        <li class="check na">
+          <span class="ico"><svg class="i" aria-hidden="true"><use href="#i-minus"/></svg></span>
+          <div>
+            <div class="top"><h3>Limites</h3><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-minus"/></svg>Não se aplica</span></div>
+            <p class="why">Nenhum limite de valor cadastrado para este item.</p>
+          </div>
+        </li>
+        <li class="check ok">
+          <span class="ico"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span>
+          <div>
+            <div class="top"><h3>Vigência</h3><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Atende</span></div>
+            <p class="why">Data prevista, 26/11/2026, está dentro da vigência (01/03/2026 a 28/02/2028).</p>
+          </div>
+        </li>
+      </ul>
+    </section>
+    <div class="grid g-2">
+      <section class="card"><h2>O que você informou</h2>
+        <dl class="facts"><dt>Item</dt><dd>Material X (exemplo) · 2 unidades</dd><dt>Valor estimado</dt><dd class="num" style="text-align:left">R$ 3.200,00</dd><dt>Rubrica</dt><dd>Custeio: material de consumo</dd><dt>Fornecedor</dt><dd>Fornecedor A (exemplo)</dd><dt>Cotações</dt><dd>1 anexada</dd></dl>
+      </section>
+      <section class="card"><h2>Registro</h2>
+        <p class="record"><svg class="i" aria-hidden="true"><use href="#i-shield"/></svg><span>Checagem nº 0042 (exemplo), pedida por Ana (exemplo) em 24/11/2026 às 14:32, com as regras v3. Não pode ser alterada; uma nova checagem cria um novo registro.</span></p>
+      </section>
+    </div>
+  </div>
+
+  <!-- ---------- PERMITIDO ---------- -->
+  <div class="stack res" id="r-permitido" hidden>
+    <section class="result ok" role="region" aria-labelledby="w-perm">
+      <div class="glyph"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></div>
+      <div>
+        <div class="word" id="w-perm">PERMITIDO</div>
+        <p class="sub">Pode comprar: todas as verificações foram atendidas.</p>
+      </div>
+    </section>
+
+    <section class="next" aria-labelledby="n-perm">
+      <h2 id="n-perm">Próximo passo</h2>
+      <ol>
+        <li>Compre dentro do valor checado, <b>R$ 1.850,00</b>, e guarde a nota fiscal.</li>
+        <li>Depois da compra, lance a despesa e vincule esta checagem. Se o valor final for maior, será preciso checar de novo.</li>
+      </ol>
+      <div class="row" style="margin-top:var(--s-4)">
+        <a class="btn accent" href="#/financeiro">Comprei: lançar despesa com esta checagem</a>
+        <a class="btn ghost" href="#/comprar">Nova checagem</a>
+      </div>
+    </section>
+
+    <section aria-labelledby="v-perm">
+      <h2 id="v-perm" style="margin-bottom:var(--s-3)">Verificações</h2>
+      <ul class="checks">
+        <li class="check ok">
+          <span class="ico"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span>
+          <div>
+            <div class="top"><h3>Item</h3><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Atende</span></div>
+            <p class="why">&quot;Item de exemplo A&quot; é permitido pelo edital.</p>
+            <p class="rule"><svg class="i" aria-hidden="true"><use href="#i-doc"/></svg><span>Fonte: Termo de outorga de exemplo, cláusula 7.1, página 11 · regras v3 · <a href="#/regras">abrir o documento na página 11</a></span></p>
+          </div>
+        </li>
+        <li class="check ok">
+          <span class="ico"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span>
+          <div>
+            <div class="top"><h3>Rubrica</h3><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Atende</span></div>
+            <p class="why">Este item entra em custeio: material de consumo, a rubrica escolhida.</p>
+            <p class="rule"><svg class="i" aria-hidden="true"><use href="#i-doc"/></svg><span>Fonte: Termo de outorga de exemplo, cláusula 7.1, página 11 · regras v3</span></p>
+          </div>
+        </li>
+        <li class="check ok">
+          <span class="ico"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span>
+          <div>
+            <div class="top"><h3>Saldo</h3><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Atende</span></div>
+            <p class="why">R$ 1.850,00 cabem no saldo da rubrica, que é de R$ 8.649,60.</p>
+          </div>
+        </li>
+        <li class="check ok">
+          <span class="ico"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span>
+          <div>
+            <div class="top"><h3>Cotações</h3><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Atende</span></div>
+            <p class="why">Cotações válidas: <b>3 de 3 exigidas</b>, de fornecedores diferentes.</p>
+            <p class="rule"><svg class="i" aria-hidden="true"><use href="#i-doc"/></svg><span>Fonte: Edital de exemplo 00/2026, item 9.2, página 8 · regras v3</span></p>
+          </div>
+        </li>
+        <li class="check na">
+          <span class="ico"><svg class="i" aria-hidden="true"><use href="#i-minus"/></svg></span>
+          <div>
+            <div class="top"><h3>Limites</h3><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-minus"/></svg>Não se aplica</span></div>
+            <p class="why">Nenhum limite de valor cadastrado para este item.</p>
+          </div>
+        </li>
+        <li class="check ok">
+          <span class="ico"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span>
+          <div>
+            <div class="top"><h3>Vigência</h3><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Atende</span></div>
+            <p class="why">Data prevista, 26/11/2026, está dentro da vigência.</p>
+          </div>
+        </li>
+      </ul>
+    </section>
+    <div class="grid g-2">
+      <section class="card"><h2>O que você informou</h2>
+        <dl class="facts"><dt>Item</dt><dd>Item de exemplo A · 1 unidade</dd><dt>Valor estimado</dt><dd style="font-variant-numeric:tabular-nums">R$ 1.850,00</dd><dt>Rubrica</dt><dd>Custeio: material de consumo</dd><dt>Fornecedor</dt><dd>Fornecedor B (exemplo)</dd><dt>Cotações</dt><dd>3 anexadas</dd></dl>
+      </section>
+      <section class="card"><h2>Registro</h2>
+        <p class="record"><svg class="i" aria-hidden="true"><use href="#i-shield"/></svg><span>Checagem nº 0043 (exemplo), pedida por Ana (exemplo) em 24/11/2026 às 15:05, com as regras v3. Não pode ser alterada.</span></p>
+      </section>
+    </div>
+  </div>
+
+  <!-- ---------- PENDENTE ---------- -->
+  <div class="stack res" id="r-pendente" hidden>
+    <section class="result warn" role="region" aria-labelledby="w-pend">
+      <div class="glyph"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg></div>
+      <div>
+        <div class="word" id="w-pend">PENDENTE</div>
+        <p class="sub">Ainda não dá para decidir: o item não está nas regras do projeto.</p>
+      </div>
+    </section>
+
+    <section class="next" aria-labelledby="n-pend">
+      <h2 id="n-pend">O que fazer</h2>
+      <ol>
+        <li>O líder precisa <b>enquadrar o item</b>: criar ou ajustar uma regra com fonte (cláusula e página), ou decidir que o item não deve ser comprado.</li>
+        <li>Depois do enquadramento, refaça a checagem. Esta continua no histórico.</li>
+        <li>Enquanto estiver pendente, não compre.</li>
+      </ol>
+      <div class="row" style="margin-top:var(--s-4)">
+        <a class="btn" href="#/regras">Enquadrar o item (líder)</a>
+        <a class="btn ghost" href="#/comprar">Refazer a checagem</a>
+      </div>
+    </section>
+
+    <section aria-labelledby="v-pend">
+      <h2 id="v-pend" style="margin-bottom:var(--s-3)">Verificações</h2>
+      <ul class="checks">
+        <li class="check warn">
+          <span class="ico"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg></span>
+          <div>
+            <div class="top"><h3>Item</h3><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Sem decisão</span></div>
+            <p class="why">Item não está nas regras do projeto; o líder precisa enquadrar.</p>
+            <p class="rule"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg><span>Você marcou &quot;não encontrei a categoria&quot;. Há 2 regras aguardando confirmação do líder; elas não foram usadas nesta checagem.</span></p>
+          </div>
+        </li>
+        <li class="check warn">
+          <span class="ico"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg></span>
+          <div>
+            <div class="top"><h3>Rubrica</h3><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Sem decisão</span></div>
+            <p class="why">Sem regra para o item, não há como confirmar em que rubrica ele entra.</p>
+          </div>
+        </li>
+        <li class="check ok">
+          <span class="ico"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span>
+          <div>
+            <div class="top"><h3>Saldo</h3><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Atende</span></div>
+            <p class="why">R$ 2.400,00 cabem no saldo da rubrica pretendida, que é de R$ 8.649,60.</p>
+          </div>
+        </li>
+        <li class="check ok">
+          <span class="ico"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span>
+          <div>
+            <div class="top"><h3>Cotações</h3><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Atende</span></div>
+            <p class="why">Cotações válidas: <b>3 de 3 exigidas</b>.</p>
+            <p class="rule"><svg class="i" aria-hidden="true"><use href="#i-doc"/></svg><span>Fonte: Edital de exemplo 00/2026, item 9.2, página 8 · regras v3</span></p>
+          </div>
+        </li>
+        <li class="check na">
+          <span class="ico"><svg class="i" aria-hidden="true"><use href="#i-minus"/></svg></span>
+          <div>
+            <div class="top"><h3>Limites</h3><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-minus"/></svg>Não se aplica</span></div>
+            <p class="why">Nenhum limite de valor cadastrado.</p>
+          </div>
+        </li>
+        <li class="check ok">
+          <span class="ico"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span>
+          <div>
+            <div class="top"><h3>Vigência</h3><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Atende</span></div>
+            <p class="why">Data prevista, 26/11/2026, está dentro da vigência.</p>
+          </div>
+        </li>
+      </ul>
+    </section>
+    <div class="grid g-2">
+      <section class="card"><h2>O que você informou</h2>
+        <dl class="facts"><dt>Item</dt><dd>Item de exemplo B · 1 unidade</dd><dt>Valor estimado</dt><dd style="font-variant-numeric:tabular-nums">R$ 2.400,00</dd><dt>Rubrica</dt><dd>Custeio: material de consumo</dd><dt>Fornecedor</dt><dd>Fornecedor C (exemplo)</dd><dt>Cotações</dt><dd>3 anexadas</dd></dl>
+      </section>
+      <section class="card"><h2>Registro</h2>
+        <p class="record"><svg class="i" aria-hidden="true"><use href="#i-shield"/></svg><span>Checagem nº 0044 (exemplo), pedida por Ana (exemplo) em 24/11/2026 às 15:20, com as regras v3. Não pode ser alterada.</span></p>
+      </section>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================
+     4. FINANCEIRO
+     ===================================================== -->
+<section class="screen" id="s-financeiro" data-title="Financeiro" aria-labelledby="h-fin">
+  <header>
+    <div>
+      <p class="crumb">Projeto Exemplo · <span class="tag-example">EXEMPLO</span></p>
+      <h1 id="h-fin" tabindex="-1">Financeiro</h1>
+      <p>Previsto, realizado e saldo por rubrica, em reais. Rendimentos ficam à parte.</p>
+    </div>
+    <a class="btn accent lg" href="#/comprar"><svg class="i" aria-hidden="true"><use href="#i-bag"/></svg>Vou comprar</a>
+  </header>
+
+  <div class="stack">
+    <div class="grid g-4">
+      <div class="card kpi"><span class="label">Orçamento aprovado</span><span class="value">R$ 100.000,00</span><span class="hint">distribuído: 100%</span></div>
+      <div class="card kpi"><span class="label">Realizado</span><span class="value">R$ 65.030,40</span><span class="hint">65,0% do orçamento</span></div>
+      <div class="card kpi"><span class="label">Saldo das rubricas</span><span class="value">R$ 34.969,60</span><span class="hint">previsto − realizado</span></div>
+      <div class="card kpi"><span class="label">Saldo da conta</span><span class="value">R$ 35.225,10</span><span class="hint">inclui rendimentos de R$ 255,50</span></div>
+    </div>
+
+    <section class="card" aria-labelledby="h-rub">
+      <div class="card-head">
+        <h2 id="h-rub">Por rubrica</h2>
+        <span class="badge b-err"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>1 rubrica acima do previsto</span>
+      </div>
+      <div class="table-wrap">
+        <table class="stack-m">
+          <caption class="sr-only">Previsto, realizado, saldo e percentual executado por rubrica, em reais</caption>
+          <thead><tr><th scope="col">Rubrica</th><th scope="col" class="num">Previsto</th><th scope="col" class="num">Realizado</th><th scope="col" class="num">Saldo</th><th scope="col">% executado</th></tr></thead>
+          <tbody>
+            <tr>
+              <td data-label="Rubrica">Custeio: material de consumo</td>
+              <td class="num" data-label="Previsto">R$ 30.000,00</td>
+              <td class="num" data-label="Realizado">R$ 21.350,40</td>
+              <td class="num" data-label="Saldo">R$ 8.649,60</td>
+              <td data-label="% executado"><div class="bar-row" style="min-width:150px"><div class="bar" role="img" aria-label="71,2% executado"><i style="width:71.2%"></i></div><span class="num" style="font-size:var(--fs-sm)">71,2%</span></div></td>
+            </tr>
+            <tr class="flag">
+              <td data-label="Rubrica">Custeio: serviços <span class="badge b-err"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>Acima do previsto</span></td>
+              <td class="num" data-label="Previsto">R$ 30.000,00</td>
+              <td class="num" data-label="Realizado">R$ 31.200,00</td>
+              <td class="num" data-label="Saldo"><b style="color:var(--c-err-fg)">−R$ 1.200,00</b></td>
+              <td data-label="% executado"><div class="bar-row" style="min-width:150px"><div class="bar over" role="img" aria-label="104,0% executado, acima do previsto"><i style="width:100%"></i></div><span class="num" style="font-size:var(--fs-sm)">104,0%</span></div></td>
+            </tr>
+            <tr>
+              <td data-label="Rubrica">Capital: equipamentos</td>
+              <td class="num" data-label="Previsto">R$ 40.000,00</td>
+              <td class="num" data-label="Realizado">R$ 12.480,00</td>
+              <td class="num" data-label="Saldo">R$ 27.520,00</td>
+              <td data-label="% executado"><div class="bar-row" style="min-width:150px"><div class="bar" role="img" aria-label="31,2% executado"><i style="width:31.2%"></i></div><span class="num" style="font-size:var(--fs-sm)">31,2%</span></div></td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr><th scope="row">Total</th><td class="num" data-label="Previsto">R$ 100.000,00</td><td class="num" data-label="Realizado">R$ 65.030,40</td><td class="num" data-label="Saldo">R$ 34.969,60</td><td data-label="% executado" class="num">65,0%</td></tr>
+          </tfoot>
+        </table>
+      </div>
+      <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Fonte: orçamento por rubrica (regras do edital) e lançamentos da conta. Saldo = previsto − realizado, ao centavo. Visível a líder e membros do projeto.</p>
+    </section>
+
+    <div class="grid g-2">
+      <section class="card" aria-labelledby="h-rend">
+        <div class="card-head"><h2 id="h-rend">Rendimentos da conta</h2></div>
+        <div class="table-wrap">
+          <table class="stack-m">
+            <caption class="sr-only">Rendimentos de aplicação por mês, em reais</caption>
+            <thead><tr><th scope="col">Mês</th><th scope="col" class="num">Rendimento</th></tr></thead>
+            <tbody>
+              <tr><td data-label="Mês">Setembro de 2026</td><td class="num" data-label="Rendimento">R$ 120,00</td></tr>
+              <tr><td data-label="Mês">Outubro de 2026</td><td class="num" data-label="Rendimento">R$ 135,50</td></tr>
+            </tbody>
+            <tfoot><tr><th scope="row">Acumulado</th><td class="num" data-label="Rendimento">R$ 255,50</td></tr></tfoot>
+          </table>
+        </div>
+        <p class="record" style="margin-top:var(--s-3)"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg><span>Rendimentos não entram no saldo de nenhuma rubrica. O uso deles depende de autorização formal (2ª versão).</span></p>
+      </section>
+
+      <section class="card" aria-labelledby="h-chk">
+        <div class="card-head"><h2 id="h-chk">Checagem prévia</h2></div>
+        <p class="kpi"><span class="value">90%</span></p>
+        <p class="muted">9 de 10 despesas lançadas têm checagem &quot;permitido&quot; vinculada.</p>
+        <div class="bar" role="img" aria-label="90% das despesas com checagem prévia" style="margin-top:var(--s-3)"><i style="width:90%"></i></div>
+        <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Fonte: vínculo entre checagens e despesas.</p>
+      </section>
+    </div>
+
+    <section class="card" aria-labelledby="h-lanc">
+      <div class="card-head"><h2 id="h-lanc">Últimos lançamentos</h2></div>
+      <div class="table-wrap">
+        <table class="stack-m">
+          <caption class="sr-only">Últimos lançamentos da conta do projeto</caption>
+          <thead><tr><th scope="col">Descrição</th><th scope="col">Data</th><th scope="col" class="num">Valor</th><th scope="col">Checagem</th><th scope="col">Origem</th></tr></thead>
+          <tbody>
+            <tr><td data-label="Descrição">Material X (exemplo)</td><td data-label="Data">20/11/2026</td><td class="num" data-label="Valor">−R$ 3.200,00</td>
+              <td data-label="Checagem"><span class="badge b-err"><svg class="i" aria-hidden="true"><use href="#i-stop"/></svg>Comprada com checagem bloqueada</span></td><td data-label="Origem">Manual</td></tr>
+            <tr><td data-label="Descrição">Item de exemplo A</td><td data-label="Data">18/11/2026</td><td class="num" data-label="Valor">−R$ 1.850,00</td>
+              <td data-label="Checagem"><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Checagem permitida vinculada</span></td><td data-label="Origem">Manual</td></tr>
+            <tr><td data-label="Descrição">Serviço de análise (exemplo)</td><td data-label="Data">12/11/2026</td><td class="num" data-label="Valor">−R$ 4.100,00</td>
+              <td data-label="Checagem"><span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>Sem checagem</span></td><td data-label="Origem">Manual</td></tr>
+            <tr><td data-label="Descrição">Rendimento de aplicação</td><td data-label="Data">31/10/2026</td><td class="num" data-label="Valor">+R$ 135,50</td>
+              <td data-label="Checagem"><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-minus"/></svg>Não se aplica</span></td><td data-label="Origem">Manual</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Cada linha mostra a origem do lançamento. Correções são feitas por estorno, nunca por apagamento.</p>
+    </section>
+  </div>
+</section>
+
+<!-- =====================================================
+     5. TRL / MRL
+     ===================================================== -->
+<section class="screen" id="s-maturidade" data-title="TRL / MRL" aria-labelledby="h-mat2">
+  <header>
+    <div>
+      <p class="crumb">Projeto Exemplo · <span class="tag-example">EXEMPLO</span></p>
+      <h1 id="h-mat2" tabindex="-1">Maturidade tecnológica (TRL e MRL)</h1>
+      <p>Tecnologia avaliada: biofertilizante de resíduos (exemplo). A escala de referência ainda será definida; os 9 níveis abaixo são um exemplo de desenho.</p>
+    </div>
+    <span class="iso-seal"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Estrutura alinhada à ISO 21500</span>
+  </header>
+
+  <div class="stack">
+    <div class="grid g-2">
+      <section class="card" aria-labelledby="h-trl">
+        <div class="card-head"><h2 id="h-trl">TRL: maturidade da tecnologia</h2><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Oficial</span></div>
+        <p class="kpi"><span class="value">Nível 4 <small class="muted" style="font-size:var(--fs-md);font-weight:600">→ meta: nível 6</small></span></p>
+        <ol class="scale" aria-label="TRL: níveis de 1 a 9; atual 4; proposta 5; meta 6">
+          <li class="done">1</li><li class="done">2</li><li class="done">3</li><li class="done cur" aria-current="step">4</li><li class="prop">5</li><li class="goal">6</li><li>7</li><li>8</li><li>9</li>
+        </ol>
+        <p class="muted" style="font-size:var(--fs-sm)">Cheio: alcançado · contorno grosso: atual · listrado: proposta · tracejado: meta.</p>
+        <p style="margin-top:var(--s-3)">Confirmado pelo líder em 10/09/2026, com 6 evidências.</p>
+        <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Fonte: evidências ligadas aos critérios de cada nível. <a href="#/maturidade">Ver evidências</a></p>
+      </section>
+      <section class="card" aria-labelledby="h-mrl">
+        <div class="card-head"><h2 id="h-mrl">MRL: maturidade de manufatura</h2><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Oficial</span></div>
+        <p class="kpi"><span class="value">Nível 3 <small class="muted" style="font-size:var(--fs-md);font-weight:600">→ meta: nível 5</small></span></p>
+        <ol class="scale" aria-label="MRL: níveis de 1 a 9; atual 3; meta 5">
+          <li class="done">1</li><li class="done">2</li><li class="done cur" aria-current="step">3</li><li>4</li><li class="goal">5</li><li>6</li><li>7</li><li>8</li><li>9</li>
+        </ol>
+        <p class="muted" style="font-size:var(--fs-sm)">Cheio: alcançado · contorno grosso: atual · tracejado: meta.</p>
+        <p style="margin-top:var(--s-3)">Confirmado pelo líder em 10/09/2026, com 3 evidências.</p>
+        <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Fonte: evidências ligadas aos critérios de cada nível.</p>
+      </section>
+    </div>
+
+    <section class="card" aria-labelledby="h-prop">
+      <div class="card-head">
+        <h2 id="h-prop">Proposta de nível TRL</h2>
+        <span class="badge b-info dashed"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Proposta, ainda não é oficial</span>
+      </div>
+      <p>Com as evidências ligadas, a plataforma propõe <b>TRL 5</b>. Falta 1 critério para sustentar esse nível.</p>
+      <ul class="todo" style="margin-top:var(--s-3)">
+        <li><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Com evidência</span><div class="txt"><b>Critério 5.1 (exemplo)</b>: validação em ambiente relevante<small>Evidência: relatório de ensaio de 02/11/2026 · <a href="#/maturidade">abrir</a></small></div></li>
+        <li><span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>Falta evidência</span><div class="txt"><b>Critério 5.2 (exemplo)</b>: repetibilidade dos resultados<small>Ligue um documento ou entrega de tarefa a este critério.</small></div></li>
+      </ul>
+      <div class="row" style="margin-top:var(--s-4)">
+        <button class="btn" type="button">Confirmar nível 5</button>
+        <button class="btn ghost" type="button">Registrar outro nível</button>
+        <button class="btn ghost" type="button">Ligar evidência</button>
+      </div>
+      <p class="muted" style="font-size:var(--fs-sm);margin-top:var(--s-2)">Só o líder confirma o nível oficial. Se você registrar um nível diferente da proposta, a justificativa é obrigatória.</p>
+    </section>
+
+    <section class="card" aria-labelledby="h-hist">
+      <div class="card-head"><h2 id="h-hist">Histórico de avaliações oficiais</h2></div>
+      <div class="table-wrap">
+        <table class="stack-m">
+          <caption class="sr-only">Avaliações oficiais de TRL e MRL</caption>
+          <thead><tr><th scope="col">Data</th><th scope="col">Escala</th><th scope="col">Nível</th><th scope="col">Evidências</th><th scope="col">Avaliador</th></tr></thead>
+          <tbody>
+            <tr><td data-label="Data">10/09/2026</td><td data-label="Escala">TRL</td><td data-label="Nível">4</td><td data-label="Evidências">6</td><td data-label="Avaliador">Líder (exemplo)</td></tr>
+            <tr><td data-label="Data">10/09/2026</td><td data-label="Escala">MRL</td><td data-label="Nível">3</td><td data-label="Evidências">3</td><td data-label="Avaliador">Líder (exemplo)</td></tr>
+            <tr><td data-label="Data">15/05/2026</td><td data-label="Escala">TRL</td><td data-label="Nível">3</td><td data-label="Evidências">4</td><td data-label="Avaliador">Líder (exemplo)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</section>
+
+<!-- =====================================================
+     6. ESTADOS (vazio, carregando, erro)
+     ===================================================== -->
+<section class="screen" id="s-estados" data-title="Estados de tela" aria-labelledby="h-est">
+  <header>
+    <div>
+      <p class="crumb">Só no protótipo · <span class="tag-example">EXEMPLO</span></p>
+      <h1 id="h-est" tabindex="-1">Estados de tela: vazio, carregando e erro</h1>
+      <p>Padrão aplicado a todas as telas principais.</p>
+    </div>
+  </header>
+  <div class="grid g-3">
+    <section class="state" aria-labelledby="e1">
+      <h2 id="e1">Vazio</h2>
+      <p>Nenhuma regra de cotação cadastrada ainda.</p>
+      <p class="muted">Defina quantas cotações o edital exige por faixa de valor, ou marque que o edital não exige. Sem isso, a checagem fica pendente.</p>
+      <a class="btn" href="#/regras">Definir exigência de cotações</a>
+    </section>
+    <section class="state" aria-labelledby="e2" aria-busy="true">
+      <h2 id="e2">Carregando</h2>
+      <p role="status">Conferindo as regras do edital…</p>
+      <div class="skel" style="width:90%"></div><div class="skel" style="width:70%"></div><div class="skel" style="width:80%"></div>
+      <p class="muted">Se passar de 10 segundos, mostramos como tentar de novo.</p>
+    </section>
+    <section class="state error" aria-labelledby="e3" role="alert">
+      <h2 id="e3"><svg class="i" aria-hidden="true" style="vertical-align:-3px"><use href="#i-alert"/></svg> Erro</h2>
+      <p><b>Não foi possível conferir agora.</b> Nada foi registrado e nenhuma decisão foi tomada por você.</p>
+      <p>Tente de novo em instantes. Se continuar, confira manualmente as regras do edital antes de comprar.</p>
+      <button class="btn ghost" type="button" style="color:inherit;border-color:currentColor">Tentar de novo</button>
+    </section>
+  </div>
+</section>
+
+<!-- Telas fora do protótipo -->
+<section class="screen" id="s-outra" data-title="Tela fora do protótipo" aria-labelledby="h-outra">
+  <header><div><h1 id="h-outra" tabindex="-1">Esta tela não faz parte do protótipo</h1>
+  <p>Ela existe no mapa de telas do guia (docs/03-ux.md, seção 3). O protótipo cobre painel do projeto, &quot;Vou comprar&quot;, financeiro e TRL/MRL.</p></div></header>
+  <a class="btn" href="#/painel">Voltar ao painel do projeto</a>
+</section>
+
+    </main>
+  </div>
+</div>
+
+<div class="mobile-cta"><a class="btn accent lg" href="#/comprar"><svg class="i" aria-hidden="true"><use href="#i-bag"/></svg>Vou comprar</a></div>
+
+<noscript><style>.screen{display:block!important;margin-bottom:48px}.res{display:flex!important}[hidden]{display:flex!important}</style></noscript>
+
+<script>
+(function () {
+  var screens = {painel:'s-painel', comprar:'s-comprar', financeiro:'s-financeiro', maturidade:'s-maturidade', estados:'s-estados'};
+  var root = document.documentElement;
+  var sidebar = document.getElementById('sidebar'), scrim = document.getElementById('scrim'), menuBtn = document.getElementById('menuBtn');
+
+  function closeMenu() { sidebar.classList.remove('open'); scrim.classList.remove('on'); menuBtn.setAttribute('aria-expanded','false'); }
+  menuBtn.addEventListener('click', function () {
+    var open = !sidebar.classList.contains('open');
+    sidebar.classList.toggle('open', open); scrim.classList.toggle('on', open);
+    menuBtn.setAttribute('aria-expanded', String(open));
+    if (open) { var f = sidebar.querySelector('a.cta'); if (f) f.focus(); }
+  });
+  scrim.addEventListener('click', closeMenu);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closeMenu(); menuBtn.focus(); } });
+
+  function route() {
+    var h = (location.hash || '#/painel').replace(/^#\/?/, '').split('/');
+    var name = h[0] || 'painel', sub = h[1] || 'bloqueado', id, navKey = name;
+    if (name === 'comprar' && h[1]) { id = 's-resultado'; }
+    else if (screens[name]) { id = screens[name]; }
+    else { id = 's-outra'; }
+    document.querySelectorAll('.screen').forEach(function (s) { s.classList.toggle('on', s.id === id); });
+    if (id === 's-resultado') {
+      if (['permitido','bloqueado','pendente'].indexOf(sub) < 0) sub = 'bloqueado';
+      document.querySelectorAll('.res').forEach(function (r) { r.hidden = r.id !== 'r-' + sub; });
+      document.querySelectorAll('#seg a').forEach(function (a) { a.setAttribute('aria-current', a.getAttribute('data-r') === sub ? 'true' : 'false'); });
+    }
+    document.querySelectorAll('.nav a[data-route]').forEach(function (a) {
+      if (a.getAttribute('data-route') === navKey) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current');
+    });
+    document.body.classList.toggle('on-comprar', name === 'comprar');
+    var sec = document.getElementById(id);
+    var h1 = sec.querySelector('h1');
+    var t = sec.getAttribute('data-title');
+    if (id === 's-resultado') t = 'Resultado: ' + sub;
+    document.title = t + ' · Gestprojet (protótipo)';
+    closeMenu();
+    window.scrollTo(0, 0);
+    if (h1) { h1.focus({preventScroll:true}); }
+  }
+  window.addEventListener('hashchange', route);
+  route();
+
+  // Tema: segue o sistema; o botão alterna e guarda a escolha (se o navegador permitir)
+  var btn = document.getElementById('themeBtn'), lbl = document.getElementById('themeLbl');
+  function isDark() { var t = root.getAttribute('data-theme'); return t ? t === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches; }
+  function paint() { var d = isDark(); btn.setAttribute('aria-pressed', String(d)); lbl.textContent = d ? 'Tema claro' : 'Tema escuro'; }
+  try { var saved = localStorage.getItem('gp-theme'); if (saved) root.setAttribute('data-theme', saved); } catch (e) {}
+  btn.addEventListener('click', function () {
+    var next = isDark() ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('gp-theme', next); } catch (e) {}
+    paint();
+  });
+  paint();
+})();
+</script>
+</body>
+</html>
