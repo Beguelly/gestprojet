@@ -30,7 +30,7 @@ Toda tarefa de código só vira `[x]` depois de **testador** e **seguranca** apr
 - [x] T-001 · Criar as 6 skills de planejamento e o CLAUDE.md · — · Pronto quando: skills listadas por `npx skills list` ✔
 - [x] T-002 · Instalar skills externas (Supabase, Tavily, Impeccable, grill-me, improve-codebase-architecture) · — ✔
 - [x] T-003 · Briefing do produto (entrevista) · — · `docs/00-briefing.md` ✔
-- [ ] ⭐ T-004 · 🛑 **DECISÃO + 🔑 CHAVE** · Criar o repositório no GitHub e informar o nome; conectar e enviar o histórico · orquestrador · Dep.: — · Pronto quando: `git push` feito. *Enquanto isso não acontece, todo o trabalho fica só no container temporário.*
+- [~] ⭐ T-004 · 🛑 **DECISÃO + 🔑 CHAVE** · Criar o repositório no GitHub e informar o nome; conectar e enviar o histórico · orquestrador · Dep.: — · Pronto quando: `git push` feito. *Enquanto isso não acontece, todo o trabalho fica só no container temporário.*
 - [ ] ⭐ T-005 · 🛑 **DECISÃO** · Validar o time de agentes proposto (6 papéis) · usuário · Dep.: — · Pronto quando: aprovação registrada no diário
 - [ ] ⭐ T-006 · Criar `.claude/agents/*.md` (6 agentes) e `.claude/settings.json` com `"agent": "orquestrador"` · orquestrador → desenvolvedor · Dep.: T-005 · Pronto quando: agentes listados em `/agents`
 - [ ] ⭐ T-007 · Escrever o PRD (`docs/01-prd.md`) a partir do briefing, com RF/RN e critérios de aceite · analista-produto · Dep.: T-006 · Pronto quando: lista de verificação do prd-builder completa
@@ -154,4 +154,5 @@ Toda tarefa de código só vira `[x]` depois de **testador** e **seguranca** apr
 | 24/11/2026 | T-001 | 6 skills de planejamento criadas | commits 21d8033, 4937309 |
 | 24/11/2026 | T-002 | 11 skills externas instaladas (frontend-design → impeccable) | commit ce9a286 |
 | 24/11/2026 | T-003 | Briefing concluído e aprovado | `docs/00-briefing.md`, commit f3349aa |
-| 24/11/2026 | — | TASKS.md criado; aguardando revisão do plano | — |
+| 24/11/2026 | — | TASKS.md criado; aguardando revisão do plano | commit f677296 |
+| 24/11/2026 | T-004 | Repositório Beguelly/gestprojet criado e ligado como `origin`. **Envio recusado (403):** o app Claude do GitHub não tem acesso ao repositório. Aguardando o dono instalar o app ou reconectar o GitHub. | `git push` → 403 |
