@@ -38,7 +38,10 @@ Toda tarefa de código só vira `[x]` depois de **testador** e **seguranca** apr
 - [x] ⭐ T-007b · PRD v0.2: plano Meta → Etapa → Linha, importação de planilha/PDF/imagem com minuta e OK do líder (linha de base), ajustes versionados, execução mensal, práticas das ISO 21500/21502/21512 em versão enxuta · analista-produto · Dep.: T-008
 - [x] ⭐ T-008b · 🛑 **DECISÃO** · Aprovar o PRD v0.2 · usuário · Dep.: T-007b
 - [x] ⭐ T-020 · Revisar `docs/03-ux.md`, `design/`, `docs/04-workflows.md` e `docs/06-seguranca.md` contra o PRD v0.2 (telas de importação, conferência, linha de base, saúde do projeto; selo ISO; segurança dos documentos importados) · designer, analista-produto, seguranca · Dep.: T-008b
-- [ ] ⭐ T-021 · 🛑 **DECISÃO** · Aprovar o protótipo atualizado (substitui a avaliação da T-017 sobre as telas novas) · usuário · Dep.: T-020
+- [x] ⭐ T-021 · 🛑 **DECISÃO** · Aprovar o protótipo atualizado (substitui a avaliação da T-017 sobre as telas novas) · usuário · Dep.: T-020
+- [~] ⭐ T-022 · Emenda do PRD v0.2.1: importação de extrato (T-012), escala TRL/MRL (T-019), contradição D25, divergências do seguranca e dos fluxos, quadro de perguntas pendentes ao dono · analista-produto · Dep.: T-021
+- [ ] ⭐ T-022b · 🛑 **DECISÃO** · Aprovar o PRD v0.2.1 e responder às perguntas de maior impacto · usuário · Dep.: T-022
+- [ ] ⭐ T-022c · Alinhar `03-ux`, `04-workflows`, `06-seguranca` e `design/` à emenda (extrato, TRL/MRL, D25, listas de questões) · designer, analista-produto, seguranca · Dep.: T-022b
 - [x] ⭐ T-009 · Requisitos de segurança e LGPD (`docs/06-seguranca.md`): inventário de dados, matriz de permissões (líder concede acesso), RLS, auditoria, segurança da IA · seguranca · Dep.: T-008
 - [x] ⭐ T-010 · 🛑 **DECISÃO** · Stack: confirmar Next.js + Supabase + hospedagem (proposta: Vercel) · usuário · Dep.: T-008
 - [x] ⭐ T-011 · 🛑 **DECISÃO** · Como as regras do edital entram: (a) o líder cadastra; (b) a IA lê o PDF e o líder confere; (c) as duas formas · usuário · Dep.: T-008
@@ -47,7 +50,7 @@ Toda tarefa de código só vira `[x]` depois de **testador** e **seguranca** apr
 - [ ] ⭐ T-014 · 🛑 **DECISÃO** · Aprovar a SPEC · usuário · Dep.: T-013
 - [x] ⭐ T-015 · Fluxos do produto (`docs/04-workflows.md`, modo processo): plano de trabalho, despesa com checagem, conta e rendimentos, TRL/MRL, entrada e saída de membros · analista-produto · Dep.: T-008
 - [x] ⭐ T-016 · Guia de UX (`docs/03-ux.md`): tokens azul-marinho/verde, navegação, mapa de telas, dashboards · designer · Dep.: T-008
-- [ ] ⭐ T-017 · 🛑 **DECISÃO** · Aprovar identidade visual e telas principais (protótipo) · usuário · Dep.: T-016
+- [x] ⭐ T-017 · 🛑 **DECISÃO** · Aprovar identidade visual e telas principais (protótipo) · usuário · Dep.: T-016
 - [ ] ⭐ T-018 · Criar as 7 skills de domínio (regras-de-edital, checagem-pre-compra, execucao-financeira-pdi, trl-mrl, iso-21500, busca-cientifica, assinatura-por-projeto), com `evals/` · analista-produto (via agent-skill-builder) · Dep.: T-008
 - [x] T-019 · 🛑 **DECISÃO** · Escala de referência TRL/MRL (proposta: TRL ISO 16290 / NASA; MRL DoD) · usuário · Dep.: T-018
 
@@ -185,3 +188,5 @@ Toda tarefa de código só vira `[x]` depois de **testador** e **seguranca** apr
 | 25/11/2026 | T-020 (fluxos) | `docs/04-workflows.md` v0.2 escrito pelo analista-produto e revisado pelo orquestrador (1.841 linhas): 17 seções, 22 diagramas (blocos abertos e fechados; **renderização não validada**), fluxos novos 8 a 12 (importação e linha de base v1, ajuste versionado, execução mensal, gestão enxuta, saúde do projeto) e fluxos 1 a 4 atualizados; referências a RF/RN/Q conferidas contra o PRD (nenhuma inexistente). Divergências D18 a D25 novas; **D25 é uma contradição do PRD**: RN-029 (plano sem OK = pendente) × RN-006/RF-062 (item vedado = bloqueado); o analista adotou o bloqueio com precedência; corrigir na emenda v0.2.1. | `docs/04-workflows.md` |
 | 25/11/2026 | T-020 (UX) | `docs/03-ux.md` v0.2 (646 linhas) e protótipo `design/index.html` (2.929 linhas, 31 rotas, sem referência externa) escritos pelo designer e revisados pelo orquestrador. Contraste repetido pelo orquestrador: **110 verificações, 0 falhas**. Telas novas: planejamento, importar (4 estados), conferir a minuta com a origem ao lado, execução mensal, saúde do projeto, registros de gestão; "Vou comprar" contra a linha (5 variantes, RF-062 mantido); selo ISO substituído por nota "baseado nas práticas". Ressalvas: largura 360 px simulada (confirmar no aparelho); sem teste com leitor de tela nem com líder; o guia ainda lista T-012 e T-019 como abertas (decididas depois), a corrigir na emenda. **T-020 concluída (UX, fluxos e segurança).** | `docs/03-ux.md`, `design/` |
 | 25/11/2026 | T-021 | **Parada obrigatória 🛑:** aguardando o dono avaliar o protótipo atualizado. | — |
+| 25/11/2026 | T-017, T-021 | **Identidade visual e protótipo atualizado aprovados pelo dono** ("Aprovado"). Nota: a aprovação refere-se ao protótipo; a pergunta específica sobre D25 (item vedado × plano sem OK) não foi respondida e segue como questão. | mensagem do dono |
+| 25/11/2026 | T-022 | Iniciada: emenda v0.2.1 do PRD delegada ao analista-produto. | — |
