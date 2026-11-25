@@ -42,7 +42,7 @@ Toda tarefa de código só vira `[x]` depois de **testador** e **seguranca** apr
 - [x] ⭐ T-009 · Requisitos de segurança e LGPD (`docs/06-seguranca.md`): inventário de dados, matriz de permissões (líder concede acesso), RLS, auditoria, segurança da IA · seguranca · Dep.: T-008
 - [x] ⭐ T-010 · 🛑 **DECISÃO** · Stack: confirmar Next.js + Supabase + hospedagem (proposta: Vercel) · usuário · Dep.: T-008
 - [x] ⭐ T-011 · 🛑 **DECISÃO** · Como as regras do edital entram: (a) o líder cadastra; (b) a IA lê o PDF e o líder confere; (c) as duas formas · usuário · Dep.: T-008
-- [ ] ⭐ T-012 · 🛑 **DECISÃO** · Como os dados da conta entram na 1ª versão: (a) lançamento manual; (b) importação de extrato (OFX/CSV); (c) integração bancária · usuário · Dep.: T-008
+- [x] ⭐ T-012 · 🛑 **DECISÃO** · Como os dados da conta entram na 1ª versão: (a) lançamento manual; (b) importação de extrato (OFX/CSV); (c) integração bancária · usuário · Dep.: T-008
 - [ ] ⭐ T-013 · Escrever a SPEC (`docs/02-spec.md`) + ADRs: arquitetura, modelo de dados, APIs, IA · desenvolvedor · Dep.: T-009, T-010, T-011, T-012
 - [ ] ⭐ T-014 · 🛑 **DECISÃO** · Aprovar a SPEC · usuário · Dep.: T-013
 - [x] ⭐ T-015 · Fluxos do produto (`docs/04-workflows.md`, modo processo): plano de trabalho, despesa com checagem, conta e rendimentos, TRL/MRL, entrada e saída de membros · analista-produto · Dep.: T-008
@@ -89,7 +89,7 @@ Toda tarefa de código só vira `[x]` depois de **testador** e **seguranca** apr
 
 - [ ] ⭐ T-401 · Rubricas e orçamento previsto por rubrica (custeio/capital), valores em centavos · desenvolvedor · Dep.: T-301
 - [ ] ⭐ T-402 · Conta do projeto: lançamentos (débitos, créditos, rendimentos) conforme T-012 · desenvolvedor · Dep.: T-401, T-012
-- [ ] T-403 · Importação de extrato (OFX/CSV) com conciliação · desenvolvedor · Dep.: T-402 · *só se T-012 = (b)*
+- [ ] ⭐ T-403 · Importação de extrato (OFX/CSV) com conciliação · desenvolvedor · Dep.: T-402 · *T-012 = (b): entra na 1ª versão*
 - [ ] ⭐ T-404 · Painel financeiro: previsto × realizado × saldo por rubrica; rendimentos acumulados · designer + desenvolvedor · Dep.: T-402
 - [ ] ⭐ T-405 · Anexar comprovantes (nota fiscal, cotações) a cada despesa · desenvolvedor · Dep.: T-402, T-302
 - [ ] ⭐ T-4T · Testes: centavos e arredondamento, saldo, concorrência, permissões · testador · Dep.: T-404, T-405
@@ -179,3 +179,4 @@ Toda tarefa de código só vira `[x]` depois de **testador** e **seguranca** apr
 | 25/11/2026 | T-008b | **Parada obrigatória 🛑:** aguardando o dono aprovar o PRD v0.2. | — |
 | 25/11/2026 | T-008b | **PRD v0.2 aprovado pelo dono** ("como está"): PDF e imagem permanecem na 1ª versão, como o dono pediu; o risco R-10 (custo/atraso da leitura por IA) segue registrado e o caminho mínimo sem IA fica como plano de corte. As suposições `[SUPOSIÇÃO]` valem até serem corrigidas. | mensagem do dono |
 | 25/11/2026 | T-020 | Iniciada em paralelo: designer → `docs/03-ux.md` e `design/`; analista-produto → `docs/04-workflows.md`; seguranca → `docs/06-seguranca.md`. | — |
+| 25/11/2026 | T-012 | Dono escolheu a opção **b: importação do extrato bancário (OFX/CSV)** para os dados da conta. Efeitos: RF-052 (hoje Could no PRD v0.2) passa a ser da 1ª versão; a conciliação do checklist de saúde deixa de ser "não verificável"; T-403 entra no caminho mínimo. Pendente: emenda ao PRD (v0.2.1) e requisitos de segurança do extrato (dados bancários). Lançamento manual continua como alternativa (a confirmar no PRD). | mensagem do dono |
