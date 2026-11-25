@@ -39,7 +39,7 @@ Toda tarefa de código só vira `[x]` depois de **testador** e **seguranca** apr
 - [x] ⭐ T-008b · 🛑 **DECISÃO** · Aprovar o PRD v0.2 · usuário · Dep.: T-007b
 - [x] ⭐ T-020 · Revisar `docs/03-ux.md`, `design/`, `docs/04-workflows.md` e `docs/06-seguranca.md` contra o PRD v0.2 (telas de importação, conferência, linha de base, saúde do projeto; selo ISO; segurança dos documentos importados) · designer, analista-produto, seguranca · Dep.: T-008b
 - [x] ⭐ T-021 · 🛑 **DECISÃO** · Aprovar o protótipo atualizado (substitui a avaliação da T-017 sobre as telas novas) · usuário · Dep.: T-020
-- [~] ⭐ T-022 · Emenda do PRD v0.2.1: importação de extrato (T-012), escala TRL/MRL (T-019), contradição D25, divergências do seguranca e dos fluxos, quadro de perguntas pendentes ao dono · analista-produto · Dep.: T-021
+- [x] ⭐ T-022 · Emenda do PRD v0.2.1: importação de extrato (T-012), escala TRL/MRL (T-019), contradição D25, divergências do seguranca e dos fluxos, quadro de perguntas pendentes ao dono · analista-produto · Dep.: T-021
 - [ ] ⭐ T-022b · 🛑 **DECISÃO** · Aprovar o PRD v0.2.1 e responder às perguntas de maior impacto · usuário · Dep.: T-022
 - [ ] ⭐ T-022c · Alinhar `03-ux`, `04-workflows`, `06-seguranca` e `design/` à emenda (extrato, TRL/MRL, D25, listas de questões) · designer, analista-produto, seguranca · Dep.: T-022b
 - [x] ⭐ T-009 · Requisitos de segurança e LGPD (`docs/06-seguranca.md`): inventário de dados, matriz de permissões (líder concede acesso), RLS, auditoria, segurança da IA · seguranca · Dep.: T-008
@@ -190,3 +190,5 @@ Toda tarefa de código só vira `[x]` depois de **testador** e **seguranca** apr
 | 25/11/2026 | T-021 | **Parada obrigatória 🛑:** aguardando o dono avaliar o protótipo atualizado. | — |
 | 25/11/2026 | T-017, T-021 | **Identidade visual e protótipo atualizado aprovados pelo dono** ("Aprovado"). Nota: a aprovação refere-se ao protótipo; a pergunta específica sobre D25 (item vedado × plano sem OK) não foi respondida e segue como questão. | mensagem do dono |
 | 25/11/2026 | T-022 | Iniciada: emenda v0.2.1 do PRD delegada ao analista-produto. | — |
+| 25/11/2026 | T-022 | Emenda **PRD v0.2.1** escrita pelo analista-produto e revisada pelo orquestrador (1.327 linhas): 92 RFs ativos (63 Must, 20 Should, 5 Could, 4 Won't), 52 RNs, 24 RNFs, 48 questões; RF-052 (extrato OFX/CSV) subiu para Must e RF-146 a RF-149 (conciliação) e RF-153 (IA desligada até contrato e RIPD) são novos; TRL 1-9 e MRL 1-10 com critérios "a validar"; D25 como proposta adotada (bloqueio com precedência); 20 novas [SUPOSIÇÃO]; quadro de 10 perguntas ao dono (seção 10.2). Conferido: sem IDs duplicados, sem "conformidade", marcas [NOVO]/[ALTERADO] presentes. Pendente: requisitos de segurança do extrato (RNF-23) e alinhamento de 03/04/06/design (T-022c). | `docs/01-prd.md` |
+| 25/11/2026 | T-022b | **Parada obrigatória 🛑:** aguardando aprovação do PRD v0.2.1 e respostas às perguntas de maior impacto. | — |
