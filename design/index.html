@@ -28,8 +28,6 @@
   --c-accent: #0A6B41;
   --c-on-accent: #FFFFFF;
   --c-accent-hover: #07583A;
-  --c-accent-text: #07583A;
-  --c-accent-soft: #E0F3E8;
   --c-ok-fg: #075E3A;   --c-ok-bg: #E1F4EA;   --c-ok-bd: #075E3A;
   --c-warn-fg: #734000; --c-warn-bg: #FFF0CC; --c-warn-bd: #9A5B00;
   --c-err-fg: #9E1717;  --c-err-bg: #FDE8E8;  --c-err-bd: #9E1717;
@@ -76,8 +74,6 @@
     --c-accent: #4FD08F;
     --c-on-accent: #04210F;
     --c-accent-hover: #7BE0AE;
-    --c-accent-text: #6FE0A3;
-    --c-accent-soft: #0F2E22;
     --c-ok-fg: #6FE0A3;   --c-ok-bg: #0F2E22;   --c-ok-bd: #6FE0A3;
     --c-warn-fg: #FFCB66; --c-warn-bg: #33260A; --c-warn-bd: #C98A1B;
     --c-err-fg: #FF9B9B;  --c-err-bg: #3A1414;  --c-err-bd: #FF9B9B;
@@ -111,8 +107,6 @@
   --c-accent: #4FD08F;
   --c-on-accent: #04210F;
   --c-accent-hover: #7BE0AE;
-  --c-accent-text: #6FE0A3;
-  --c-accent-soft: #0F2E22;
   --c-ok-fg: #6FE0A3;   --c-ok-bg: #0F2E22;   --c-ok-bd: #6FE0A3;
   --c-warn-fg: #FFCB66; --c-warn-bg: #33260A; --c-warn-bd: #C98A1B;
   --c-err-fg: #FF9B9B;  --c-err-bg: #3A1414;  --c-err-bd: #FF9B9B;
@@ -354,7 +348,7 @@ input:focus-visible, select:focus-visible { outline: 3px solid var(--c-focus); o
 .next ol { list-style: decimal; padding-left: 1.4em; display: flex; flex-direction: column; gap: var(--s-2); margin-top: var(--s-2); }
 .seg { display: flex; gap: var(--s-2); flex-wrap: wrap; }
 .seg a { display: inline-flex; align-items: center; gap: var(--s-2); min-height: var(--tap); padding: var(--s-2) var(--s-4); border: 2px solid var(--c-border-strong); border-radius: 999px; text-decoration: none; color: var(--c-text); font-weight: 600; background: var(--c-surface); }
-.seg a[aria-current="true"] { background: var(--c-primary); color: var(--c-on-primary); border-color: var(--c-primary); }
+.seg a[aria-current="true"], .seg a[aria-current="page"] { background: var(--c-primary); color: var(--c-on-primary); border-color: var(--c-primary); font-weight: 800; }
 dl.facts { display: grid; grid-template-columns: max-content 1fr; gap: var(--s-2) var(--s-4); margin: 0; }
 dl.facts dt { color: var(--c-text-muted); font-size: var(--fs-sm); padding-top: 2px; }
 dl.facts dd { margin: 0; font-weight: 600; }
@@ -376,6 +370,9 @@ dl.facts dd { margin: 0; font-weight: 600; }
 input[type="checkbox"], input[type="radio"] { width: 24px; height: 24px; min-height: 24px; padding: 0; flex: none; accent-color: var(--c-primary); }
 textarea { min-height: 88px; resize: vertical; }
 input[type="file"] { padding: var(--s-2) var(--s-3); }
+::placeholder { color: var(--c-text-muted); opacity: 1; }
+::selection { background: var(--c-primary); color: var(--c-on-primary); }
+input, select, textarea { caret-color: var(--c-text); }
 input[aria-invalid="true"], select[aria-invalid="true"] { border-color: var(--c-err-bd); border-style: dashed; }
 .chk { display: flex; gap: var(--s-3); align-items: flex-start; min-height: var(--tap); padding: var(--s-2) 0; cursor: pointer; }
 .chk input { margin-top: 2px; }
@@ -498,7 +495,8 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
 .ctrl .field { min-width: 180px; }
 .ctrl fieldset { display: flex; gap: var(--s-4); flex-wrap: wrap; }
 .linha-sel { border: 1px solid var(--c-border-strong); border-radius: var(--r-md); padding: var(--s-3) var(--s-4); background: var(--c-surface-2); }
-.diff-up { font-weight: 700; }
+.neg { color: var(--c-err-fg); font-weight: 800; }
+.quote.map { grid-template-columns: minmax(0,1fr) minmax(0,1.2fr); }
 
 /* =========================================================
    RESPONSIVO (mobile first desde 360 px, sem rolagem horizontal)
@@ -531,6 +529,7 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
   .result .glyph, .result .glyph svg { width: 48px; height: 48px; }
   .result .word { font-size: var(--fs-3xl); }
   .quote { grid-template-columns: 1fr 1fr; }
+  .quote.map { grid-template-columns: minmax(0,1fr); }
   .quote .qn { grid-column: 1 / -1; }
   dl.facts { grid-template-columns: 1fr; gap: 0; }
   dl.facts dd { margin-bottom: var(--s-2); }
@@ -646,7 +645,7 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
       </button>
       <div class="proj-switch">
         <b>Projeto Exemplo: biofertilizante de resíduos</b>
-        <span>Financiador de exemplo · Edital de exemplo 00/2026 · vigência 01/03/2026 a 28/02/2028</span>
+        <span>Financiador de exemplo · Edital de exemplo 00/2026 · vigência 01/03/2026 a 28/02/2028 · <span class="if-ok">linha de base v2</span><span class="if-semok">plano sem OK</span></span>
       </div>
       <div class="topbar-actions">
         <span class="role-chip">Você: líder (exemplo)</span>
@@ -746,7 +745,7 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
       <section class="card" aria-labelledby="h-prazos">
         <div class="card-head"><h2 id="h-prazos">Próximos prazos</h2></div>
         <ul class="todo">
-          <li><div class="txt"><b>04/12/2026</b> · Marco: entrega do protótipo ao financiador<small>Meta 2 · em 10 dias</small></div></li>
+          <li><div class="txt"><b>04/12/2026</b> · Marco: entrega do protótipo ao financiador<small>Meta 2 · em 9 dias</small></div></li>
           <li><div class="txt"><b>15/12/2026</b> · Tarefa: ensaio de campo, lote 2<small>Meta 2 · responsável: Caio (exemplo)</small></div></li>
           <li><div class="txt"><b>10/01/2027</b> · Relatório parcial ao financiador (calendário de comunicação)<small>Responsável: líder · <a href="#/registros/comunicacao">ver calendário</a></small></div></li>
           <li><div class="txt"><b>30/01/2027</b> · Tarefa: análise de resultados<small>Meta 2 · etapa 2.2</small></div></li>
@@ -1757,6 +1756,850 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
 </section>
 
 <!-- =====================================================
+     5c. IMPORTAR O PLANO (escolha, mapeamento, leitura, erro)
+     ===================================================== -->
+<section class="screen" id="s-importar" data-title="Importar o plano" aria-labelledby="h-imp">
+  <header>
+    <div>
+      <p class="crumb">Projeto Exemplo · Planejamento · <span class="tag-example">EXEMPLO</span></p>
+      <h1 id="h-imp" tabindex="-1">Importar o plano de trabalho</h1>
+      <p>Envie o plano aprovado pelo financiador. A plataforma monta uma minuta, você confere cada linha com o documento ao lado e dá o OK. Nada vale antes disso.</p>
+    </div>
+  </header>
+  <nav class="seg subnav" data-sub="plan" aria-label="Planejamento"></nav>
+  <nav class="seg" id="segImp" aria-label="Estados da importação (exemplos)" style="margin-bottom:var(--s-5)">
+    <a href="#/importar/escolher" data-i="escolher">Exemplo: escolher o arquivo</a>
+    <a href="#/importar/mapear" data-i="mapear">Exemplo: mapear colunas (planilha)</a>
+    <a href="#/importar/lendo" data-i="lendo">Exemplo: lendo o PDF</a>
+    <a href="#/importar/erro" data-i="erro">Exemplo: erros</a>
+  </nav>
+
+  <!-- 1. escolher -->
+  <div class="stack imp" id="i-escolher" hidden>
+    <ol class="steps" aria-label="Etapas da importação">
+      <li><span class="badge b-info"><svg class="i" aria-hidden="true"><use href="#i-upload"/></svg>1. Escolher o arquivo</span></li>
+      <li><span class="badge b-neutral">2. Ler</span></li>
+      <li><span class="badge b-neutral">3. Conferir com a origem ao lado</span></li>
+      <li><span class="badge b-neutral">4. Dar o OK</span></li>
+    </ol>
+    <form class="card stack" novalidate aria-labelledby="h-imp">
+      <fieldset>
+        <legend>Que tipo de arquivo você tem?</legend>
+        <div class="choices" style="margin-top:var(--s-3)">
+          <label class="choice"><input type="radio" name="fmt" value="xlsx" checked><span><b>Planilha</b><small>XLSX ou CSV. Leitura direta na plataforma, sem IA.</small></span></label>
+          <label class="choice"><input type="radio" name="fmt" value="pdf"><span><b>PDF com texto</b><small>Leitura por IA: texto do PDF.</small></span></label>
+          <label class="choice"><input type="radio" name="fmt" value="img"><span><b>PDF escaneado ou foto</b><small>Leitura por IA: reconhecimento do texto na imagem (JPG, PNG).</small></span></label>
+        </div>
+      </fieldset>
+      <div class="field">
+        <label for="f-arq">Arquivo do plano</label>
+        <input id="f-arq" type="file" aria-describedby="f-arq-h">
+        <span class="help" id="f-arq-h">Limites: planilha até 10 MB e 2.000 linhas · PDF até 25 MB e 50 páginas · imagem até 25 MB, no máximo 10 imagens. Os limites ainda serão confirmados (Q-23).</span>
+      </div>
+      <div class="banner info" role="note">
+        <svg class="i" aria-hidden="true"><use href="#i-info"/></svg>
+        <div><b>PDF e imagem são lidos por IA, fora da plataforma.</b> O conteúdo do arquivo é enviado a um provedor externo de IA, só o necessário e sob contrato que proteja os dados do projeto (provedor e contrato ainda a definir: Q-24). O texto do documento é tratado só como dado. Planilha é lida aqui, sem IA, e macros nunca são executadas.</div>
+      </div>
+      <div class="row">
+        <button class="btn accent lg" type="button" data-demo="Exemplo: nenhum arquivo foi enviado."><svg class="i" aria-hidden="true"><use href="#i-upload"/></svg>Enviar e ler o arquivo</button>
+        <a class="btn ghost lg" href="#/plano">Cadastrar o plano à mão</a>
+      </div>
+      <p class="muted">O cadastro à mão gera a mesma minuta e passa pelas mesmas conferências e pelo mesmo OK. Sem IA disponível, ele e a planilha continuam funcionando.</p>
+    </form>
+  </div>
+
+  <!-- 2. mapear colunas (planilha) -->
+  <div class="stack imp" id="i-mapear" hidden>
+    <section class="card stack" aria-labelledby="h-map">
+      <div class="card-head"><h2 id="h-map">Diga o que é cada coluna</h2><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-grid"/></svg>plano-exemplo.xlsx · aba &quot;Plano&quot;</span></div>
+      <p class="muted">A plataforma leu o valor calculado das células. Escolha, para cada coluna, o que ela representa. Fórmulas com erro e macros não são usadas.</p>
+      <ul class="stack" style="gap:var(--s-3)">
+        <li class="quote map"><div><span class="qn">Coluna A · &quot;Meta&quot;</span><br><span class="muted">1 - Formulação do biofertilizante</span></div><div class="field"><label for="m-a">É</label><select id="m-a"><option>Meta</option></select></div></li>
+        <li class="quote map"><div><span class="qn">Coluna B · &quot;Etapa&quot;</span><br><span class="muted">1.1 Formulação em laboratório</span></div><div class="field"><label for="m-b">É</label><select id="m-b"><option>Etapa</option></select></div></li>
+        <li class="quote map"><div><span class="qn">Coluna C · &quot;Natureza&quot;</span><br><span class="muted">339030</span></div><div class="field"><label for="m-c">É</label><select id="m-c"><option>Classificação da despesa</option></select></div></li>
+        <li class="quote map"><div><span class="qn">Coluna D · &quot;Especificação&quot;</span><br><span class="muted">Reagentes e insumos para ensaios…</span></div><div class="field"><label for="m-d">É</label><select id="m-d"><option>Objeto previsto (especificação)</option></select></div></li>
+        <li class="quote map"><div><span class="qn">Coluna E · &quot;Valor&quot;</span><br><span class="muted">18000</span></div><div class="field"><label for="m-e">É</label><select id="m-e"><option>Valor aprovado</option></select></div></li>
+        <li class="quote map"><div><span class="qn">Colunas F, G, H · cabeçalhos</span><br><span class="muted">mar/2027 · mar/2027 · jun/2027</span><br><span class="badge b-warn" style="margin-top:4px"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>Período repetido e períodos faltando</span></div><div class="field"><label for="m-f">São</label><select id="m-f"><option>Períodos (meses)</option></select></div></li>
+        <li class="quote map"><div><span class="qn">Coluna I · &quot;Total&quot;</span><br><span class="muted">#REF!</span><br><span class="badge b-warn" style="margin-top:4px"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>Referência quebrada</span></div><div class="field"><label for="m-i">É</label><select id="m-i"><option>Total do documento (ilegível: não será usado como valor válido)</option></select></div></li>
+      </ul>
+      <label class="chk"><input type="checkbox" checked><span>Lembrar este mapeamento para o próximo arquivo do mesmo modelo</span></label>
+      <div class="row"><button class="btn accent lg" type="button" data-demo="Exemplo: a planilha não foi lida de verdade.">Ler a planilha com este mapeamento</button><a class="btn ghost lg" href="#/importar/escolher">Escolher outro arquivo</a></div>
+      <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Leitura direta, sem IA. A origem de cada campo fica guardada como aba e célula, e o arquivo original fica guardado sem alteração.</p>
+    </section>
+  </div>
+
+  <!-- 3. lendo (PDF por IA) -->
+  <div class="stack imp" id="i-lendo" hidden>
+    <section class="card stack" aria-labelledby="h-len" aria-busy="true">
+      <div class="card-head"><h2 id="h-len">Lendo o documento</h2><span class="badge b-info dashed"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Leitura por IA: sugestão, ainda não vale</span></div>
+      <p role="status">Lendo o PDF: página 12 de 38.</p>
+      <div class="bar-row">
+        <div class="meta"><span>Andamento da leitura</span><b class="num">32%</b></div>
+        <div class="bar" role="progressbar" aria-label="Andamento da leitura do PDF" aria-valuemin="0" aria-valuemax="100" aria-valuenow="32"><i style="width:32%"></i></div>
+      </div>
+      <ul class="stack" style="gap:var(--s-2)">
+        <li class="row"><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Feito</span> Arquivo guardado, sem alteração, com identificador de integridade.</li>
+        <li class="row"><span class="badge b-info"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Em andamento</span> Lendo o texto e as tabelas, com a origem de cada campo (página e região).</li>
+        <li class="row"><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Aguardando</span> Montando a minuta.</li>
+        <li class="row"><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Aguardando</span> Conferindo somas, classificações, duplicidades e períodos.</li>
+      </ul>
+      <p class="muted">Pode levar até 3 minutos para 50 páginas. Você pode sair desta tela: a minuta aparece em Planejamento quando estiver pronta.</p>
+      <div class="row"><button class="btn ghost" type="button" data-demo="Exemplo: nada foi cancelado.">Cancelar a leitura</button></div>
+    </section>
+  </div>
+
+  <!-- 4. erros -->
+  <div class="stack imp" id="i-erro" hidden>
+    <div class="grid g-2">
+      <section class="state error" role="alert" aria-labelledby="er1">
+        <h2 id="er1"><svg class="i" aria-hidden="true" style="vertical-align:-3px"><use href="#i-alert"/></svg> Arquivo acima do limite</h2>
+        <p><b>Este PDF tem 72 páginas e o limite é 50.</b> Nada foi enviado nem guardado.</p>
+        <p>Divida o arquivo em partes, envie uma planilha ou cadastre o plano à mão.</p>
+        <div class="row"><a class="btn ghost" href="#/importar/escolher" style="color:inherit;border-color:currentColor">Escolher outro arquivo</a><a class="btn ghost" href="#/plano" style="color:inherit;border-color:currentColor">Cadastrar à mão</a></div>
+      </section>
+      <section class="state error" role="alert" aria-labelledby="er2">
+        <h2 id="er2"><svg class="i" aria-hidden="true" style="vertical-align:-3px"><use href="#i-alert"/></svg> A leitura por IA não está disponível agora</h2>
+        <p><b>O arquivo foi guardado.</b> Nenhuma minuta foi criada e nada foi decidido por você.</p>
+        <p>Você pode tentar de novo mais tarde, enviar uma planilha (lida sem IA) ou cadastrar o plano à mão.</p>
+        <div class="row"><button class="btn ghost" type="button" style="color:inherit;border-color:currentColor" data-demo="Exemplo: nada foi reenviado.">Tentar de novo</button><a class="btn ghost" href="#/plano" style="color:inherit;border-color:currentColor">Cadastrar à mão</a></div>
+      </section>
+    </div>
+    <p class="muted">Os mesmos avisos valem para foto pouco nítida: a leitura termina, e as linhas de baixa confiança vêm destacadas para você conferir (ver &quot;Conferir minuta&quot;).</p>
+  </div>
+</section>
+
+<!-- =====================================================
+     5d. CONFERIR A MINUTA
+     ===================================================== -->
+<section class="screen" id="s-conferir" data-title="Conferir a minuta" aria-labelledby="h-conf">
+  <header>
+    <div>
+      <p class="crumb">Projeto Exemplo · Planejamento · <span class="tag-example">EXEMPLO</span></p>
+      <h1 id="h-conf" tabindex="-1">Conferir a minuta do plano</h1>
+      <p>Minuta 1, lida de plano-exemplo.pdf (PDF escaneado) por IA. Cada linha mostra, ao lado, o trecho do documento de onde saiu.</p>
+    </div>
+    <div class="row">
+      <span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Minuta: não vale</span>
+      <span class="badge b-info dashed"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Sugestão da IA</span>
+    </div>
+  </header>
+  <nav class="seg subnav" data-sub="plan" aria-label="Planejamento"></nav>
+
+  <div class="stack">
+    <div class="banner info" role="note"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg><div><span class="if-ok">Exemplo: esta é a conferência que antecedeu a linha de base v1 do projeto de exemplo. </span><span class="if-semok">Este é o plano que aguarda o seu OK. </span>Experimente corrigir as linhas 2.1.2 e 2.2.2, marcar os &quot;ciente&quot; e conferir as linhas: o botão do fim da página só fica ativo quando tudo for atendido. Nada é salvo no protótipo.</div></div>
+
+    <section aria-labelledby="h-falta">
+      <h2 id="h-falta" style="margin-bottom:var(--s-3)">O que falta para o OK</h2>
+      <div class="gate-grid">
+        <div class="gate-col err">
+          <h3><svg class="i" aria-hidden="true"><use href="#i-stop"/></svg>Impedem o OK (2)</h3>
+          <p class="muted" style="font-size:var(--fs-sm)">Corrija a linha. Não dá para seguir com ciente.</p>
+          <ul>
+            <li><span class="t"><a href="#l-2-1-2">Linha 2.1.2</a>: classificação 339031 fora da lista do projeto.</span><span id="st-imp-cls"></span></li>
+            <li><span class="t"><a href="#l-2-2-2">Linha 2.2.2</a>: valor aprovado ausente.</span><span id="st-imp-val"></span></li>
+          </ul>
+        </div>
+        <div class="gate-col warn">
+          <h3><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Exigem &quot;ciente&quot; com justificativa (4)</h3>
+          <p class="muted" style="font-size:var(--fs-sm)">Você decide seguir, e a justificativa fica registrada.</p>
+          <ul>
+            <li data-ciente><span class="t"><b>Soma diverge do documento:</b> as linhas somam R$ 104.000,00 e o total impresso é R$ 100.000,00. Diferença de R$ 4.000,00 (etapa 3.1: R$ 8.000,00 contra R$ 4.000,00).</span>
+              <div class="field" style="width:100%"><label class="chk"><input type="checkbox" class="ck"><span>Ciente</span></label><input class="why-in" aria-label="Justificativa: soma diverge do documento" placeholder="Justificativa (obrigatória)" autocomplete="off"></div></li>
+            <li data-ciente><span class="t"><b>Classificação inconsistente:</b> &quot;diárias de viagem&quot; está em 339014 na etapa 2.1 (linha 2.1.3) e em 339039 na etapa 2.2 (linha 2.2.1).</span>
+              <div class="field" style="width:100%"><label class="chk"><input type="checkbox" class="ck"><span>Ciente</span></label><input class="why-in" aria-label="Justificativa: classificação inconsistente" placeholder="Justificativa (obrigatória)" autocomplete="off"></div></li>
+            <li data-ciente><span class="t"><b>Linha duplicada:</b> 3.1.1 e 3.1.2 têm a mesma etapa, classificação, objeto e valor.</span>
+              <div class="field" style="width:100%"><label class="chk"><input type="checkbox" class="ck"><span>Ciente</span></label><input class="why-in" aria-label="Justificativa: linha duplicada" placeholder="Justificativa (obrigatória)" autocomplete="off"></div></li>
+            <li data-ciente><span class="t"><b>Períodos inconsistentes:</b> o cabeçalho traz mar/2027 repetido e faltam abr/2027 e mai/2027.</span>
+              <div class="field" style="width:100%"><label class="chk"><input type="checkbox" class="ck"><span>Ciente</span></label><input class="why-in" aria-label="Justificativa: períodos inconsistentes" placeholder="Justificativa (obrigatória)" autocomplete="off"></div></li>
+          </ul>
+        </div>
+        <div class="gate-col">
+          <h3><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg>Conferir linha a linha (7)</h3>
+          <p class="muted" style="font-size:var(--fs-sm)">Baixa confiança de leitura ou alerta: marque &quot;Conferi esta linha&quot; em cada uma.</p>
+          <ul>
+            <li><span class="t">Linha 1.2.1: leitura de baixa confiança (0,74).</span><a href="#l-1-2-1">Ir</a></li>
+            <li><span class="t">Linhas 2.1.2 e 2.2.2: impedimentos.</span><a href="#l-2-1-2">Ir</a></li>
+            <li><span class="t">Linhas 2.1.3 e 2.2.1: classificação inconsistente.</span><a href="#l-2-1-3">Ir</a></li>
+            <li><span class="t">Linhas 3.1.1 e 3.1.2: duplicadas.</span><a href="#l-3-1-1">Ir</a></li>
+            <li><span class="t"><b id="cnt-need">0 de 7</b> linhas conferidas.</span><span id="st-need"></span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="h-linhas">
+      <h2 id="h-linhas">Linhas da minuta</h2>
+      <p class="muted">Soma das linhas: <b class="num">R$ 104.000,00</b> · total impresso no documento: <b class="num">R$ 100.000,00</b> · diferença: <b class="num">R$ 4.000,00</b>. Os totais de etapa e meta abaixo são sempre a soma das linhas.</p>
+
+      <h3 class="grp">Meta 1 · Formulação do biofertilizante · R$ 68.000,00</h3>
+      <h4 style="margin-bottom:var(--s-2)">Etapa 1.1 · Formulação em laboratório · R$ 28.000,00</h4>
+      <div class="mrows">
+        <article class="mrow" id="l-1-1-1" aria-labelledby="t-1-1-1">
+          <div class="mmain">
+            <div class="mhead"><h5 id="t-1-1-1" style="font-size:var(--fs-md)">Linha 1.1.1</h5><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Confiança 0,97</span></div>
+            <dl class="facts"><dt>Classificação</dt><dd><span class="cls">339030</span> Material de consumo</dd><dt>Objeto previsto</dt><dd>Reagentes e insumos para ensaios de formulação</dd><dt>Valor aprovado</dt><dd class="num" style="text-align:left">R$ 18.000,00</dd></dl>
+            <details class="edit"><summary><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg>Corrigir esta linha</summary><div class="form-grid"><div class="field"><label for="e111c">Classificação</label><select id="e111c"><option>339030 Material de consumo</option><option>339039 Serviços de terceiros</option><option>339014 Diárias de viagem</option><option>449052 Equipamentos</option></select></div><div class="field"><label for="e111v">Valor aprovado (R$)</label><input id="e111v" inputmode="decimal" value="18.000,00"></div><div class="field full"><label for="e111o">Objeto previsto</label><textarea id="e111o">Reagentes e insumos para ensaios de formulação</textarea><span class="help">Valor lido: R$ 18.000,00. Se você corrigir, a plataforma guarda o valor lido e o corrigido.</span></div></div></details>
+          </div>
+          <aside class="origin" aria-label="Origem da linha 1.1.1 no documento">
+            <h4><svg class="i" aria-hidden="true"><use href="#i-doc"/></svg>Página 7 · tabela de despesas</h4>
+            <div class="page" aria-hidden="true"><i style="top:10px;width:60%"></i><i style="top:20px;width:80%"></i><i style="top:30px;width:70%"></i><span class="hlbox" style="top:40px"></span><i style="top:66px;width:75%"></i></div>
+            <p class="o-text">… 1.1.1 <mark>Reagentes e insumos para ensaios de formulação ..... 339030 ..... 18.000,00</mark> …</p>
+            <p class="o-meta">Lido pela IA: R$ 18.000,00 · confiança 0,97</p>
+          </aside>
+        </article>
+        <article class="mrow" id="l-1-1-2" aria-labelledby="t-1-1-2">
+          <div class="mmain">
+            <div class="mhead"><h5 id="t-1-1-2" style="font-size:var(--fs-md)">Linha 1.1.2</h5><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Confiança 0,91</span></div>
+            <dl class="facts"><dt>Classificação</dt><dd><span class="cls">339039</span> Serviços de terceiros</dd><dt>Objeto previsto</dt><dd>Análises químicas por laboratório externo</dd><dt>Valor aprovado</dt><dd class="num" style="text-align:left">R$ 10.000,00</dd></dl>
+            <details class="edit"><summary><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg>Corrigir esta linha</summary><div class="form-grid"><div class="field"><label for="e112v">Valor aprovado (R$)</label><input id="e112v" inputmode="decimal" value="10.000,00"></div></div></details>
+          </div>
+          <aside class="origin" aria-label="Origem da linha 1.1.2 no documento">
+            <h4><svg class="i" aria-hidden="true"><use href="#i-doc"/></svg>Página 7 · tabela de despesas</h4>
+            <div class="page" aria-hidden="true"><i style="top:10px;width:60%"></i><i style="top:20px;width:80%"></i><i style="top:30px;width:70%"></i><i style="top:40px;width:65%"></i><span class="hlbox" style="top:50px"></span></div>
+            <p class="o-text">… 1.1.2 <mark>Análises químicas por laboratório externo ..... 339039 ..... 10.000,00</mark> …</p>
+            <p class="o-meta">Lido pela IA: R$ 10.000,00 · confiança 0,91</p>
+          </aside>
+        </article>
+      </div>
+
+      <h4 style="margin:var(--s-4) 0 var(--s-2)">Etapa 1.2 · Produção do lote piloto · R$ 40.000,00</h4>
+      <div class="mrows">
+        <article class="mrow warn" id="l-1-2-1" aria-labelledby="t-1-2-1">
+          <div class="mmain">
+            <div class="mhead"><h5 id="t-1-2-1" style="font-size:var(--fs-md)">Linha 1.2.1</h5><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>Baixa confiança: 0,74</span></div>
+            <dl class="facts"><dt>Classificação</dt><dd><span class="cls">449052</span> Equipamentos</dd><dt>Objeto previsto</dt><dd>Biorreator de bancada de 5 L, com controle de temperatura e pH</dd><dt>Valor aprovado</dt><dd class="num" style="text-align:left">R$ 40.000,00</dd></dl>
+            <ul class="alerts"><li><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg><span>O trecho está pouco nítido (foto). Compare o valor e o objeto com o documento ao lado.</span></li></ul>
+            <details class="edit"><summary><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg>Corrigir esta linha</summary><div class="form-grid"><div class="field"><label for="e121v">Valor aprovado (R$)</label><input id="e121v" inputmode="decimal" value="40.000,00"></div><div class="field full"><label for="e121o">Objeto previsto</label><textarea id="e121o">Biorreator de bancada de 5 L, com controle de temperatura e pH</textarea><span class="help">Valor lido: R$ 40.000,00.</span></div></div></details>
+            <label class="chk"><input type="checkbox" class="need"><span>Conferi esta linha</span></label>
+          </div>
+          <aside class="origin" aria-label="Origem da linha 1.2.1 no documento">
+            <h4><svg class="i" aria-hidden="true"><use href="#i-doc"/></svg>Página 8 · tabela de equipamentos</h4>
+            <div class="page" aria-hidden="true"><i style="top:10px;width:55%"></i><i style="top:20px;width:75%"></i><span class="hlbox" style="top:30px"></span><i style="top:56px;width:70%"></i><i style="top:66px;width:50%"></i></div>
+            <p class="o-text">… 1.2.1 <mark>Biorreator de bancada 5 L, controle de temp. e pH ..... 449052 ..... 4O.000,00</mark> …</p>
+            <p class="o-meta">Lido pela IA: R$ 40.000,00 · confiança 0,74 (o &quot;0&quot; do valor pode ser a letra O)</p>
+          </aside>
+        </article>
+      </div>
+
+      <h3 class="grp">Meta 2 · Validação em campo · R$ 28.000,00 (a linha 2.2.2 está sem valor)</h3>
+      <h4 style="margin-bottom:var(--s-2)">Etapa 2.1 · Ensaios de campo · R$ 26.000,00</h4>
+      <div class="mrows">
+        <article class="mrow" id="l-2-1-1" aria-labelledby="t-2-1-1">
+          <div class="mmain">
+            <div class="mhead"><h5 id="t-2-1-1" style="font-size:var(--fs-md)">Linha 2.1.1</h5><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Confiança 0,95</span></div>
+            <dl class="facts"><dt>Classificação</dt><dd><span class="cls">339030</span> Material de consumo</dd><dt>Objeto previsto</dt><dd>Insumos para ensaio de campo, lote 2</dd><dt>Valor aprovado</dt><dd class="num" style="text-align:left">R$ 12.000,00</dd></dl>
+            <details class="edit"><summary><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg>Corrigir esta linha</summary><div class="form-grid"><div class="field"><label for="e211v">Valor aprovado (R$)</label><input id="e211v" inputmode="decimal" value="12.000,00"></div></div></details>
+          </div>
+          <aside class="origin" aria-label="Origem da linha 2.1.1 no documento">
+            <h4><svg class="i" aria-hidden="true"><use href="#i-doc"/></svg>Página 9 · tabela de despesas</h4>
+            <div class="page" aria-hidden="true"><i style="top:10px;width:60%"></i><span class="hlbox" style="top:20px"></span><i style="top:46px;width:70%"></i><i style="top:56px;width:80%"></i></div>
+            <p class="o-text">… 2.1.1 <mark>Insumos para ensaio de campo, lote 2 ..... 339030 ..... 12.000,00</mark> …</p>
+            <p class="o-meta">Lido pela IA: R$ 12.000,00 · confiança 0,95</p>
+          </aside>
+        </article>
+
+        <article class="mrow err" id="l-2-1-2" aria-labelledby="t-2-1-2">
+          <div class="mmain">
+            <div class="mhead"><h5 id="t-2-1-2" style="font-size:var(--fs-md)">Linha 2.1.2</h5><span class="badge b-err" id="b-cls"><svg class="i" aria-hidden="true"><use href="#i-stop"/></svg>Impede o OK</span><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Confiança 0,93</span></div>
+            <dl class="facts"><dt>Classificação</dt><dd><span class="cls" id="v-cls">339031</span></dd><dt>Objeto previsto</dt><dd>Serviço de análise de solo e tecido vegetal</dd><dt>Valor aprovado</dt><dd class="num" style="text-align:left">R$ 12.000,00</dd></dl>
+            <ul class="alerts"><li id="a-cls"><svg class="i" aria-hidden="true" style="color:var(--c-err-fg)"><use href="#i-stop"/></svg><span><b>Classificação fora da lista do projeto.</b> 339031 não existe entre 339030, 339039, 339014 e 449052. Escolha a classificação correta.</span></li></ul>
+            <details class="edit" open><summary><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg>Corrigir esta linha</summary><div class="form-grid"><div class="field"><label for="e212c">Classificação</label><select id="e212c" aria-invalid="true" aria-describedby="e212c-m"><option value="339031">339031 (fora da lista)</option><option value="339030">339030 Material de consumo</option><option value="339039">339039 Serviços de terceiros</option><option value="339014">339014 Diárias de viagem</option><option value="449052">449052 Equipamentos</option></select><span class="err-msg" id="e212c-m"><svg class="i" aria-hidden="true"><use href="#i-stop"/></svg>Escolha uma classificação da lista.</span></div><div class="field"><label for="e212v">Valor aprovado (R$)</label><input id="e212v" inputmode="decimal" value="12.000,00"><span class="help">Valor lido: R$ 12.000,00.</span></div></div></details>
+            <label class="chk"><input type="checkbox" class="need"><span>Conferi esta linha</span></label>
+          </div>
+          <aside class="origin" aria-label="Origem da linha 2.1.2 no documento">
+            <h4><svg class="i" aria-hidden="true"><use href="#i-doc"/></svg>Página 9 · tabela de despesas</h4>
+            <div class="page" aria-hidden="true"><i style="top:10px;width:60%"></i><i style="top:20px;width:80%"></i><span class="hlbox" style="top:30px"></span><i style="top:56px;width:60%"></i></div>
+            <p class="o-text">… 2.1.2 <mark>Serviço de análise de solo e tecido vegetal ..... 339031 ..... 12.000,00</mark> …</p>
+            <p class="o-meta">Lido pela IA: classificação 339031 · confiança 0,93. A leitura pode estar certa e o documento, errado: confira.</p>
+          </aside>
+        </article>
+
+        <article class="mrow warn" id="l-2-1-3" aria-labelledby="t-2-1-3">
+          <div class="mmain">
+            <div class="mhead"><h5 id="t-2-1-3" style="font-size:var(--fs-md)">Linha 2.1.3</h5><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>Classificação inconsistente</span><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Confiança 0,92</span></div>
+            <dl class="facts"><dt>Classificação</dt><dd><span class="cls">339014</span> Diárias de viagem</dd><dt>Objeto previsto</dt><dd>Diárias de viagem</dd><dt>Valor aprovado</dt><dd class="num" style="text-align:left">R$ 2.000,00</dd></dl>
+            <ul class="alerts"><li><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg><span>O mesmo objeto, &quot;diárias de viagem&quot;, tem outra classificação na linha 2.2.1 (339039). Confirme qual vale ou registre &quot;ciente&quot; no resumo acima.</span></li></ul>
+            <label class="chk"><input type="checkbox" class="need"><span>Conferi esta linha</span></label>
+          </div>
+          <aside class="origin" aria-label="Origem da linha 2.1.3 no documento">
+            <h4><svg class="i" aria-hidden="true"><use href="#i-doc"/></svg>Página 9 · tabela de despesas</h4>
+            <div class="page" aria-hidden="true"><i style="top:10px;width:60%"></i><i style="top:20px;width:80%"></i><i style="top:30px;width:70%"></i><span class="hlbox" style="top:40px"></span><i style="top:66px;width:50%"></i></div>
+            <p class="o-text">… 2.1.3 <mark>Diárias de viagem ..... 339014 ..... 2.000,00</mark> …</p>
+            <p class="o-meta">Lido pela IA: R$ 2.000,00 · confiança 0,92</p>
+          </aside>
+        </article>
+      </div>
+
+      <h4 style="margin:var(--s-4) 0 var(--s-2)">Etapa 2.2 · Análise de resultados · R$ 2.000,00 (a linha 2.2.2 está sem valor)</h4>
+      <div class="mrows">
+        <article class="mrow warn" id="l-2-2-1" aria-labelledby="t-2-2-1">
+          <div class="mmain">
+            <div class="mhead"><h5 id="t-2-2-1" style="font-size:var(--fs-md)">Linha 2.2.1</h5><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>Classificação inconsistente</span><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Confiança 0,90</span></div>
+            <dl class="facts"><dt>Classificação</dt><dd><span class="cls">339039</span> Serviços de terceiros</dd><dt>Objeto previsto</dt><dd>Diárias de viagem</dd><dt>Valor aprovado</dt><dd class="num" style="text-align:left">R$ 2.000,00</dd></dl>
+            <ul class="alerts"><li><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg><span>Mesmo objeto da linha 2.1.3, com classificação diferente (339014 contra 339039).</span></li></ul>
+            <label class="chk"><input type="checkbox" class="need"><span>Conferi esta linha</span></label>
+          </div>
+          <aside class="origin" aria-label="Origem da linha 2.2.1 no documento">
+            <h4><svg class="i" aria-hidden="true"><use href="#i-doc"/></svg>Página 10 · tabela de despesas</h4>
+            <div class="page" aria-hidden="true"><i style="top:10px;width:60%"></i><span class="hlbox" style="top:20px"></span><i style="top:46px;width:80%"></i></div>
+            <p class="o-text">… 2.2.1 <mark>Diárias de viagem ..... 339039 ..... 2.000,00</mark> …</p>
+            <p class="o-meta">Lido pela IA: classificação 339039 · confiança 0,90</p>
+          </aside>
+        </article>
+        <article class="mrow err" id="l-2-2-2" aria-labelledby="t-2-2-2">
+          <div class="mmain">
+            <div class="mhead"><h5 id="t-2-2-2" style="font-size:var(--fs-md)">Linha 2.2.2</h5><span class="badge b-err" id="b-val"><svg class="i" aria-hidden="true"><use href="#i-stop"/></svg>Impede o OK</span><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>Confiança 0,41</span></div>
+            <dl class="facts"><dt>Classificação</dt><dd><span class="cls">339039</span> Serviços de terceiros</dd><dt>Objeto previsto</dt><dd>Relatório técnico e publicação dos resultados</dd><dt>Valor aprovado</dt><dd class="num" style="text-align:left" id="v-val">não lido</dd></dl>
+            <ul class="alerts"><li id="a-val"><svg class="i" aria-hidden="true" style="color:var(--c-err-fg)"><use href="#i-stop"/></svg><span><b>Valor ausente.</b> A leitura não encontrou o valor desta linha. Digite o valor do documento.</span></li></ul>
+            <details class="edit" open><summary><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg>Corrigir esta linha</summary><div class="form-grid"><div class="field"><label for="e222v">Valor aprovado (R$)</label><input id="e222v" inputmode="decimal" aria-invalid="true" aria-describedby="e222v-m e222v-h"><span class="help" id="e222v-h">Exemplo: 1.234,56. Valor lido: nenhum.</span><span class="err-msg" id="e222v-m"><svg class="i" aria-hidden="true"><use href="#i-stop"/></svg>Informe o valor, em reais, maior que zero.</span></div></div></details>
+            <label class="chk"><input type="checkbox" class="need"><span>Conferi esta linha</span></label>
+          </div>
+          <aside class="origin" aria-label="Origem da linha 2.2.2 no documento">
+            <h4><svg class="i" aria-hidden="true"><use href="#i-doc"/></svg>Página 10 · tabela de despesas</h4>
+            <div class="page" aria-hidden="true"><i style="top:10px;width:60%"></i><i style="top:20px;width:80%"></i><span class="hlbox" style="top:32px"></span><i style="top:58px;width:50%"></i></div>
+            <p class="o-text">… 2.2.2 <mark>Relatório técnico e publicação dos resultados ..... 339039 ..... [borrão]</mark> …</p>
+            <p class="o-meta">Lido pela IA: sem valor · confiança 0,41 (mancha no papel)</p>
+          </aside>
+        </article>
+      </div>
+
+      <h3 class="grp">Meta 3 · Gestão administrativa e financeira · R$ 8.000,00 pela minuta</h3>
+      <h4 style="margin-bottom:var(--s-2)">Etapa 3.1 · Gestão · R$ 8.000,00 (o documento imprime R$ 4.000,00)</h4>
+      <div class="mrows">
+        <article class="mrow warn" id="l-3-1-1" aria-labelledby="t-3-1-1">
+          <div class="mmain">
+            <div class="mhead"><h5 id="t-3-1-1" style="font-size:var(--fs-md)">Linha 3.1.1</h5><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>Possível duplicidade</span><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Confiança 0,96</span></div>
+            <dl class="facts"><dt>Classificação</dt><dd><span class="cls">339039</span> Serviços de terceiros</dd><dt>Objeto previsto</dt><dd>Serviços de contabilidade e apoio administrativo</dd><dt>Valor aprovado</dt><dd class="num" style="text-align:left">R$ 4.000,00</dd></dl>
+            <ul class="alerts"><li><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg><span>Idêntica à linha 3.1.2. Se for repetição, remova uma delas nesta minuta; a soma volta a bater com o documento.</span></li></ul>
+            <div class="row"><button class="btn ghost" type="button" data-demo="Exemplo: nenhuma linha foi removida.">Remover esta linha da minuta</button></div>
+            <label class="chk"><input type="checkbox" class="need"><span>Conferi esta linha</span></label>
+          </div>
+          <aside class="origin" aria-label="Origem da linha 3.1.1 no documento">
+            <h4><svg class="i" aria-hidden="true"><use href="#i-doc"/></svg>Página 11 · tabela de despesas</h4>
+            <div class="page" aria-hidden="true"><i style="top:10px;width:60%"></i><span class="hlbox" style="top:20px"></span><i style="top:46px;width:70%"></i></div>
+            <p class="o-text">… 3.1.1 <mark>Serviços de contabilidade e apoio administrativo ..... 339039 ..... 4.000,00</mark> …</p>
+            <p class="o-meta">Lido pela IA: R$ 4.000,00 · confiança 0,96</p>
+          </aside>
+        </article>
+        <article class="mrow warn" id="l-3-1-2" aria-labelledby="t-3-1-2">
+          <div class="mmain">
+            <div class="mhead"><h5 id="t-3-1-2" style="font-size:var(--fs-md)">Linha 3.1.2</h5><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>Possível duplicidade</span><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Confiança 0,96</span></div>
+            <dl class="facts"><dt>Classificação</dt><dd><span class="cls">339039</span> Serviços de terceiros</dd><dt>Objeto previsto</dt><dd>Serviços de contabilidade e apoio administrativo</dd><dt>Valor aprovado</dt><dd class="num" style="text-align:left">R$ 4.000,00</dd></dl>
+            <ul class="alerts"><li><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg><span>Idêntica à linha 3.1.1.</span></li></ul>
+            <label class="chk"><input type="checkbox" class="need"><span>Conferi esta linha</span></label>
+          </div>
+          <aside class="origin" aria-label="Origem da linha 3.1.2 no documento">
+            <h4><svg class="i" aria-hidden="true"><use href="#i-doc"/></svg>Página 11 · tabela de despesas</h4>
+            <div class="page" aria-hidden="true"><i style="top:10px;width:60%"></i><i style="top:20px;width:80%"></i><span class="hlbox" style="top:32px"></span><i style="top:58px;width:50%"></i></div>
+            <p class="o-text">… 3.1.2 <mark>Serviços de contabilidade e apoio administrativo ..... 339039 ..... 4.000,00</mark> …</p>
+            <p class="o-meta">Lido pela IA: R$ 4.000,00 · confiança 0,96</p>
+          </aside>
+        </article>
+      </div>
+    </section>
+
+    <section class="gate-bar" id="gate" aria-labelledby="h-ok">
+      <h2 id="h-ok">Dar o OK</h2>
+      <label class="chk"><input type="checkbox" id="lidoTudo"><span>Li a minuta inteira, inclusive as linhas que não têm alerta (1.1.1, 1.1.2 e 2.1.1).</span></label>
+      <p id="gateTxt" role="status"></p>
+      <div class="row">
+        <button class="btn lg" type="button" id="btnOk" aria-disabled="true" aria-describedby="gateTxt"><svg class="i" aria-hidden="true"><use id="okIco" href="#i-lock"/></svg>Dar OK e liberar a execução</button>
+        <a class="btn ghost lg" href="#/plano">Voltar sem dar o OK</a>
+      </div>
+      <p class="muted">O OK é decisão sua, como líder: a plataforma não aprova nada por conta própria. Ele trava a linha de base v1 (cópia do que está nesta tela, ligada ao arquivo original) e libera a execução e a checagem por linha. Depois, qualquer mudança é um ajuste versionado.</p>
+      <div class="banner warn" id="okConfirm" hidden role="region" aria-labelledby="okc-t" tabindex="-1">
+        <svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>
+        <div><b id="okc-t">Confirmar o OK?</b> Você está travando a linha de base v1 com o que está nesta tela, já com as suas correções. Depois disso, a linha de base não pode ser editada; só mudada por ajuste. Nada é enviado ao financiador.<br>
+          <button class="btn" type="button" id="okYes">Sim, dar o OK</button> <button class="btn ghost" type="button" id="okNo" style="color:inherit;border-color:currentColor">Voltar</button></div>
+      </div>
+      <div class="banner ok" id="okDone" hidden role="status"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg><div><b>OK registrado (exemplo).</b> Linha de base v1 criada com o arquivo original, o seu nome, a data e os totais. A execução e a checagem por linha estão liberadas. Nada foi gravado: isto é um protótipo.</div></div>
+    </section>
+  </div>
+</section>
+
+<!-- =====================================================
+     5e. AJUSTES E VERSÕES DA LINHA DE BASE
+     ===================================================== -->
+<section class="screen" id="s-ajustes" data-title="Ajustes e versões" aria-labelledby="h-aj">
+  <header>
+    <div>
+      <p class="crumb">Projeto Exemplo · Planejamento · <span class="tag-example">EXEMPLO</span></p>
+      <h1 id="h-aj" tabindex="-1">Ajustes e versões da linha de base</h1>
+      <p>Depois do OK, o plano não é editado: cada mudança é um ajuste, com pedido, justificativa, decisor e versão nova. As versões antigas continuam consultáveis.</p>
+    </div>
+  </header>
+  <nav class="seg subnav" data-sub="plan" aria-label="Planejamento"></nav>
+
+  <div class="stack">
+    <section class="card" aria-labelledby="h-ver">
+      <div class="card-head"><h2 id="h-ver">Versões</h2></div>
+      <ol class="rec">
+        <li class="late">
+          <div class="rt"><b>Versão 3</b><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Pendente de aprovação externa</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-minus"/></svg>Ainda não vale</span></div>
+          <p>Mover R$ 1.200,00 da linha 2.2.1 para a linha 2.1.2, para cobrir o saldo negativo.</p>
+          <p class="meta">Pedido em 20/11/2026 · decisor: Líder (exemplo) · enquanto não for aprovada, a versão vigente continua sendo a 2.</p>
+        </li>
+        <li>
+          <div class="rt"><b>Versão 2</b><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Vigente</span></div>
+          <p>Mover R$ 2.000,00 da linha 1.1.2 para a linha 1.1.1, por necessidade de mais reagentes na formulação.</p>
+          <p class="meta">Vigente desde 12/11/2026 · decisor: Líder (exemplo) · aprovação do financiador registrada em 10/11/2026 (ofício de exemplo, anexado).</p>
+        </li>
+        <li>
+          <div class="rt"><b>Versão 1</b><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-layers"/></svg>Anterior, só consulta</span></div>
+          <p>Linha de base inicial, criada com o OK do líder sobre a minuta 1 (plano-exemplo.pdf).</p>
+          <p class="meta">Travada em 03/03/2026 · decisor: Líder (exemplo) · <a href="#/plano">ver o plano</a></p>
+        </li>
+      </ol>
+      <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>A execução já lançada continua ligada à versão vigente à época em que foi lançada. Só o líder pede e registra ajustes.</p>
+    </section>
+
+    <section class="card" aria-labelledby="h-aj3">
+      <div class="card-head"><h2 id="h-aj3">Ajuste da versão 3</h2><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Pendente de aprovação externa</span></div>
+      <ol class="steps" aria-label="Caminho de um ajuste" style="margin-bottom:var(--s-4)">
+        <li><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>1. Rascunho: feito</span></li>
+        <li><span class="badge b-warn dashed" aria-current="step"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>2. Pendente de aprovação externa: você está aqui</span></li>
+        <li><span class="badge b-neutral">3. Vigente (versão 3)</span></li>
+        <li><span class="badge b-neutral">ou Recusado</span></li>
+        <li><span class="badge b-neutral">ou Cancelado</span></li>
+      </ol>
+      <div class="table-wrap">
+        <table class="stack-m">
+          <caption class="sr-only">Diferença entre a versão vigente e a versão 3 proposta, em reais</caption>
+          <thead><tr><th scope="col">Linha</th><th scope="col" class="num">Versão 2 (vigente)</th><th scope="col" class="num">Versão 3 (proposta)</th><th scope="col" class="num">Diferença</th></tr></thead>
+          <tbody>
+            <tr><td data-label="Linha">2.1.2 · Serviço de análise de solo e tecido vegetal</td><td class="num" data-label="Versão 2">R$ 12.000,00</td><td class="num" data-label="Versão 3">R$ 13.200,00</td><td class="num" data-label="Diferença">+R$ 1.200,00</td></tr>
+            <tr><td data-label="Linha">2.2.1 · Diárias de viagem para visita técnica</td><td class="num" data-label="Versão 2">R$ 2.000,00</td><td class="num" data-label="Versão 3">R$ 800,00</td><td class="num" data-label="Diferença">−R$ 1.200,00</td></tr>
+          </tbody>
+          <tfoot><tr><th scope="row">Total do projeto</th><td class="num" data-label="Versão 2">R$ 100.000,00</td><td class="num" data-label="Versão 3">R$ 100.000,00</td><td class="num" data-label="Diferença">R$ 0,00 (sem mudança)</td></tr></tfoot>
+        </table>
+      </div>
+      <p style="margin-top:var(--s-3)"><b>Efeito na execução:</b> a linha 2.1.2 tem R$ 13.200,00 executados. Com a versão 3, o saldo dela passa de −R$ 1.200,00 para R$ 0,00.</p>
+      <dl class="facts" style="margin-top:var(--s-3)">
+        <dt>Justificativa</dt><dd>O serviço de análise de solo teve mais amostras do que o previsto; a visita técnica será feita com menos diárias.</dd>
+        <dt>Decisor</dt><dd>Líder (exemplo)</dd>
+        <dt>Financiador precisa aprovar?</dt><dd>Sim, pela regra do edital de exemplo (cláusula 12.1, página 15)</dd>
+      </dl>
+      <form class="stack" style="margin-top:var(--s-4)" novalidate aria-labelledby="h-aprov">
+        <h3 id="h-aprov">Registrar o que o financiador respondeu</h3>
+        <div class="form-grid">
+          <div class="field"><label for="f-adata">Data da resposta</label><input id="f-adata" inputmode="numeric" placeholder="DD/MM/AAAA" aria-describedby="f-adata-h"><span class="help" id="f-adata-h">Formato DD/MM/AAAA.</span></div>
+          <div class="field"><label for="f-aref">Referência (ofício, e-mail, processo)</label><input id="f-aref" autocomplete="off"></div>
+          <div class="field full"><label for="f-aanx">Anexo da aprovação</label><input id="f-aanx" type="file"></div>
+        </div>
+        <div class="row">
+          <button class="btn" type="button" data-demo="Exemplo: a aprovação não foi registrada.">Registrar aprovação e criar a versão 3</button>
+          <button class="btn ghost" type="button" data-demo="Exemplo: nada foi registrado.">Registrar recusa</button>
+          <button class="btn ghost" type="button" data-demo="Exemplo: o ajuste não foi cancelado.">Cancelar o ajuste</button>
+        </div>
+        <p class="record"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg><span>A plataforma não envia o pedido ao financiador nem recebe a resposta. Você registra aqui o que aconteceu fora dela.</span></p>
+      </form>
+    </section>
+
+    <section class="card" aria-labelledby="h-novo">
+      <div class="card-head"><h2 id="h-novo">Pedir um novo ajuste</h2></div>
+      <form class="stack" id="formAjuste" novalidate>
+        <div class="form-grid">
+          <div class="field"><label for="a-tipo">O que muda</label><select id="a-tipo"><option>Mover valor entre linhas</option><option>Mudar classificação, objeto ou valor de uma linha</option><option>Criar meta, etapa ou linha</option><option>Remover meta, etapa ou linha</option></select></div>
+          <div class="field"><label for="a-val">Valor a mover (R$)</label><input id="a-val" inputmode="decimal" value="500,00" aria-describedby="a-val-h"><span class="help" id="a-val-h">Exemplo: 1.234,56</span></div>
+          <div class="field"><label for="a-de">Tirar da linha</label><select id="a-de"><option>2.1.3 · Diárias de viagem para ensaios de campo</option><option>1.1.2 · Análises químicas por laboratório externo</option></select></div>
+          <div class="field"><label for="a-para">Pôr na linha</label><select id="a-para"><option>2.1.1 · Insumos para ensaio de campo, lote 2</option><option>1.1.1 · Reagentes e insumos para ensaios de formulação</option></select></div>
+          <div class="field full"><label for="a-just">Justificativa (obrigatória)</label><textarea id="a-just" aria-describedby="a-just-m" aria-required="true"></textarea><span class="err-msg" id="a-just-m" hidden><svg class="i" aria-hidden="true"><use href="#i-stop"/></svg>Explique por que este ajuste é necessário. Sem justificativa, ele não é salvo como vigente.</span></div>
+          <div class="field full"><label class="chk" for="a-ext"><input type="checkbox" id="a-ext"><span>O financiador precisa aprovar este ajuste (regra do edital). Neste caso a nova versão só vale depois que você registrar a aprovação.</span></label></div>
+        </div>
+        <dl class="facts"><dt>Decisor</dt><dd>Líder (exemplo): você</dd><dt>Efeito no total</dt><dd>Nenhum: R$ 500,00 saem de uma linha e entram em outra</dd></dl>
+        <div class="row">
+          <button class="btn" type="button" id="adjGo">Aplicar como nova versão</button>
+          <button class="btn ghost" type="button" data-demo="Exemplo: o rascunho não foi salvo.">Salvar como rascunho</button>
+        </div>
+        <p class="muted">Se o ajuste deixar o valor aprovado de uma linha abaixo do que já foi executado, a plataforma avisa e pede o seu &quot;ciente&quot; com justificativa. Membros não veem este formulário.</p>
+      </form>
+    </section>
+
+    <section class="card" aria-labelledby="h-dv">
+      <div class="card-head"><h2 id="h-dv">O que mudou da versão 1 para a 2</h2></div>
+      <div class="table-wrap">
+        <table class="stack-m">
+          <caption class="sr-only">Diferença entre as versões 1 e 2 da linha de base, em reais</caption>
+          <thead><tr><th scope="col">Linha</th><th scope="col" class="num">Versão 1</th><th scope="col" class="num">Versão 2</th><th scope="col" class="num">Diferença</th></tr></thead>
+          <tbody>
+            <tr><td data-label="Linha">1.1.1 · Reagentes e insumos para ensaios de formulação</td><td class="num" data-label="Versão 1">R$ 16.000,00</td><td class="num" data-label="Versão 2">R$ 18.000,00</td><td class="num" data-label="Diferença">+R$ 2.000,00</td></tr>
+            <tr><td data-label="Linha">1.1.2 · Análises químicas por laboratório externo</td><td class="num" data-label="Versão 1">R$ 12.000,00</td><td class="num" data-label="Versão 2">R$ 10.000,00</td><td class="num" data-label="Diferença">−R$ 2.000,00</td></tr>
+          </tbody>
+          <tfoot><tr><th scope="row">Total do projeto</th><td class="num" data-label="Versão 1">R$ 100.000,00</td><td class="num" data-label="Versão 2">R$ 100.000,00</td><td class="num" data-label="Diferença">R$ 0,00 (sem mudança)</td></tr></tfoot>
+        </table>
+      </div>
+      <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Fonte: versões da linha de base. Cada mudança de total do projeto é destacada em reais e vai para a trilha de auditoria.</p>
+    </section>
+  </div>
+</section>
+
+<!-- =====================================================
+     5f. EXECUÇÃO MENSAL: PREVISTO x EXECUTADO
+     ===================================================== -->
+<section class="screen" id="s-execucao" data-title="Execução mensal" aria-labelledby="h-ex">
+  <header>
+    <div>
+      <p class="crumb">Projeto Exemplo · <span class="tag-example">EXEMPLO</span></p>
+      <h1 id="h-ex" tabindex="-1">Execução mensal: previsto × executado</h1>
+      <p>Quanto foi aprovado e quanto foi executado em cada linha, etapa, meta e no projeto, por mês ou por trimestre.</p>
+    </div>
+    <a class="btn accent lg" href="#/comprar"><svg class="i" aria-hidden="true"><use href="#i-bag"/></svg>Vou comprar</a>
+  </header>
+
+  <div class="stack">
+    <div class="banner warn if-semok" role="status"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg><div><b>Previsto × executado só vale depois do OK do plano.</b> Sem linha de base, não há valor aprovado por linha. As despesas continuam sendo lançadas e ficam &quot;sem linha&quot;, nas pendências.<br><a class="btn" href="#/conferir">Conferir o plano e dar o OK</a></div></div>
+
+    <div class="if-ok stack">
+      <form class="card ctrl" aria-label="Período e versão" onsubmit="return false">
+        <fieldset><legend>Ver por</legend>
+          <label class="chk"><input type="radio" name="per" value="m" checked><span>Mês</span></label>
+          <label class="chk"><input type="radio" name="per" value="t"><span>Trimestre</span></label>
+        </fieldset>
+        <div class="field"><label for="ex-per">Período</label><select id="ex-per"></select></div>
+        <div class="field"><label for="ex-ver">Linha de base</label><select id="ex-ver"><option value="2">v2, vigente desde 12/11/2026</option><option value="1">v1, anterior (só consulta)</option></select></div>
+      </form>
+
+      <div class="grid g-4" aria-live="polite">
+        <div class="card kpi"><span class="label">Executado no período</span><span class="value" id="k-per">R$ 0,00</span><span class="hint" id="k-perl">período</span></div>
+        <div class="card kpi"><span class="label">Executado acumulado</span><span class="value" id="k-acc">R$ 0,00</span><span class="hint" id="k-accp">do aprovado</span></div>
+        <div class="card kpi"><span class="label">Saldo do projeto</span><span class="value" id="k-sal">R$ 0,00</span><span class="hint">aprovado − acumulado</span></div>
+        <div class="card kpi"><span class="label">Linhas acima do aprovado</span><span class="value" id="k-neg">0</span><span class="hint">saldo negativo, sem bloquear lançamentos</span></div>
+      </div>
+
+      <section class="card" aria-labelledby="h-ext">
+        <div class="card-head"><h2 id="h-ext">Meta → Etapa → Linha</h2><span class="badge b-neutral" id="ex-ver-b"><svg class="i" aria-hidden="true"><use href="#i-layers"/></svg>Linha de base v2</span></div>
+        <div class="table-wrap">
+          <table class="stack-m" id="exT">
+            <caption class="sr-only" id="exCap">Previsto e executado por meta, etapa e linha</caption>
+            <thead><tr><th scope="col">Meta, etapa ou linha</th><th scope="col" class="num">Aprovado</th><th scope="col" class="num" id="th-per">No período</th><th scope="col" class="num">Acumulado</th><th scope="col" class="num">Saldo</th><th scope="col">% executado</th></tr></thead>
+            <tbody id="exB"></tbody>
+            <tfoot id="exF"></tfoot>
+          </table>
+        </div>
+        <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Fonte: valor aprovado da versão escolhida da linha de base e despesas lançadas por linha, no mês da data da despesa. O trimestre é só a soma de três meses de calendário (suposição do PRD, Q-22). Totais são calculados na hora, nunca digitados. Visível a líder e membros; só o líder lança o executado resumido.</p>
+      </section>
+
+      <section class="card" aria-labelledby="h-fecha">
+        <div class="card-head"><h2 id="h-fecha">Fechar novembro de 2026</h2><span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Mês em andamento</span></div>
+        <p>Estas linhas não têm execução em novembro. Marque &quot;sem execução neste mês&quot; para as que de fato não gastaram. O item &quot;executado do mês lançado&quot; do checklist de saúde fica atendido quando todas estiverem lançadas ou marcadas.</p>
+        <ul class="todo" id="fechaList">
+          <li><div class="txt"><b>Linha 1.1.2</b> · Análises químicas por laboratório externo<small>Executado em novembro: R$ 0,00</small></div><label class="chk"><input type="checkbox"><span>Sem execução neste mês</span></label></li>
+          <li><div class="txt"><b>Linha 1.2.1</b> · Biorreator de bancada de 5 L<small>Executado em novembro: R$ 0,00</small></div><label class="chk"><input type="checkbox"><span>Sem execução neste mês</span></label></li>
+          <li><div class="txt"><b>Linha 2.1.3</b> · Diárias de viagem para ensaios de campo<small>Executado em novembro: R$ 0,00</small></div><label class="chk"><input type="checkbox"><span>Sem execução neste mês</span></label></li>
+          <li><div class="txt"><b>Linha 2.2.1</b> · Diárias de viagem para visita técnica<small>Executado em novembro: R$ 0,00</small></div><label class="chk"><input type="checkbox"><span>Sem execução neste mês</span></label></li>
+          <li><div class="txt"><b>Linha 3.1.1</b> · Serviços de contabilidade e apoio administrativo<small>Executado em novembro: R$ 0,00</small></div><label class="chk"><input type="checkbox"><span>Sem execução neste mês</span></label></li>
+        </ul>
+        <div class="row" style="margin-top:var(--s-3)">
+          <button class="btn ghost" type="button" aria-disabled="true" aria-describedby="resumo-h"><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg>Lançar executado do mês (resumo)</button>
+          <span class="badge b-info dashed"><svg class="i" aria-hidden="true"><use href="#i-question"/></svg>Depende de decisão do dono: Q-28</span>
+        </div>
+        <p class="muted" id="resumo-h" style="margin-top:var(--s-2)">Lançar um valor resumido direto na linha, sem detalhar as despesas, só será liberado se o dono decidir que isso é permitido (Q-28). Se for, o lançamento terá a origem &quot;resumo&quot; e, talvez, comprovante obrigatório.</p>
+      </section>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================
+     7. SAÚDE DO PROJETO (checklist por fase)
+     ===================================================== -->
+<section class="screen" id="s-saude" data-title="Saúde do projeto" aria-labelledby="h-sau">
+  <header>
+    <div>
+      <p class="crumb">Projeto Exemplo · Saúde e gestão · <span class="tag-example">EXEMPLO</span></p>
+      <h1 id="h-sau" tabindex="-1">Saúde do projeto</h1>
+      <p>O que está em dia e o que pede atenção, fase por fase. O checklist sinaliza pendências: não aprova nada, e completá-lo não muda o estado de nenhuma fase, compra, despesa ou ajuste.</p>
+    </div>
+  </header>
+  <nav class="seg subnav" data-sub="gest" aria-label="Saúde e gestão"></nav>
+
+  <div class="stack">
+    <details class="norm-note">
+      <summary><svg class="i" aria-hidden="true"><use href="#i-book"/></svg>Baseado nas práticas ISO 21500, 21502 e 21512</summary>
+      <p>As cinco fases e os pontos de atenção se baseiam nas práticas das ABNT NBR ISO 21500:2021, 21502:2021 e 21512:2026, em versão enxuta. As normas orientam. Quem aprova é você, o financiador ou a instituição. Rubrica, cotação, prestação de contas, TRL/MRL e regras do financiador não vêm das normas: vêm do edital e das suas decisões.</p>
+    </details>
+
+    <section aria-labelledby="h-fases">
+      <h2 id="h-fases" style="margin-bottom:var(--s-3)">Fases</h2>
+      <ol class="phases">
+        <li class="phase"><b>1. Iniciação</b><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Fase concluída</span><small>5 atendidos</small></li>
+        <li class="phase"><b>2. Planejamento</b><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Fase concluída</span><small>5 atendidos · 1 aguardando você</small></li>
+        <li class="phase cur" aria-current="step"><b>3. Execução</b><span class="badge b-info"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Fase atual</span><small>1 atendido · 4 pendentes · 1 não verificável · 1 aguardando você</small></li>
+        <li class="phase cur" aria-current="step"><b>4. Controle</b><span class="badge b-info"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Fase atual</span><small>2 atendidos · 1 pendente · 1 aguardando você</small></li>
+        <li class="phase next"><b>5. Encerramento</b><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Próxima fase</span><small>1 pendente · 2 não verificáveis · 2 aguardando você</small></li>
+      </ol>
+      <p class="muted" style="margin-top:var(--s-2)">Execução e controle acontecem juntas durante a vigência. Quem marca a fase atual é o líder; a plataforma só sugere avançar quando o checklist da fase está respondido.</p>
+    </section>
+
+    <section class="card" aria-labelledby="h-leg">
+      <h2 id="h-leg">Como ler os itens</h2>
+      <div class="grid g-2">
+        <ul class="stack" style="gap:var(--s-2)">
+          <li class="row"><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Plataforma verifica</span> A plataforma confere sozinha, com link para a origem.</li>
+          <li class="row"><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-person"/></svg>Você responde</span> Só você, líder, pode responder: sim, não ou não se aplica, com nota.</li>
+        </ul>
+        <ul class="stack" style="gap:var(--s-2)">
+          <li class="row"><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Atendido</span> <span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Pendente</span></li>
+          <li class="row"><span class="badge b-info dashed"><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg>Aguardando sua resposta</span></li>
+          <li class="row"><span class="badge b-neutral dashed"><svg class="i" aria-hidden="true"><use href="#i-question"/></svg>Não verificável</span> Depende de uma decisão em aberto; não conta como atendido nem como falha.</li>
+        </ul>
+      </div>
+    </section>
+
+    <details class="fase" open>
+      <summary>3. Execução e 4. Controle: fase atual <span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>5 pendentes</span></summary>
+      <div class="inner">
+        <h3>Execução</h3>
+        <ul class="stack" style="gap:var(--s-3)">
+          <li class="citem ok"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><div>
+            <div class="top"><h4 style="font-size:var(--fs-md)">Executado do mês lançado ou &quot;sem execução no mês&quot; marcado</h4></div>
+            <div class="top"><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Atendido</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Plataforma verifica</span></div>
+            <p class="why">Outubro de 2026 está lançado. <a href="#/execucao">Ver execução mensal</a>. Novembro ainda está em andamento.</p></div></li>
+          <li class="citem warn"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg></span><div>
+            <div class="top"><h4 style="font-size:var(--fs-md)">Despesa sem comprovante ou compra sem cotações mínimas</h4></div>
+            <div class="top"><span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Pendente</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Plataforma verifica</span></div>
+            <p class="why">1 despesa de R$ 4.100,00, lançada em 12/11/2026, está sem checagem. <a href="#/financeiro">Ver despesa</a></p></div></li>
+          <li class="citem warn"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg></span><div>
+            <div class="top"><h4 style="font-size:var(--fs-md)">Item fora do objeto ou da classificação aprovada</h4></div>
+            <div class="top"><span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Pendente</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Plataforma verifica</span></div>
+            <p class="why">1 despesa foi lançada na linha 2.1.1 com checagem bloqueada (R$ 3.200,00, em 20/11/2026). <a href="#/financeiro">Ver despesa</a></p></div></li>
+          <li class="citem warn"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg></span><div>
+            <div class="top"><h4 style="font-size:var(--fs-md)">Saldo negativo em linha</h4></div>
+            <div class="top"><span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Pendente</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Plataforma verifica</span></div>
+            <p class="why">Linha 2.1.2 com saldo de −R$ 1.200,00. <a href="#/ajustes">Ver ajuste pendente</a></p></div></li>
+          <li class="citem nv"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-question"/></svg></span><div>
+            <div class="top"><h4 style="font-size:var(--fs-md)">Desvio acima do limite configurável entre previsto e executado</h4></div>
+            <div class="top"><span class="badge b-neutral dashed"><svg class="i" aria-hidden="true"><use href="#i-question"/></svg>Não verificável</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Plataforma verifica</span></div>
+            <p class="why">Depende de decisão do dono (Q-30): qual é o limite e de onde vem o valor previsto por período. Não conta como atendido nem como falha.</p></div></li>
+          <li class="citem ask"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg></span><div>
+            <div class="top"><h4 style="font-size:var(--fs-md)">Riscos abertos revisados no mês</h4></div>
+            <div class="top"><span class="badge b-info dashed"><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg>Aguardando sua resposta</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-person"/></svg>Você responde</span></div>
+            <p class="why">Há 1 risco aberto sem revisão há 44 dias. <a href="#/registros/riscos">Ver riscos</a></p>
+            <details class="edit"><summary><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg>Responder</summary>
+              <form class="stack" style="padding:var(--s-3)" novalidate>
+                <fieldset><legend>Os riscos abertos foram revisados neste mês?</legend><div class="radios"><label class="chk"><input type="radio" name="r-riscos"><span>Sim</span></label><label class="chk"><input type="radio" name="r-riscos"><span>Não</span></label><label class="chk"><input type="radio" name="r-riscos"><span>Não se aplica</span></label></div></fieldset>
+                <div class="field"><label for="n-riscos">Nota</label><input id="n-riscos" autocomplete="off"></div>
+                <div class="row"><button class="btn" type="button" data-demo="Exemplo: a resposta não foi salva.">Salvar resposta</button></div>
+                <p class="muted" style="font-size:var(--fs-sm)">A resposta fica registrada com a sua identificação, a data e a nota.</p>
+              </form></details></div></li>
+          <li class="citem warn"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg></span><div>
+            <div class="top"><h4 style="font-size:var(--fs-md)">Questões abertas sem responsável ou vencidas</h4></div>
+            <div class="top"><span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Pendente</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Plataforma verifica</span></div>
+            <p class="why">1 questão sem responsável e com prazo vencido em 18/11/2026. <a href="#/registros/questoes">Ver questões</a></p></div></li>
+        </ul>
+        <h3 style="margin-top:var(--s-3)">Controle</h3>
+        <ul class="stack" style="gap:var(--s-3)">
+          <li class="citem ok"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><div><div class="top"><h4 style="font-size:var(--fs-md)">Todo ajuste com justificativa, decisor e versão</h4></div><div class="top"><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Atendido</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Plataforma verifica</span></div></div></li>
+          <li class="citem warn"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg></span><div><div class="top"><h4 style="font-size:var(--fs-md)">Ajuste pendente de aprovação do financiador</h4></div><div class="top"><span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Pendente</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Plataforma verifica</span></div><p class="why">Versão 3 aguardando desde 20/11/2026. <a href="#/ajustes">Ver ajuste</a></p></div></li>
+          <li class="citem ok"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><div><div class="top"><h4 style="font-size:var(--fs-md)">Relatório do período no prazo e evidências anexadas</h4></div><div class="top"><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Atendido</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Plataforma verifica</span></div><p class="why">Relatório do 3º trimestre feito em 15/10/2026, com comprovante de envio anexado.</p></div></li>
+          <li class="citem ask"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg></span><div><div class="top"><h4 style="font-size:var(--fs-md)">Entregas da etapa verificadas pelo critério de aceitação</h4></div><div class="top"><span class="badge b-info dashed"><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg>Aguardando sua resposta</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-person"/></svg>Você responde</span></div><p class="why">Etapa 1.1: relatório de formulação previsto para 15/12/2026.</p></div></li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="fase">
+      <summary>1. Iniciação e 2. Planejamento: fases concluídas <span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>10 atendidos</span></summary>
+      <div class="inner">
+        <h3>Iniciação</h3>
+        <ul class="stack" style="gap:var(--s-2)">
+          <li class="citem ok"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><div><div class="top"><b>Plano aprovado importado e minuta confirmada (OK dado)</b><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Atendido</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Plataforma verifica</span></div><p class="why"><a href="#/plano">Linha de base v1, de 03/03/2026</a></p></div></li>
+          <li class="citem ok"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><div><div class="top"><b>Justificativa e resultado esperado registrados</b><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Atendido</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-person"/></svg>Você responde</span></div><p class="why">Respondido por você em 02/03/2026: sim.</p></div></li>
+          <li class="citem ok"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><div><div class="top"><b>Financiador, instituição e parceiros cadastrados</b><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Atendido</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Plataforma verifica</span></div></div></li>
+          <li class="citem ok"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><div><div class="top"><b>Equipe e papéis, incluindo quem aprova mudanças</b><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Atendido</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Plataforma verifica</span></div></div></li>
+          <li class="citem ok"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><div><div class="top"><b>Vigência e datas de relatório</b><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Atendido</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Plataforma verifica</span></div></div></li>
+        </ul>
+        <h3 style="margin-top:var(--s-3)">Planejamento</h3>
+        <ul class="stack" style="gap:var(--s-2)">
+          <li class="citem ok"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><div><div class="top"><b>Toda linha com classificação, objeto e valor</b><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Atendido</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Plataforma verifica</span></div></div></li>
+          <li class="citem ok"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><div><div class="top"><b>A soma das linhas fecha com o total</b><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Atendido</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Plataforma verifica</span></div><p class="why">Diferença de R$ 0,00. <a href="#/plano">Ver plano</a></p></div></li>
+          <li class="citem ok"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><div><div class="top"><b>Principais riscos e oportunidades com responsável</b><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Atendido</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-person"/></svg>Você responde</span></div><p class="why">Respondido por você em 10/03/2026: sim.</p></div></li>
+          <li class="citem ok"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><div><div class="top"><b>Cada etapa com critério de aceitação e data</b><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Atendido</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Plataforma verifica</span></div></div></li>
+          <li class="citem ok"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><div><div class="top"><b>Linha de base congelada e versionada</b><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Atendido</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Plataforma verifica</span></div></div></li>
+          <li class="citem ask"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg></span><div><div class="top"><b>Plano de compras para itens que exigem cotação</b><span class="badge b-info dashed"><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg>Aguardando sua resposta</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-person"/></svg>Você responde</span></div></div></li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="fase">
+      <summary>5. Encerramento: próxima fase <span class="badge b-neutral dashed"><svg class="i" aria-hidden="true"><use href="#i-question"/></svg>2 não verificáveis</span></summary>
+      <div class="inner">
+        <ul class="stack" style="gap:var(--s-2)">
+          <li class="citem warn"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg></span><div><div class="top"><b>Entregas aceitas ou com pendência</b><span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Pendente</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Plataforma verifica</span></div></div></li>
+          <li class="citem nv"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-question"/></svg></span><div><div class="top"><b>Comprovante e conciliação em todas as despesas</b><span class="badge b-neutral dashed"><svg class="i" aria-hidden="true"><use href="#i-question"/></svg>Não verificável</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Plataforma verifica</span></div><p class="why">A conciliação depende de como os dados da conta entram (decisão do dono: T-012).</p></div></li>
+          <li class="citem ask"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg></span><div><div class="top"><b>Lições aprendidas registradas</b><span class="badge b-info dashed"><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg>Aguardando sua resposta</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-person"/></svg>Você responde</span></div><p class="why">2 lições já registradas. <a href="#/registros/licoes">Ver lições</a></p></div></li>
+          <li class="citem ask"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg></span><div><div class="top"><b>Resultado comparado ao esperado</b><span class="badge b-info dashed"><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg>Aguardando sua resposta</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-person"/></svg>Você responde</span></div></div></li>
+          <li class="citem nv"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-question"/></svg></span><div><div class="top"><b>Documentos arquivados pelo prazo de guarda</b><span class="badge b-neutral dashed"><svg class="i" aria-hidden="true"><use href="#i-question"/></svg>Não verificável</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Plataforma verifica</span></div><p class="why">Depende do prazo de retenção, ainda a definir (Q-12).</p></div></li>
+        </ul>
+      </div>
+    </details>
+    <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Fonte: plano, lançamentos, ajustes, registros de gestão e respostas do líder. Visível a líder e membros; só o líder responde os itens &quot;Você responde&quot;. Não há nota nem percentual de &quot;saúde&quot;: só a lista de pendências.</p>
+  </div>
+</section>
+
+<!-- =====================================================
+     8. REGISTROS ENXUTOS DE GESTÃO
+     ===================================================== -->
+<section class="screen" id="s-registros" data-title="Registros de gestão" aria-labelledby="h-reg">
+  <header>
+    <div>
+      <p class="crumb">Projeto Exemplo · Saúde e gestão · <span class="tag-example">EXEMPLO</span></p>
+      <h1 id="h-reg" tabindex="-1">Registros de gestão</h1>
+      <p>Listas curtas para o dia a dia: riscos, questões, partes interessadas, comunicação e lições aprendidas. Sem pontuação, sem gráficos.</p>
+    </div>
+  </header>
+  <nav class="seg subnav" data-sub="gest" aria-label="Saúde e gestão"></nav>
+
+  <!-- RISCOS -->
+  <div class="stack reg" id="g-riscos" hidden>
+    <div class="grid g-2">
+      <section class="card" aria-labelledby="h-ame">
+        <div class="card-head"><h2 id="h-ame"><svg class="i" aria-hidden="true" style="vertical-align:-3px"><use href="#i-alert"/></svg> Ameaças (2)</h2></div>
+        <ul class="rec">
+          <li class="hi"><div class="rt"><span class="badge b-err"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>Ameaça</span><b>Atraso na entrega do biorreator</b></div>
+            <p>Probabilidade <b>alta</b> · impacto <b>alto</b> · situação: aberto · responsável: Caio (exemplo)</p>
+            <p>Resposta planejada: acompanhar o prazo com o fornecedor e pedir um segundo orçamento.</p>
+            <p class="meta"><span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Vai para as pendências: probabilidade e impacto altos</span> <span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Sem revisão há 44 dias</span><br>Última revisão: 12/10/2026</p></li>
+          <li><div class="rt"><span class="badge b-err"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>Ameaça</span><b>Chuva forte durante o ensaio de campo</b></div>
+            <p>Probabilidade <b>média</b> · impacto <b>médio</b> · situação: aberto · responsável: Bia (exemplo)</p>
+            <p>Resposta planejada: reservar uma segunda semana para o ensaio.</p>
+            <p class="meta">Última revisão: 10/11/2026</p></li>
+        </ul>
+      </section>
+      <section class="card" aria-labelledby="h-opo">
+        <div class="card-head"><h2 id="h-opo"><svg class="i" aria-hidden="true" style="vertical-align:-3px"><use href="#i-up"/></svg> Oportunidades (1)</h2></div>
+        <ul class="rec">
+          <li><div class="rt"><span class="badge b-info"><svg class="i" aria-hidden="true"><use href="#i-up"/></svg>Oportunidade</span><b>Parceria com a cooperativa para ampliar o lote de campo</b></div>
+            <p>Probabilidade <b>média</b> · impacto <b>alto</b> · situação: aberto · responsável: Líder (exemplo)</p>
+            <p>Resposta planejada: conversar com a cooperativa em dezembro.</p>
+            <p class="meta">Última revisão: 10/11/2026</p></li>
+        </ul>
+      </section>
+    </div>
+    <section class="card" aria-labelledby="h-nr">
+      <div class="card-head"><h2 id="h-nr">Registrar risco</h2></div>
+      <form class="stack" novalidate>
+        <fieldset><legend>Tipo</legend><div class="radios"><label class="chk"><input type="radio" name="rtipo" checked><span>Ameaça: pode atrapalhar</span></label><label class="chk"><input type="radio" name="rtipo"><span>Oportunidade: pode ajudar</span></label></div></fieldset>
+        <div class="form-grid">
+          <div class="field full"><label for="r-desc">Descrição</label><input id="r-desc" autocomplete="off"></div>
+          <div class="field"><label for="r-prob">Probabilidade</label><select id="r-prob"><option>Baixa</option><option>Média</option><option>Alta</option></select></div>
+          <div class="field"><label for="r-imp">Impacto</label><select id="r-imp"><option>Baixo</option><option>Médio</option><option>Alto</option></select></div>
+          <div class="field"><label for="r-resp">Responsável</label><select id="r-resp"><option>Líder (exemplo)</option><option>Bia (exemplo)</option><option>Caio (exemplo)</option></select></div>
+          <div class="field"><label for="r-sit">Situação</label><select id="r-sit"><option>Aberto</option><option>Tratado</option><option>Ocorrido</option><option>Encerrado</option></select></div>
+          <div class="field full"><label for="r-resposta">Resposta planejada</label><textarea id="r-resposta"></textarea></div>
+          <div class="field"><label for="r-rev">Data da última revisão</label><input id="r-rev" inputmode="numeric" placeholder="DD/MM/AAAA"></div>
+        </div>
+        <div class="row"><button class="btn" type="button" data-demo="Exemplo: o risco não foi salvo.">Salvar risco</button></div>
+      </form>
+    </section>
+  </div>
+
+  <!-- QUESTÕES -->
+  <div class="stack reg" id="g-questoes" hidden>
+    <section class="card" aria-labelledby="h-qs">
+      <div class="card-head"><h2 id="h-qs">Questões (3)</h2><span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>1 vai para as pendências</span></div>
+      <p class="muted" style="margin-bottom:var(--s-3)">Questão é um problema que já aconteceu e pede decisão.</p>
+      <ul class="rec">
+        <li class="late"><div class="rt"><span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>Aberta</span><b>Laudo da análise de solo atrasado</b></div>
+          <p>Responsável: <b>ninguém definido</b> · prazo: 18/11/2026 (vencido)</p>
+          <p class="meta"><span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Sem responsável e com prazo vencido</span></p></li>
+        <li><div class="rt"><span class="badge b-info"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Em resolução</span><b>Fornecedor do biorreator pediu mais prazo</b></div>
+          <p>Responsável: Caio (exemplo) · prazo: 05/12/2026</p></li>
+        <li><div class="rt"><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Resolvida</span><b>Troca de bolsista</b></div>
+          <p>Decisão: bolsista substituído a partir de 01/10/2026.</p>
+          <p class="meta">Registrada por Líder (exemplo) em 02/10/2026.</p></li>
+      </ul>
+    </section>
+    <section class="card" aria-labelledby="h-nq">
+      <div class="card-head"><h2 id="h-nq">Registrar questão</h2></div>
+      <form class="stack" novalidate>
+        <div class="form-grid">
+          <div class="field full"><label for="q-desc">O que aconteceu</label><input id="q-desc" autocomplete="off"></div>
+          <div class="field"><label for="q-resp">Responsável</label><select id="q-resp"><option>Líder (exemplo)</option><option>Bia (exemplo)</option><option>Caio (exemplo)</option></select></div>
+          <div class="field"><label for="q-prazo">Prazo</label><input id="q-prazo" inputmode="numeric" placeholder="DD/MM/AAAA"></div>
+          <div class="field"><label for="q-sit">Situação</label><select id="q-sit"><option>Aberta</option><option>Em resolução</option><option>Resolvida</option></select></div>
+          <div class="field full"><label for="q-dec">Decisão tomada</label><textarea id="q-dec"></textarea></div>
+        </div>
+        <div class="row"><button class="btn" type="button" data-demo="Exemplo: a questão não foi salva.">Salvar questão</button></div>
+      </form>
+    </section>
+  </div>
+
+  <!-- PARTES INTERESSADAS -->
+  <div class="stack reg" id="g-partes" hidden>
+    <section class="card" aria-labelledby="h-pi">
+      <div class="card-head"><h2 id="h-pi">Partes interessadas (4)</h2></div>
+      <ul class="rec">
+        <li><div class="rt"><b>Financiador de exemplo</b><span class="badge b-neutral">Financiador</span></div><p>Espera: relatórios parciais no prazo.</p><p class="meta">Contato: financiador@exemplo.invalid · comunicação: relatório por e-mail, a cada trimestre</p></li>
+        <li><div class="rt"><b>Instituição executora de exemplo</b><span class="badge b-neutral">Instituição</span></div><p>Espera: execução dentro das regras do convênio.</p><p class="meta">Contato: nucleo@exemplo.invalid · comunicação: reunião mensal</p></li>
+        <li><div class="rt"><b>Cooperativa parceira (exemplo)</b><span class="badge b-neutral">Parceiro</span></div><p>Espera: acesso aos resultados do ensaio de campo.</p><p class="meta">Contato: coop@exemplo.invalid · comunicação: e-mail, a cada ensaio</p></li>
+        <li><div class="rt"><b>Fornecedor A (exemplo)</b><span class="badge b-neutral">Fornecedor-chave</span></div><p>Espera: pedido confirmado com antecedência.</p><p class="meta">Contato: fornecedor@exemplo.invalid · comunicação: e-mail, quando houver pedido</p></li>
+      </ul>
+      <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Contatos são dado pessoal: só quem tem acesso ao projeto os vê. Sem matriz de poder e interesse nesta versão.</p>
+    </section>
+    <section class="card" aria-labelledby="h-np">
+      <div class="card-head"><h2 id="h-np">Cadastrar parte interessada</h2></div>
+      <form class="stack" novalidate>
+        <div class="form-grid">
+          <div class="field"><label for="p-nome">Nome</label><input id="p-nome" autocomplete="off"></div>
+          <div class="field"><label for="p-papel">Papel</label><select id="p-papel"><option>Financiador</option><option>Instituição</option><option>Parceiro</option><option>Fornecedor-chave</option><option>Equipe</option></select></div>
+          <div class="field full"><label for="p-int">Interesse ou expectativa, em uma frase</label><input id="p-int" autocomplete="off"></div>
+          <div class="field"><label for="p-cont">Contato</label><input id="p-cont" autocomplete="off"></div>
+          <div class="field"><label for="p-com">Forma e frequência de comunicação</label><input id="p-com" autocomplete="off"></div>
+        </div>
+        <div class="row"><button class="btn" type="button" data-demo="Exemplo: nada foi cadastrado.">Salvar</button></div>
+      </form>
+    </section>
+  </div>
+
+  <!-- COMUNICAÇÃO -->
+  <div class="stack reg" id="g-comunicacao" hidden>
+    <section class="card" aria-labelledby="h-cal">
+      <div class="card-head"><h2 id="h-cal">Calendário de comunicação e de relatórios</h2><span class="badge b-err"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>1 atrasada</span></div>
+      <ul class="rec">
+        <li class="late"><div class="rt"><span class="badge b-err"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>Atrasada</span><b>24/11/2026 · Esclarecimento sobre o ajuste da versão 3</b></div><p>Para: financiador de exemplo · responsável: Líder (exemplo)</p><p class="meta">Passou o dia previsto e não foi marcada como feita.</p></li>
+        <li><div class="rt"><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Prevista</span><b>15/12/2026 · Relatório de formulação (marco da etapa 1.1)</b></div><p>Para: financiador de exemplo · responsável: Líder (exemplo)</p></li>
+        <li><div class="rt"><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Prevista</span><b>10/01/2027 · Relatório parcial ao financiador</b></div><p>Para: financiador de exemplo · responsável: Líder (exemplo)</p><p class="meta">Data exigida pelo financiador, cadastrada pelo líder.</p></li>
+        <li><div class="rt"><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Feita</span><b>15/10/2026 · Relatório do 3º trimestre</b></div><p>Para: financiador de exemplo · responsável: Líder (exemplo)</p><p class="meta">Comprovante de envio anexado: relatorio-3tri-exemplo.pdf</p></li>
+      </ul>
+      <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>A plataforma avisa as datas, mas não envia relatório nem mensagem ao financiador: você envia fora dela e marca &quot;feita&quot;, anexando o comprovante.</p>
+    </section>
+    <section class="card" aria-labelledby="h-ncal">
+      <div class="card-head"><h2 id="h-ncal">Registrar comunicação ou relatório</h2></div>
+      <form class="stack" novalidate>
+        <div class="form-grid">
+          <div class="field full"><label for="c-oque">O que</label><input id="c-oque" autocomplete="off"></div>
+          <div class="field"><label for="c-para">Para quem</label><input id="c-para" autocomplete="off"></div>
+          <div class="field"><label for="c-data">Data</label><input id="c-data" inputmode="numeric" placeholder="DD/MM/AAAA"></div>
+          <div class="field"><label for="c-resp">Responsável</label><select id="c-resp"><option>Líder (exemplo)</option><option>Bia (exemplo)</option></select></div>
+          <div class="field"><label for="c-sit">Situação</label><select id="c-sit"><option>Prevista</option><option>Feita</option></select></div>
+          <div class="field full"><label for="c-anx">Comprovante de envio (quando feita)</label><input id="c-anx" type="file"></div>
+        </div>
+        <div class="row"><button class="btn" type="button" data-demo="Exemplo: nada foi salvo.">Salvar</button></div>
+      </form>
+    </section>
+  </div>
+
+  <!-- LIÇÕES -->
+  <div class="stack reg" id="g-licoes" hidden>
+    <section class="card" aria-labelledby="h-li">
+      <div class="card-head"><h2 id="h-li">Lições aprendidas (2)</h2></div>
+      <ul class="rec">
+        <li><p><b>O que aconteceu:</b> a compra de insumos foi feita sem as 3 cotações exigidas e a despesa foi recusada.</p><p><b>O que fazer diferente:</b> conferir antes de comprar, com &quot;Vou comprar&quot;.</p><p class="meta">Registrada por Líder (exemplo) em 21/10/2026</p></li>
+        <li><p><b>O que aconteceu:</b> o laboratório externo demorou para entregar os laudos.</p><p><b>O que fazer diferente:</b> combinar o prazo de laudos no pedido e acompanhar por semana.</p><p class="meta">Registrada por Bia (exemplo) em 05/11/2026</p></li>
+      </ul>
+      <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>As lições aparecem na revisão do encerramento. Líder e membros com nível &quot;registra&quot; podem registrar a qualquer momento.</p>
+    </section>
+    <section class="card" aria-labelledby="h-nl">
+      <div class="card-head"><h2 id="h-nl">Registrar lição</h2></div>
+      <form class="stack" novalidate>
+        <div class="field"><label for="l-ac">O que aconteceu</label><textarea id="l-ac"></textarea></div>
+        <div class="field"><label for="l-dif">O que fazer diferente</label><textarea id="l-dif"></textarea></div>
+        <div class="row"><button class="btn" type="button" data-demo="Exemplo: nada foi salvo.">Salvar lição</button></div>
+      </form>
+    </section>
+  </div>
+</section>
+
+<!-- =====================================================
      6. ESTADOS (vazio, carregando, erro)
      ===================================================== -->
 <section class="screen" id="s-estados" data-title="Estados de tela" aria-labelledby="h-est">
@@ -1787,12 +2630,33 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
       <button class="btn ghost" type="button" style="color:inherit;border-color:currentColor">Tentar de novo</button>
     </section>
   </div>
+  <h2 style="margin:var(--s-6) 0 var(--s-3)">Plano e execução</h2>
+  <div class="grid g-3">
+    <section class="state" aria-labelledby="e4">
+      <h2 id="e4">Vazio: sem plano</h2>
+      <p>Este projeto ainda não tem plano de trabalho.</p>
+      <p class="muted">Importe o plano aprovado (planilha, PDF ou imagem) ou cadastre à mão. Sem o plano e o seu OK, a checagem antes da compra fica pendente.</p>
+      <div class="row"><a class="btn" href="#/importar/escolher">Importar o plano</a><a class="btn ghost" href="#/plano">Cadastrar à mão</a></div>
+    </section>
+    <section class="state" aria-labelledby="e5" aria-busy="true">
+      <h2 id="e5">Carregando: tabela grande</h2>
+      <p role="status">Montando o previsto × executado…</p>
+      <div class="skel" style="width:95%"></div><div class="skel" style="width:85%"></div><div class="skel" style="width:90%"></div><div class="skel" style="width:60%"></div>
+      <p class="muted">Com 2.000 linhas a tela carrega por partes: os totais aparecem primeiro.</p>
+    </section>
+    <section class="state error" aria-labelledby="e6" role="alert">
+      <h2 id="e6"><svg class="i" aria-hidden="true" style="vertical-align:-3px"><use href="#i-alert"/></svg> Erro: não foi possível dar o OK</h2>
+      <p><b>A linha de base não foi criada.</b> Nada foi travado e a minuta continua como estava.</p>
+      <p>Confira a sua conexão e tente de novo. Se continuar, guarde o número do erro e fale com o suporte.</p>
+      <button class="btn ghost" type="button" style="color:inherit;border-color:currentColor">Tentar de novo</button>
+    </section>
+  </div>
 </section>
 
 <!-- Telas fora do protótipo -->
 <section class="screen" id="s-outra" data-title="Tela fora do protótipo" aria-labelledby="h-outra">
   <header><div><h1 id="h-outra" tabindex="-1">Esta tela não faz parte do protótipo</h1>
-  <p>Ela existe no mapa de telas do guia (docs/03-ux.md, seção 3). O protótipo cobre painel do projeto, &quot;Vou comprar&quot;, financeiro e TRL/MRL.</p></div></header>
+  <p>Ela existe no mapa de telas do guia (docs/03-ux.md, seção 3). O protótipo cobre painel, plano e importação, conferência da minuta, ajustes, execução mensal, saúde e registros de gestão, &quot;Vou comprar&quot;, financeiro e TRL/MRL.</p></div></header>
   <a class="btn" href="#/painel">Voltar ao painel do projeto</a>
 </section>
 
@@ -1801,13 +2665,23 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
 </div>
 
 <div class="mobile-cta"><a class="btn accent lg" href="#/comprar"><svg class="i" aria-hidden="true"><use href="#i-bag"/></svg>Vou comprar</a></div>
+<div class="toast" id="toast" role="status" hidden><svg class="i" aria-hidden="true"><use href="#i-info"/></svg><span id="toastTxt"></span></div>
 
 <noscript><style>.screen{display:block!important;margin-bottom:48px}.res{display:flex!important}[hidden]{display:flex!important}</style></noscript>
 
 <script>
 (function () {
-  var screens = {painel:'s-painel', comprar:'s-comprar', financeiro:'s-financeiro', maturidade:'s-maturidade', estados:'s-estados'};
+  var screens = {painel:'s-painel', comprar:'s-comprar', financeiro:'s-financeiro', maturidade:'s-maturidade', estados:'s-estados',
+    plano:'s-plano', progresso:'s-progresso', importar:'s-importar', conferir:'s-conferir', ajustes:'s-ajustes', execucao:'s-execucao', saude:'s-saude', registros:'s-registros'};
+  var navMap = {progresso:'plano', importar:'plano', conferir:'plano', ajustes:'plano', registros:'saude'};
+  var RES = ['permitido','bloqueado','pendente','semok','semlinha'], IMP = ['escolher','mapear','lendo','erro'], REG = ['riscos','questoes','partes','comunicacao','licoes'];
+  var SUB = {
+    plan: [['plano','Plano e linha de base'],['progresso','Progresso'],['importar','Importar plano'],['conferir','Conferir minuta'],['ajustes','Ajustes e versões']],
+    gest: [['saude','Saúde do projeto'],['registros/riscos','Riscos'],['registros/questoes','Questões'],['registros/partes','Partes interessadas'],['registros/comunicacao','Comunicação'],['registros/licoes','Lições aprendidas']]
+  };
   var root = document.documentElement;
+  function $(s) { return document.querySelector(s); }
+  function $$(s) { return Array.prototype.slice.call(document.querySelectorAll(s)); }
   var sidebar = document.getElementById('sidebar'), scrim = document.getElementById('scrim'), menuBtn = document.getElementById('menuBtn');
 
   function closeMenu() { sidebar.classList.remove('open'); scrim.classList.remove('on'); menuBtn.setAttribute('aria-expanded','false'); }
@@ -1822,16 +2696,32 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
 
   function route() {
     var h = (location.hash || '#/painel').replace(/^#\/?/, '').split('/');
-    var name = h[0] || 'painel', sub = h[1] || 'bloqueado', id, navKey = name;
-    if (name === 'comprar' && h[1]) { id = 's-resultado'; }
+    var name = h[0] || 'painel', sub = h[1], id, navKey = navMap[name] || name, subKey = name;
+    if (name === 'comprar' && sub) { id = 's-resultado'; }
     else if (screens[name]) { id = screens[name]; }
     else { id = 's-outra'; }
     document.querySelectorAll('.screen').forEach(function (s) { s.classList.toggle('on', s.id === id); });
     if (id === 's-resultado') {
-      if (['permitido','bloqueado','pendente'].indexOf(sub) < 0) sub = 'bloqueado';
+      if (RES.indexOf(sub) < 0) sub = 'bloqueado';
       document.querySelectorAll('.res').forEach(function (r) { r.hidden = r.id !== 'r-' + sub; });
       document.querySelectorAll('#seg a').forEach(function (a) { a.setAttribute('aria-current', a.getAttribute('data-r') === sub ? 'true' : 'false'); });
     }
+    if (name === 'importar') {
+      if (IMP.indexOf(sub) < 0) sub = 'escolher';
+      $$('.imp').forEach(function (r) { r.hidden = r.id !== 'i-' + sub; });
+      $$('#segImp a').forEach(function (a) { a.setAttribute('aria-current', a.getAttribute('data-i') === sub ? 'true' : 'false'); });
+    }
+    if (name === 'registros') {
+      if (REG.indexOf(sub) < 0) sub = 'riscos';
+      $$('.reg').forEach(function (r) { r.hidden = r.id !== 'g-' + sub; });
+      subKey = 'registros/' + sub;
+    }
+    $$('nav.subnav').forEach(function (n) {
+      var set = SUB[n.getAttribute('data-sub')] || [];
+      n.innerHTML = set.map(function (it) {
+        return '<a href="#/' + it[0] + '" aria-current="' + (it[0] === subKey ? 'page' : 'false') + '">' + it[1] + '</a>';
+      }).join('');
+    });
     document.querySelectorAll('.nav a[data-route]').forEach(function (a) {
       if (a.getAttribute('data-route') === navKey) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current');
     });
@@ -1840,6 +2730,7 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
     var h1 = sec.querySelector('h1');
     var t = sec.getAttribute('data-title');
     if (id === 's-resultado') t = 'Resultado: ' + sub;
+    if (id === 's-registros') t = 'Registros: ' + sub;
     document.title = t + ' · Gestprojet (protótipo)';
     closeMenu();
     window.scrollTo(0, 0);
@@ -1847,6 +2738,178 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
   }
   window.addEventListener('hashchange', route);
   route();
+
+  /* ---------- utilidades de formato (valores em centavos, RN-009) ---------- */
+  function brl(c) { var neg = c < 0, v = Math.abs(c), r = Math.floor(v / 100), ct = ('0' + (v % 100)).slice(-2);
+    return (neg ? '−' : '') + 'R$ ' + String(r).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ',' + ct; }
+  function pc(n, d) { if (!d) return '—'; var p = Math.round(n * 1000 / d); return Math.floor(p / 10) + ',' + (p % 10) + '%'; }
+  function parseMoney(s) { s = (s || '').replace(/[^\d,]/g, '').replace(',', '.'); return parseFloat(s) || 0; }
+  function ico(n) { return '<svg class="i" aria-hidden="true"><use href="#i-' + n + '"/></svg>'; }
+
+  /* ---------- aviso rápido do protótipo ---------- */
+  var toast = $('#toast'), toastTxt = $('#toastTxt'), toastT;
+  function say(msg) { toastTxt.textContent = msg; toast.hidden = false; clearTimeout(toastT); toastT = setTimeout(function () { toast.hidden = true; }, 4500); }
+  document.addEventListener('click', function (e) {
+    var d = e.target.closest('[data-demo]');
+    if (d) { say(d.getAttribute('data-demo')); return; }
+    var a = e.target.closest('a[href^="#l-"], a[href="#gate"]');
+    if (a) {
+      e.preventDefault();
+      var el = document.getElementById(a.getAttribute('href').slice(1));
+      if (el) { el.setAttribute('tabindex', '-1'); el.scrollIntoView({block: 'start'}); el.focus({preventScroll: true}); }
+    }
+  });
+
+  /* ---------- plano sem OK (simulação) ---------- */
+  var planBtn = $('#planBtn'), planLbl = $('#planLbl');
+  planBtn.addEventListener('click', function () {
+    var on = !document.body.classList.contains('plan-semok');
+    document.body.classList.toggle('plan-semok', on);
+    planBtn.setAttribute('aria-pressed', String(on));
+    planLbl.textContent = on ? 'Voltar ao plano com OK' : 'Simular plano sem OK';
+    say(on ? 'Simulação: o plano está sem OK. Veja o painel, a execução e o Vou comprar.' : 'Simulação desligada: o plano tem OK (linha de base v2).');
+    pickResult(); showInfo();
+  });
+
+  /* ---------- dados fictícios do plano (a mesma fonte para execução e Vou comprar) ---------- */
+  var MET = [{id:'1', t:'Formulação do biofertilizante'}, {id:'2', t:'Validação em campo'}, {id:'3', t:'Gestão administrativa e financeira'}];
+  var ETA = [{id:'1.1', m:'1', t:'Formulação em laboratório'}, {id:'1.2', m:'1', t:'Produção do lote piloto'}, {id:'2.1', m:'2', t:'Ensaios de campo'}, {id:'2.2', m:'2', t:'Análise de resultados'}, {id:'3.1', m:'3', t:'Gestão (linha única)'}];
+  var LIN = [
+    {id:'1.1.1', e:'1.1', c:'339030', o:'Reagentes e insumos para ensaios de formulação', ap:{1:1600000, 2:1800000}, ex:{'2026-03':300000, '2026-05':250000, '2026-07':300000, '2026-09':250000, '2026-10':215000, '2026-11':185000}},
+    {id:'1.1.2', e:'1.1', c:'339039', o:'Análises químicas por laboratório externo', ap:{1:1200000, 2:1000000}, ex:{'2026-06':120000, '2026-08':200000, '2026-10':300000}},
+    {id:'1.2.1', e:'1.2', c:'449052', o:'Biorreator de bancada de 5 L, com controle de temperatura e pH', ap:{1:4000000, 2:4000000}, ex:{'2026-09':1248000}},
+    {id:'2.1.1', e:'2.1', c:'339030', o:'Insumos para ensaio de campo, lote 2', ap:{1:1200000, 2:1200000}, ex:{'2026-10':500000, '2026-11':335040}},
+    {id:'2.1.2', e:'2.1', c:'339039', o:'Serviço de análise de solo e tecido vegetal', ap:{1:1200000, 2:1200000}, ex:{'2026-09':510000, '2026-10':400000, '2026-11':410000}},
+    {id:'2.1.3', e:'2.1', c:'339014', o:'Diárias de viagem para ensaios de campo', ap:{1:200000, 2:200000}, ex:{'2026-10':100000}},
+    {id:'2.2.1', e:'2.2', c:'339014', o:'Diárias de viagem para visita técnica', ap:{1:200000, 2:200000}, ex:{}},
+    {id:'3.1.1', e:'3.1', c:'339039', o:'Serviços de contabilidade e apoio administrativo', ap:{1:400000, 2:400000}, ex:{'2026-03':50000, '2026-06':50000, '2026-09':100000, '2026-10':100000}}
+  ];
+  function exSum(l, from, to) { var s = 0; for (var k in l.ex) { if (k >= from && k <= to) s += l.ex[k]; } return s; }
+
+  /* ---------- execução mensal: previsto x executado ---------- */
+  var MESES = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+  function periods(mode) {
+    var out = [], m, k;
+    if (mode === 'm') { for (m = 11; m >= 3; m--) { k = '2026-' + ('0' + m).slice(-2); out.push({v:k, from:k, to:k, l:MESES[m-1] + ' de 2026' + (m === 11 ? ' (em andamento)' : '')}); } }
+    else {
+      out = [{v:'q4', from:'2026-10', to:'2026-12', l:'4º trimestre de 2026, out a dez (em andamento)'}, {v:'q3', from:'2026-07', to:'2026-09', l:'3º trimestre de 2026, jul a set'},
+             {v:'q2', from:'2026-04', to:'2026-06', l:'2º trimestre de 2026, abr a jun'}, {v:'q1', from:'2026-01', to:'2026-03', l:'1º trimestre de 2026, jan a mar (a vigência começa em março)'}];
+    }
+    return out;
+  }
+  var exPer = $('#ex-per'), exVer = $('#ex-ver'), exB = $('#exB'), exF = $('#exF');
+  function modeNow() { var r = $('input[name="per"]:checked'); return r ? r.value : 'm'; }
+  function fillPeriods() { exPer.innerHTML = periods(modeNow()).map(function (p) { return '<option value="' + p.v + '">' + p.l + '</option>'; }).join(''); }
+  function rowTr(cls, level, label, ap, per, acc, extra) {
+    var sal = ap - acc, neg = sal < 0, p = pc(acc, ap), w = ap ? Math.min(100, Math.round(acc * 100 / ap)) : 0, bar = '';
+    if (extra === 'bar') {
+      bar = '<div class="pbar"><div class="bar' + (neg ? ' over' : '') + '" role="img" aria-label="' + p + ' executado' + (neg ? ', acima do aprovado' : '') + '"><i style="width:' + (neg ? 100 : w) + '%"></i></div><span class="num">' + p + '</span></div>';
+    } else { bar = '<span class="num">' + p + '</span>'; }
+    var badge = neg ? ' <span class="badge b-err">' + ico('alert') + 'Acima do aprovado</span>' : '';
+    return '<tr class="' + cls + (neg ? ' flag' : '') + '"><td data-label="' + level + '">' + label + badge + '</td><td class="num" data-label="Aprovado">' + brl(ap) + '</td><td class="num" data-label="No período">' + brl(per) +
+      '</td><td class="num" data-label="Acumulado">' + brl(acc) + '</td><td class="num" data-label="Saldo">' + (neg ? '<b class="neg">' + brl(sal) + '</b>' : brl(sal)) + '</td><td data-label="% executado">' + bar + '</td></tr>';
+  }
+  function renderExec() {
+    if (!exB) return;
+    var ps = periods(modeNow()), cur = ps.filter(function (p) { return p.v === exPer.value; })[0] || ps[0], ver = exVer.value;
+    var html = '', T = {ap:0, per:0, acc:0}, negs = 0;
+    function agg(ls) { var a = {ap:0, per:0, acc:0}; ls.forEach(function (l) { a.ap += l.ap[ver]; a.per += exSum(l, cur.from, cur.to); a.acc += exSum(l, '2000-01', cur.to); }); return a; }
+    MET.forEach(function (m) {
+      var es = ETA.filter(function (e) { return e.m === m.id; }), ml = LIN.filter(function (l) { return es.some(function (e) { return e.id === l.e; }); }), a = agg(ml);
+      html += rowTr('lv-meta', 'Meta', 'Meta ' + m.id + ' · ' + m.t, a.ap, a.per, a.acc, '');
+      es.forEach(function (e) {
+        var el = LIN.filter(function (l) { return l.e === e.id; }), b = agg(el);
+        html += rowTr('lv-etapa', 'Etapa', 'Etapa ' + e.id + ' · ' + e.t, b.ap, b.per, b.acc, '');
+        el.forEach(function (l) {
+          var c = agg([l]); if (c.ap - c.acc < 0) negs++;
+          html += rowTr('lv-linha', 'Linha', 'Linha ' + l.id + ' · <span class="cls">' + l.c + '</span> ' + l.o, c.ap, c.per, c.acc, 'bar');
+        });
+      });
+      T.ap += a.ap; T.per += a.per; T.acc += a.acc;
+    });
+    exB.innerHTML = html;
+    exF.innerHTML = '<tr><th scope="row">Total do projeto</th><td class="num" data-label="Aprovado">' + brl(T.ap) + '</td><td class="num" data-label="No período">' + brl(T.per) + '</td><td class="num" data-label="Acumulado">' + brl(T.acc) + '</td><td class="num" data-label="Saldo">' + brl(T.ap - T.acc) + '</td><td class="num" data-label="% executado">' + pc(T.acc, T.ap) + '</td></tr>';
+    $('#th-per').textContent = modeNow() === 'm' ? 'No mês' : 'No trimestre';
+    $('#k-per').textContent = brl(T.per); $('#k-perl').textContent = cur.l;
+    $('#k-acc').textContent = brl(T.acc); $('#k-accp').textContent = pc(T.acc, T.ap) + ' do aprovado';
+    $('#k-sal').textContent = brl(T.ap - T.acc); $('#k-neg').textContent = String(negs);
+    $('#ex-ver-b').innerHTML = ico('layers') + 'Linha de base v' + ver + (ver === '2' ? ' (vigente)' : ' (anterior, só consulta)');
+    $('#exCap').textContent = 'Aprovado e executado por meta, etapa e linha, em ' + cur.l + ', linha de base v' + ver + ', em reais';
+  }
+  $$('input[name="per"]').forEach(function (r) { r.addEventListener('change', function () { fillPeriods(); renderExec(); }); });
+  exPer.addEventListener('change', renderExec); exVer.addEventListener('change', renderExec);
+  fillPeriods(); renderExec();
+
+  /* ---------- Vou comprar: etapa, linha e resultado ---------- */
+  var cEt = $('#f-etapa'), cLi = $('#f-linha'), cInfo = $('#linha-info'), cCat = $('#f-cat'), cGo = $('#btnConferir');
+  cEt.innerHTML = ETA.map(function (e) { return '<option value="' + e.id + '"' + (e.id === '2.1' ? ' selected' : '') + '>Meta ' + e.m + ' · etapa ' + e.id + ' ' + e.t + '</option>'; }).join('');
+  function fillLinhas() {
+    cLi.innerHTML = LIN.filter(function (l) { return l.e === cEt.value; }).map(function (l, i) { return '<option value="' + l.id + '"' + (l.id === '2.1.1' ? ' selected' : '') + '>' + l.id + ' · ' + l.o + '</option>'; }).join('') +
+      '<option value="none">Não encontrei linha para este item</option>';
+  }
+  function showInfo() {
+    if (document.body.classList.contains('plan-semok')) { cInfo.innerHTML = '<b>Plano sem OK.</b> A linha, o objeto previsto e o saldo só aparecem depois do OK do plano.'; return; }
+    if (cLi.value === 'none') { cInfo.innerHTML = '<b>Sem linha escolhida.</b> A checagem ficará pendente: o item não é objeto previsto de nenhuma linha desta etapa. Você poderá pedir um ajuste do plano ou desistir da compra.'; return; }
+    var l = LIN.filter(function (x) { return x.id === cLi.value; })[0]; if (!l) return;
+    var ex = exSum(l, '2000-01', '2999-12'), sal = l.ap[2] - ex;
+    cInfo.innerHTML = '<b>Linha ' + l.id + '</b> · classificação <span class="cls">' + l.c + '</span><br>Objeto previsto: ' + l.o + '<br>Aprovado ' + brl(l.ap[2]) + ' · executado ' + brl(ex) + ' · saldo da linha <b class="num">' + brl(sal) + '</b>' +
+      (sal < 0 ? ' <span class="badge b-err">' + ico('alert') + 'Acima do aprovado</span>' : '');
+  }
+  function pickResult() {
+    var r = 'permitido', cat = cCat.value;
+    if (document.body.classList.contains('plan-semok')) r = 'semok';
+    else if (cLi.value === 'none') r = 'semlinha';
+    else if (cat === 'nao') r = 'pendente';
+    else if (cat === 'vedado') r = 'bloqueado';
+    cGo.setAttribute('href', '#/comprar/' + r);
+  }
+  cEt.addEventListener('change', function () { fillLinhas(); showInfo(); pickResult(); });
+  cLi.addEventListener('change', function () { showInfo(); pickResult(); });
+  cCat.addEventListener('change', pickResult);
+  fillLinhas(); showInfo(); pickResult();
+
+  /* ---------- conferência da minuta: quando o OK fica ativo ---------- */
+  var gCls = $('#e212c'), gVal = $('#e222v'), btnOk = $('#btnOk'), gTxt = $('#gateTxt');
+  function stBadge(ok) { return ok ? '<span class="badge b-ok">' + ico('check') + 'Resolvido</span>' : '<span class="badge b-warn dashed">' + ico('clock') + 'Pendente</span>'; }
+  function gate() {
+    var okC = gCls.value !== '339031', cents = Math.round(parseMoney(gVal.value) * 100), okV = cents > 0;
+    $('#st-imp-cls').innerHTML = stBadge(okC); $('#st-imp-val').innerHTML = stBadge(okV);
+    var bc = $('#b-cls'), bv = $('#b-val');
+    bc.className = 'badge ' + (okC ? 'b-ok' : 'b-err'); bc.innerHTML = okC ? ico('check') + 'Resolvido' : ico('stop') + 'Impede o OK';
+    bv.className = 'badge ' + (okV ? 'b-ok' : 'b-err'); bv.innerHTML = okV ? ico('check') + 'Resolvido' : ico('stop') + 'Impede o OK';
+    $('#v-cls').textContent = gCls.value + (okC ? '' : ' (fora da lista)'); $('#a-cls').hidden = okC; $('#e212c-m').hidden = okC; gCls.setAttribute('aria-invalid', String(!okC));
+    $('#v-val').textContent = okV ? brl(cents) : 'não lido'; $('#a-val').hidden = okV; $('#e222v-m').hidden = okV; gVal.setAttribute('aria-invalid', String(!okV));
+    var needs = $$('.need'), nDone = needs.filter(function (c) { return c.checked; }).length;
+    $('#cnt-need').textContent = nDone + ' de ' + needs.length; $('#st-need').innerHTML = stBadge(nDone === needs.length);
+    var ci = $$('[data-ciente]'), cOk = ci.filter(function (li) { return li.querySelector('.ck').checked && li.querySelector('.why-in').value.trim().length >= 3; }).length;
+    var lido = $('#lidoTudo').checked, falta = [];
+    var imp = (okC ? 0 : 1) + (okV ? 0 : 1);
+    if (imp) falta.push(imp + (imp === 1 ? ' impedimento' : ' impedimentos'));
+    if (cOk < ci.length) falta.push((ci.length - cOk) + ' &quot;ciente&quot; com justificativa');
+    if (nDone < needs.length) falta.push((needs.length - nDone) + (needs.length - nDone === 1 ? ' linha para conferir' : ' linhas para conferir'));
+    if (!lido) falta.push('a confirmação de que você leu a minuta inteira');
+    var pronto = falta.length === 0;
+    gTxt.innerHTML = pronto ? ico('check') + ' Tudo pronto: você pode dar o OK.' : ico('lock') + ' Ainda não dá para dar o OK. Falta: ' + falta.join('; ') + '.';
+    btnOk.setAttribute('aria-disabled', String(!pronto));
+    btnOk.classList.toggle('accent', pronto);
+    $('#okIco').setAttribute('href', pronto ? '#i-check' : '#i-lock');
+  }
+  $$('#s-conferir input, #s-conferir select').forEach(function (el) { el.addEventListener('input', gate); el.addEventListener('change', gate); });
+  btnOk.addEventListener('click', function () {
+    if (btnOk.getAttribute('aria-disabled') === 'true') { gTxt.setAttribute('tabindex', '-1'); gTxt.focus(); return; }
+    var c = $('#okConfirm'); c.hidden = false; c.focus();
+  });
+  $('#okYes').addEventListener('click', function () { $('#okConfirm').hidden = true; $('#okDone').hidden = false; });
+  $('#okNo').addEventListener('click', function () { $('#okConfirm').hidden = true; btnOk.focus(); });
+  gate();
+
+  /* ---------- ajuste: justificativa obrigatória ---------- */
+  $('#adjGo').addEventListener('click', function () {
+    var j = $('#a-just'), m = $('#a-just-m');
+    if (!j.value.trim()) { m.hidden = false; j.setAttribute('aria-invalid', 'true'); j.focus(); return; }
+    m.hidden = true; j.setAttribute('aria-invalid', 'false');
+    say($('#a-ext').checked ? 'Exemplo: o ajuste ficaria pendente de aprovação externa. Nada foi salvo.' : 'Exemplo: nasceria a versão 3. Nada foi salvo.');
+  });
 
   // Tema: segue o sistema; o botão alterna e guarda a escolha (se o navegador permitir)
   var btn = document.getElementById('themeBtn'), lbl = document.getElementById('themeLbl');
