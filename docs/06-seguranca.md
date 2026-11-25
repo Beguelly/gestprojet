@@ -4,7 +4,7 @@ Versão: 0.2 · Data: 2026-11-25 · Status: rascunho do agente `seguranca` (T-00
 
 Fonte: `docs/00-briefing.md` e `docs/01-prd.md` (PRD v0.2, tratado aqui como aprovado conforme a instrução da T-020; o cabeçalho do arquivo ainda diz "rascunho", ver divergência DP-01 na seção 15). Este documento não decide nada que o PRD deixou em aberto (seção 10 do PRD, Q-01 a Q-34): onde o requisito depende de uma decisão pendente, aparece "depende de Q-xx" e a questão é repetida na seção 15. Nenhum segredo, chave ou credencial aparece aqui. Prazos legais citados são propostas **a confirmar com revisão jurídica**.
 
-**O que mudou da v0.1 para a v0.2 deste documento:** (a) documentos importados (planilha, PDF, imagem) e sua proteção (seção 11.2, SEG-206 a SEG-217, SEG-237); (b) IA lendo o documento (seção 11.3, SEG-218 a SEG-227); (c) linha de base, ajustes, execução e registros enxutos (seções 11.4 e 11.5, SEG-228 a SEG-236); (d) inventário D-27 a D-37 e ajustes em D-10 a D-14, D-20; (e) matriz de permissões com as linhas 26 a 38; (f) eventos de auditoria novos (8.2) e conferência com `docs/04-workflows.md` (8.3); (g) STRIDE dos módulos novos; (h) incidente de documento importado (SEG-238, SEG-239); (i) QS-01 a QS-10 revistas e QS-11 a QS-18 novas (seção 15); (j) leitura "rubrica" como "classificação da despesa" (RN-026).
+**O que mudou da v0.1 para a v0.2 deste documento:** (a) documentos importados (planilha, PDF, imagem) e sua proteção (seção 11.2, SEG-206 a SEG-217, SEG-237); (b) IA lendo o documento (seção 11.3, SEG-218 a SEG-227); (c) linha de base, ajustes, execução e registros enxutos (seções 11.4 e 11.5, SEG-228 a SEG-236); (d) inventário D-27 a D-37 e ajustes em D-10 a D-14, D-20; (e) matriz de permissões com as linhas 26 a 38; (f) eventos de auditoria novos (8.2) e conferência com `docs/04-workflows.md` (8.3); (g) STRIDE dos módulos novos; (h) incidente de documento importado (SEG-238, SEG-239) e governança LGPD do envio à IA e de terceiros (SEG-240, SEG-241); (i) QS-01 a QS-10 revistas, QS-11 a QS-18 novas e divergências DP e DW (seção 15); (j) leitura "rubrica" como "classificação da despesa" (RN-026).
 
 ## 0. Como ler
 
@@ -378,7 +378,7 @@ Depende de **Q-04** (provedor, meios de pagamento, nota fiscal) e **Q-05** (per�
 
 ### 11.2 Documentos importados (planilha, PDF, imagem) `[NOVO v0.2]`
 
-Escopo: arquivos de importação do plano (RF-123, RF-124) e anexos de aprovação externa (RF-129). Valem para o arquivo enviado pelo líder, qualquer que seja o leitor (direto ou IA). Fluxo de segurança do arquivo: **recebido → quarentena → validação de tipo e limites → varredura → leitor isolado → derivados → minuta**. Em qualquer etapa que falhe, o arquivo não segue adiante (falha fechada).
+Escopo: arquivos de importação do plano (RF-123, RF-124) e anexos de aprovação externa (RF-129). Alguns requisitos (SEG-216, SEG-223) são de processo ou cota. Valem para o arquivo enviado pelo líder, qualquer que seja o leitor (direto ou IA). Fluxo de segurança do arquivo: **recebido → quarentena → validação de tipo e limites → varredura → leitor isolado → derivados → minuta**. Em qualquer etapa que falhe, o arquivo não segue adiante (falha fechada).
 
 | ID | Requisito | Origem | Verificação |
 |---|---|---|---|
@@ -697,5 +697,36 @@ Situação em 25/11/2026: **todas as QS-01 a QS-10 continuam em aberto**; as amp
 | RNF-10 | SEG-070, SEG-140 |
 | RNF-12 | SEG-065 |
 | RNF-14 | SEG-066, SEG-160 |
+| **Itens novos do PRD v0.2** | |
+| RF-010, RF-120 | SEG-217, SEG-232, SEG-237; matriz linhas 3 e 30 |
+| RF-121 | SEG-232 |
+| RF-122 | SEG-230, SEG-233 |
+| RF-123 | SEG-206, SEG-207, SEG-210, SEG-211, SEG-215 |
+| RF-124 | SEG-206, SEG-207, SEG-212, SEG-213, SEG-218 a SEG-227, SEG-240 |
+| RF-125 | SEG-208, SEG-209, SEG-213, SEG-214, SEG-224, SEG-228 |
+| RF-126 | SEG-220, SEG-230 |
+| RF-127 | SEG-230 |
+| RF-128 | SEG-005, SEG-228, SEG-229, SEG-230 |
+| RF-129 | SEG-005, SEG-228, SEG-229, SEG-231, SEG-232 |
+| RF-130, RF-131 | SEG-233, SEG-234 |
+| RF-132 a RF-138 | SEG-236 |
+| RF-112 (v0.2) | SEG-235; seção 8.2 e 8.3 |
+| RF-063, RF-064 (v0.2) | SEG-233, SEG-200 |
+| RN-025 | SEG-232 |
+| RN-027 | SEG-228, SEG-229, SEG-233 |
+| RN-028 | SEG-231, SEG-232 |
+| RN-029 | SEG-220, SEG-233 |
+| RN-030 | SEG-220, SEG-226 |
+| RN-031 | SEG-005, SEG-230 |
+| RN-032, RN-038 | SEG-233, SEG-234 |
+| RN-034 | SEG-236 |
+| RN-035 | SEG-208, SEG-213, SEG-218 a SEG-222, SEG-224, SEG-240 |
+| RNF-15 | SEG-206, SEG-216 |
+| RNF-16 | SEG-225 |
+| RNF-17 | SEG-219, SEG-220, SEG-226 |
+| RNF-18 | SEG-216, SEG-219 |
+| RNF-20 | SEG-206 a SEG-215, SEG-221, SEG-222, SEG-238 |
+| RNF-21 | SEG-224, SEG-214 |
+| R-09 a R-12 | SEG-220, SEG-222, SEG-226, SEG-238 |
 
-SEG sem RF/RN/RNF direto (origem em tarefa, seção do PRD ou questão): SEG-010, SEG-060, SEG-061, SEG-063, SEG-068, SEG-071, SEG-073, SEG-107, SEG-125, SEG-132, SEG-147, SEG-148, SEG-181, SEG-182, SEG-183, SEG-184, SEG-186, SEG-188, SEG-189, SEG-081, SEG-088, SEG-091.
+SEG sem RF/RN/RNF direto (origem em tarefa, seção do PRD ou questão): SEG-223 (T-306, SEG-071), SEG-239 (SEG-108), SEG-241 (RF-113 e questão QS-01), SEG-010, SEG-060, SEG-061, SEG-063, SEG-068, SEG-071, SEG-073, SEG-107, SEG-125, SEG-132, SEG-147, SEG-148, SEG-181, SEG-182, SEG-183, SEG-184, SEG-186, SEG-188, SEG-189, SEG-081, SEG-088, SEG-091.
