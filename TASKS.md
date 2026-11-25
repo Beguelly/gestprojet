@@ -49,7 +49,7 @@ Toda tarefa de código só vira `[x]` depois de **testador** e **seguranca** apr
 - [x] ⭐ T-016 · Guia de UX (`docs/03-ux.md`): tokens azul-marinho/verde, navegação, mapa de telas, dashboards · designer · Dep.: T-008
 - [ ] ⭐ T-017 · 🛑 **DECISÃO** · Aprovar identidade visual e telas principais (protótipo) · usuário · Dep.: T-016
 - [ ] ⭐ T-018 · Criar as 7 skills de domínio (regras-de-edital, checagem-pre-compra, execucao-financeira-pdi, trl-mrl, iso-21500, busca-cientifica, assinatura-por-projeto), com `evals/` · analista-produto (via agent-skill-builder) · Dep.: T-008
-- [ ] T-019 · 🛑 **DECISÃO** · Escala de referência TRL/MRL (proposta: TRL ISO 16290 / NASA; MRL DoD) · usuário · Dep.: T-018
+- [x] T-019 · 🛑 **DECISÃO** · Escala de referência TRL/MRL (proposta: TRL ISO 16290 / NASA; MRL DoD) · usuário · Dep.: T-018
 
 ## E01 · Fundação (infraestrutura, autenticação, permissões, auditoria)
 
@@ -180,3 +180,4 @@ Toda tarefa de código só vira `[x]` depois de **testador** e **seguranca** apr
 | 25/11/2026 | T-008b | **PRD v0.2 aprovado pelo dono** ("como está"): PDF e imagem permanecem na 1ª versão, como o dono pediu; o risco R-10 (custo/atraso da leitura por IA) segue registrado e o caminho mínimo sem IA fica como plano de corte. As suposições `[SUPOSIÇÃO]` valem até serem corrigidas. | mensagem do dono |
 | 25/11/2026 | T-020 | Iniciada em paralelo: designer → `docs/03-ux.md` e `design/`; analista-produto → `docs/04-workflows.md`; seguranca → `docs/06-seguranca.md`. | — |
 | 25/11/2026 | T-012 | Dono escolheu a opção **b: importação do extrato bancário (OFX/CSV)** para os dados da conta. Efeitos: RF-052 (hoje Could no PRD v0.2) passa a ser da 1ª versão; a conciliação do checklist de saúde deixa de ser "não verificável"; T-403 entra no caminho mínimo. Pendente: emenda ao PRD (v0.2.1) e requisitos de segurança do extrato (dados bancários). Lançamento manual continua como alternativa (a confirmar no PRD). | mensagem do dono |
+| 25/11/2026 | T-019 | Dono escolheu **TRL de 1 a 9 e MRL de 1 a 10** (opção a). Referências: ISO 16290 para o TRL e a escala de 10 níveis do DoD para o MRL; os textos oficiais dos critérios **não foram conferidos**: ficam "a validar" até o dono enviar o documento de critérios ou o analista obtê-los de fonte aberta. Escala configurável por financiador fica para depois. | mensagem do dono |
