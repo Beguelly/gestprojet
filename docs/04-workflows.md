@@ -262,7 +262,7 @@ RF-003, RF-010, RF-011, RF-012, RF-013, RF-024, RF-033, RF-071, RF-120, RF-121, 
 
 ---
 
-## 3. Despesa com checagem antes da compra `[ALTERADO v0.2]`
+## 3. Despesa com checagem antes da compra `[ALTERADO v0.2]` `[ALTERADO v0.2.1]`
 
 Este é o fluxo central da 1ª versão e o que evita o erro que originou o produto. Na v0.2 a checagem compara a compra com a **linha** do plano (objeto previsto, classificação, saldo da linha) além das regras do edital (RF-060, RF-063, RF-064). O fluxo existente foi atualizado; não há segundo fluxo de despesa. O caso real (RF-062) continua intacto.
 
@@ -544,106 +544,240 @@ RN-004 (regra só vale confirmada), RN-005 (versões), RN-006 `[ALTERADO v0.2]` 
 - **Cotação vencida:** prazo de validade configurável por edital (RN-008); fora do prazo, não conta como válida.
 - **Compra fora da vigência:** bloqueada (RN-024, Q-15).
 - **Duas checagens "permitido" disputando o mesmo saldo:** com a regra atual, as duas passam e o saldo só cai no lançamento (RN-010). Se Q-19 mandar reservar, a segunda considera a reserva da primeira.
-- **Projeto encerrado ou suspenso:** não se lança despesa em projeto encerrado (RF-004); em projeto suspenso vale o efeito de T-802.
+- **Projeto encerrado ou suspenso:** não se lança despesa em projeto encerrado (RF-004); em projeto suspenso (assinatura em atraso) o projeto é somente leitura e nada é lançado, mas nenhum dado é apagado (RF-104).
 - **Lançamento sem acesso de escrita** (membro "visualiza"): recusado (matriz da seção 3).
 
 ### 3.14 Rastreio
 
-RF-040 a RF-043, RF-050 a RF-055, RF-060 a RF-067, RF-090, RF-091, RF-120, RF-121, RF-128, RF-129, RF-130 · RN-004 a RN-008, RN-010, RN-012 a RN-015, RN-020, RN-024, RN-026 a RN-029, RN-032, RN-038 · Q-01, Q-02, Q-10, Q-11, Q-15, Q-19, Q-31.
+RF-040 a RF-043, RF-050 a RF-055, RF-060 a RF-067, RF-090, RF-091, RF-120, RF-121, RF-128, RF-129, RF-130 · RN-004 a RN-008, RN-010, RN-012 a RN-015, RN-020, RN-024, RN-026 a RN-029, RN-032, RN-038, RN-043, RN-047 · Q-01, Q-10, Q-11, Q-15, Q-19 (Q-31 e Q-38 resolvidas em 25/11/2026; Q-02 resolvida).
 
 ---
 
-## 4. Conta do projeto e rendimentos
+## 4. Conta do projeto: extrato (OFX ou CSV), conciliação e rendimentos `[ALTERADO v0.2]` `[REESCRITO v0.2.1]`
+
+Reescrito na v0.2.1 porque a **T-012 foi decidida em 25/11/2026, opção b**: os dados da conta entram por **importação do extrato bancário (OFX ou CSV)**; o lançamento manual continua como alternativa (RF-052, RF-146 a RF-149). Integração bancária fora do escopo (PRD 4.3). A leitura do extrato é **direta, sem IA** (RF-091 não se aplica: não há sugestão de IA neste fluxo).
 
 ### 4.1 Gatilho e atores
 
-- **Gatilho** `[ALTERADO v0.2]`: o orçamento por classificação da despesa **não é mais cadastrado à parte**: é a soma das linhas do plano (RF-050, RF-120), que passa a valer com o OK da linha de base (fluxo 8). A partir daí entram lançamentos de despesa, crédito e rendimento (RF-051). Este fluxo cuida da conta; a execução por linha e por mês é o fluxo 10.
-- **Atores:** Líder (orçamento, créditos, rendimentos, despesas, estornos); Membro (registra) (somente despesas, RF-051; créditos e rendimentos dependem de Q-09); Sistema (calcula saldos, deduplica importação).
-- **Como o lançamento entra depende de Q-02 (T-012):** manual, importação de extrato ou integração bancária. Nos três casos o registro é o mesmo, com a origem anotada (manual, extrato, banco).
-- **Fora desta versão:** distribuição dos rendimentos. Nesta versão o rendimento é registrado e fica **acumulado, sem destinação**. O estado de saída do fluxo é "rendimento acumulado", à espera da 2ª versão, que exigirá autorização formal registrada (RN-011).
+- **Gatilho** `[ALTERADO v0.2.1]`: o líder baixa o extrato da conta do projeto no internet banking e o envia (RF-052). Antes disso, o orçamento por classificação da despesa continua sendo a soma das linhas do plano (RF-050, RF-120), válida com o OK da linha de base (fluxo 8). Despesa, crédito e rendimento entram no mesmo registro (RF-051), com a origem anotada: **manual** ou **extrato**.
+- **Três registros que não se confundem** (RN-039): a **despesa** é o registro da pessoa (linha, checagem, comprovante); o **lançamento do extrato** é o registro do banco; a **conciliação** só liga os dois, sem alterar valor nem data de nenhum (RN-040). Nenhum dos três é apagado (RN-020).
+- **Atores:** Líder (importa o extrato, mapeia colunas, confirma a conciliação, justifica exceções, classifica créditos e confirma rendimentos, lança manualmente, estorna, marca o mês conferido, fluxo 10); Membro (registra) (só lança despesas, RF-051; **não** importa extrato nem concilia `[SUPOSIÇÃO]` do PRD; créditos e rendimentos manuais dependem de Q-09); Membro (visualiza) (só lê); Sistema (lê o arquivo, deduplica, sugere correspondências com os motivos, calcula saldos e a diferença com o saldo do extrato).
+- **Bancos de partida `[RESPOSTA PARCIAL 25/11/2026]` (Q-35):** Banco do Brasil, Caixa e os demais bancos oficiais que costumam operar contas de projetos financiados. **Não verificado:** quais formatos (OFX, CSV) cada um exporta; falta um extrato de exemplo anonimizado de cada banco. O fluxo funciona para qualquer banco: o OFX é lido direto e o CSV passa pelo mapeamento manual de colunas (RF-146); o mapeamento "pronto" por banco só existe depois de testado com o extrato real.
+- **Critérios de conciliação (Q-48, aberta):** janela de data (5 dias), tolerância de valor (nenhuma), um débito para várias despesas e prazo de "despesa sem extrato" (30 dias) são **parâmetros** com valor proposto `[SUPOSIÇÃO]`; o fluxo não muda se o dono responder outra coisa.
+- **Fora desta versão:** distribuição dos rendimentos. Nesta versão o rendimento é registrado e fica **acumulado, sem destinação**. O estado de saída é "rendimento acumulado", à espera da 2ª versão, que exigirá autorização formal registrada (RN-011, RN-042).
 
-### 4.2 Diagrama (ciclo de um lançamento)
+### 4.2 Diagramas
+
+**Importação de um extrato** (RF-052, RF-146).
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Registrado: lançamento manual
-    [*] --> Importado: extrato importado ou banco, se Q-02 incluir
-    Importado --> AClassificar: sem rubrica
-    AClassificar --> Registrado: líder classifica a rubrica
-    Importado --> Registrado: já chegou com rubrica
-    Importado --> Ignorado: já existia, importação repetida
-    Registrado --> Estornado: correção com motivo
-    Registrado --> Corrigido: nova versão com motivo
-    Corrigido --> Registrado: nova versão passa a valer
-    Estornado --> [*]: original mantido, nada é apagado
-    Registrado --> [*]: compõe os saldos
+    [*] --> ArquivoRecebido: líder envia OFX ou CSV
+    ArquivoRecebido --> Recusado: tipo, tamanho ou formato fora dos limites
+    ArquivoRecebido --> EmVarredura: formato aceito
+    EmVarredura --> Recusado: varredura detecta problema e o original não é guardado
+    EmVarredura --> PreVisualizacao: varredura limpa e original guardado com hash
+    PreVisualizacao --> MapeandoColunas: CSV sem mapeamento confirmado
+    PreVisualizacao --> ProntoParaImportar: OFX lido direto ou mapeamento lembrado confirmado
+    MapeandoColunas --> ProntoParaImportar: líder confirma colunas, formato de data e de número
+    MapeandoColunas --> Cancelada: líder desiste
+    ProntoParaImportar --> Importado: líder confirma a importação
+    ProntoParaImportar --> Cancelada: líder desiste
+    ProntoParaImportar --> Falhou: erro durante a gravação e nada é gravado
+    Falhou --> ProntoParaImportar: líder tenta de novo
+    Importado --> [*]: lançamentos novos criados, repetidos ignorados e contados
+    Recusado --> [*]
+    Cancelada --> [*]
 
-    note right of Registrado
-        Rendimento registrado fica acumulado,
-        sem destinação na 1ª versão, e nunca
-        entra no saldo de rubrica (RN-011).
+    note right of EmVarredura
+        Só depois da varredura limpa o arquivo
+        vira original guardado, DP-09.
+        Fórmula ou comando em célula de CSV
+        é texto e nunca é executado.
+    end note
+    note right of Importado
+        Mostra novos, repetidos ignorados e
+        linhas com erro listadas, RN-041.
+    end note
+```
+
+**Ciclo de um lançamento do extrato** (débito ou crédito, RF-147 a RF-149).
+
+```mermaid
+stateDiagram-v2
+    [*] --> Ignorado: mesmo lançamento já importado antes
+    [*] --> Importado: lançamento novo criado pela importação
+    Importado --> SemDespesa: débito sem despesa ligada
+    Importado --> AClassificar: crédito sem tipo confirmado
+    SemDespesa --> SugestaoDisponivel: plataforma sugere despesa por valor, data e descrição
+    SugestaoDisponivel --> Conciliado: líder confirma o par
+    SugestaoDisponivel --> SemDespesa: líder recusa a sugestão
+    SemDespesa --> Conciliado: líder liga a uma despesa existente
+    SemDespesa --> Conciliado: líder cria a despesa a partir do lançamento
+    SemDespesa --> Justificado: líder registra o motivo
+    Conciliado --> SemDespesa: líder desfaz com motivo
+    Justificado --> SemDespesa: líder reabre
+    AClassificar --> Classificado: líder confirma o tipo do crédito
+    Classificado --> [*]
+    Conciliado --> [*]
+    Justificado --> [*]
+    Ignorado --> [*]
+
+    note right of Ignorado
+        Repetido não vira registro novo nem é somado.
+        Aparece só na contagem da importação, RN-041.
+    end note
+    note right of SugestaoDisponivel
+        A plataforma sugere e a pessoa confirma.
+        Nunca concilia sozinha, RN-040.
+    end note
+```
+
+**Ciclo da despesa quanto ao extrato** (RF-148). É uma marca, ao lado da marca da checagem e do vínculo com a linha (fluxo 3). Vale também para lançamento manual de despesa, crédito ou rendimento.
+
+```mermaid
+stateDiagram-v2
+    [*] --> SemExtrato: despesa ou lançamento manual criado
+    SemExtrato --> SugestaoDisponivel: aparece débito compatível em extrato importado
+    SugestaoDisponivel --> Conciliada: líder confirma o par
+    SugestaoDisponivel --> SemExtrato: líder recusa
+    SemExtrato --> SemExtratoHaMaisDe30Dias: passam 30 dias sem correspondência e sem motivo
+    SemExtratoHaMaisDe30Dias --> SugestaoDisponivel: aparece débito compatível em extrato posterior
+    SemExtrato --> SemExtratoJustificada: líder registra o motivo
+    SemExtratoHaMaisDe30Dias --> SemExtratoJustificada: líder registra o motivo
+    SemExtratoJustificada --> SugestaoDisponivel: aparece débito compatível em extrato posterior
+    Conciliada --> SemExtrato: líder desfaz com motivo
+    SemExtrato --> Estornada: correção por estorno com motivo
+    SemExtratoHaMaisDe30Dias --> Estornada: correção por estorno com motivo
+    Conciliada --> Estornada: correção por estorno com motivo
+    Estornada --> [*]: original mantido, nada é apagado
+    Conciliada --> [*]: compõe os saldos e o mês pode ser conferido
+
+    note right of SemExtratoHaMaisDe30Dias
+        Vai para as pendências do líder e para o checklist.
+        30 dias é SUPOSIÇÃO do PRD, RF-148 e Q-48.
+    end note
+    note right of SemExtratoJustificada
+        Pagamento em dinheiro, lançamento ainda não
+        compensado ou data errada. O motivo fica visível.
+    end note
+```
+
+**Crédito e rendimento** (RF-149, RN-042). O rendimento nunca entra no saldo de linha nem de classificação.
+
+```mermaid
+stateDiagram-v2
+    [*] --> CreditoImportado: crédito vindo do extrato
+    CreditoImportado --> SugeridoRendimento: descrição do banco parece rendimento
+    CreditoImportado --> AClassificar: sem sugestão
+    SugeridoRendimento --> Rendimento: líder confirma o tipo
+    SugeridoRendimento --> AClassificar: líder não confirma
+    AClassificar --> Rendimento: líder classifica como rendimento
+    AClassificar --> ParcelaRecebida: líder classifica como parcela recebida
+    AClassificar --> OutroCredito: líder classifica como outro tipo
+    Rendimento --> Acumulado: soma por mês, sem destinação
+    ParcelaRecebida --> [*]
+    OutroCredito --> [*]
+    Acumulado --> [*]: espera a 2ª versão e a autorização formal, RN-011
+
+    note right of Acumulado
+        Rendimento lançado à mão, quando o extrato
+        não o traz, entra aqui com origem manual.
     end note
 ```
 
 ### 4.3 Passos
 
 1. **Orçamento (RF-050).** O valor aprovado de cada classificação é a soma das linhas do plano com essa classificação. A plataforma mostra o percentual distribuído e avisa a diferença em reais se a soma das linhas não bater com o valor total do projeto (RF-001), ao salvar e ao dar o OK, sem impedir o salvamento (RN-025). Mudar o orçamento depois do OK é ajuste versionado (fluxo 9).
-2. **Crédito.** Líder registra a parcela recebida (data, valor, descrição).
-3. **Despesa.** Segue o fluxo 3. Aumenta o executado da linha e da classificação e reduz o saldo ao centavo (RF-051).
-4. **Rendimento (RF-054).** Líder registra o rendimento de aplicação (data, valor). A tela "Rendimentos" mostra por mês e acumulado. O valor **não** entra no saldo de nenhuma rubrica (RN-011).
-5. **Importação (RF-052, só se Q-02 incluir).** Cada linha do extrato vira lançamento com origem "extrato"; linhas repetidas são ignoradas; linhas sem rubrica ficam "a classificar" e entram nas pendências.
-6. **Painel (RF-053).** Por rubrica: previsto, realizado, saldo (previsto menos realizado, estornos somam de volta, RN-010) e percentual executado; totais e saldo da conta.
-7. **Correção (RN-020).** Sempre por estorno ou nova versão, com motivo; o original permanece.
+2. **Enviar o extrato (RF-052).** O líder envia o extrato em OFX (preferido, porque tem estrutura padronizada) ou CSV. A plataforma verifica o tipo real, o tamanho e a quantidade de lançamentos contra o RNF-22 (5 MB e 20.000 lançamentos `[SUPOSIÇÃO]`, a confirmar com o extrato real do piloto, Q-35), recusa o que passa do limite e explica o motivo. **Só depois da varredura limpa** o arquivo é guardado como original, com hash, data, autor, período coberto e quantidade de lançamentos (DP-09); arquivo com detecção é recusado e não é guardado. O original só o líder baixa (RNF-23).
+3. **Pré-visualizar e mapear (RF-146).** Mostra as primeiras linhas. No OFX a leitura é direta. No CSV o líder indica as colunas de data, descrição, valor (ou débito e crédito separados), saldo (opcional) e identificador (opcional), e o formato de data e de número; o mapeamento pode ser lembrado por banco `[SUPOSIÇÃO]`. Linha com data inválida é marcada e o líder corrige o mapeamento ou ignora a linha, que fica listada. Fórmula ou comando em célula é texto e nunca é executado.
+4. **Importar sem duplicar (RN-041).** O líder confirma. O mesmo lançamento não entra duas vezes, venha no mesmo arquivo reimportado ou em extratos com período sobreposto; a identificação usa o identificador do banco quando existir e, senão, data, valor, descrição e posição. A tela informa "N novos, R repetidos ignorados"; reimportar o mesmo arquivo mostra "extrato já importado: 0 novos lançamentos". Nada é gravado pela metade; falha deixa o estado anterior e o líder tenta de novo.
+5. **Classificar créditos e confirmar rendimentos (RF-149, RN-042).** Cada crédito fica "a classificar" até o líder confirmar o tipo: parcela recebida, rendimento ou outro. A plataforma **sugere** "rendimento" pela descrição do banco; a pessoa confirma. Rendimento confirmado soma por mês e fica "acumulado, sem destinação"; nunca entra no saldo de linha nem de classificação (RN-011). Se o extrato não traz o rendimento, o líder o lança à mão (RF-054), com origem "manual".
+6. **Conciliar (RF-147, RN-040).** Para cada débito sem despesa, a plataforma lista despesas compatíveis por valor, data (janela de 5 dias `[SUPOSIÇÃO]`) e descrição, **com os motivos** ("mesmo valor; data 2 dias antes; fornecedor igual") e sem esconder a divergência ("valor e data conferem; descrição diferente"). A pessoa confirma ou recusa cada par; só confirmar liga os registros e guarda quem e quando. A conciliação não altera valor nem data de nenhum dos dois. Dois débitos iguais e uma despesa: a plataforma sugere a despesa para ambos mas só deixa confirmar um, e mostra que o outro continua sem despesa. Desfazer é possível, com motivo. A tela mostra o saldo final informado no extrato ao lado do saldo calculado e a diferença em reais, com a lista dos lançamentos sem correspondência.
+7. **Tratar as exceções (RF-148).** Sempre sinalizadas, nunca resolvidas sozinhas. **(a) Lançamento do extrato sem despesa** (tarifa, débito não reconhecido): o líder cria a despesa a partir dele (nasce conciliada, com o valor e a data do banco, "sem checagem" e "sem linha" até completar, RN-012, RN-029), liga a uma despesa existente ou marca "justificado" com motivo. **(b) Despesa sem lançamento no extrato** (pagamento em dinheiro, lançamento ainda não compensado, data errada): fica "sem extrato" nas pendências; depois de 30 dias `[SUPOSIÇÃO]` sem correspondência e sem motivo, vira "sem extrato há mais de 30 dias", e o líder registra o motivo ou espera um extrato posterior. **(c) Lançamento manual:** alternativa para o que não passa pelo extrato (Q-36 `[SUPOSIÇÃO]`); fica "manual, sem extrato" até ser conciliado ou justificado, e um extrato posterior que traga o débito gera a sugestão de conciliação sem duplicar o lançamento.
+8. **Despesa.** Segue o fluxo 3. Aumenta o executado da linha e da classificação e reduz o saldo ao centavo (RF-051); a conciliação com o extrato vem depois, neste fluxo.
+9. **Painel e mês conferido (RF-053, RF-152).** Por classificação: previsto, realizado, saldo (previsto menos realizado, estornos somam de volta, RN-010) e percentual executado; totais e saldo da conta. O resumo do mês (fluxo 10) mostra os lançamentos sem conciliação, e o líder pode marcar o mês como "conferido" depois de revisar a conciliação; a marca não trava nada (RN-044).
+10. **Correção (RN-020).** Sempre por estorno ou nova versão, com motivo; o original permanece. Nem a despesa nem o lançamento do extrato são apagados.
 
-O PRD não dá a fórmula do "saldo da conta" (RF-053). Este documento assume créditos mais rendimentos menos débitos `[SUPOSIÇÃO]`; ver seção 15, item D3.
+O PRD não dá a fórmula do "saldo da conta" (RF-053). Este documento assume créditos mais rendimentos menos débitos `[SUPOSIÇÃO]`; ver seção 15, item D3. O saldo final do extrato, quando existe, é só uma referência para a diferença, nunca substitui o saldo calculado.
 
 ### 4.4 Regras de negócio aplicadas
 
-RN-009 (centavos), RN-010 (saldo da rubrica), RN-011 (rendimentos à parte), RN-020 (sem apagar), RN-022 (acesso), RNF-14 (zero diferença de centavos).
+RN-009 (centavos), RN-010 (saldo da linha), RN-011 (rendimentos à parte), RN-014 (a plataforma sugere, a pessoa decide), RN-020 (sem apagar), RN-022 (acesso), RN-039 (a conta entra pelo extrato; três registros), RN-040 (conciliação sugerida e confirmada), RN-041 (sem duplicidade), RN-042 (rendimentos vêm do extrato e ficam acumulados), RN-044 (mês conferido não trava), RNF-14 (zero diferença de centavos), RNF-22 (formatos, limites e tempo), RNF-23 (dados bancários), RNF-24 (precisão).
 
 ### 4.5 Evidências exigidas
 
-- Despesa: nota fiscal e comprovantes (fluxo 3).
-- Crédito: não há evidência obrigatória no PRD; anexar o comprovante do crédito é possível pelo mesmo mecanismo de anexos `[SUPOSIÇÃO]`.
-- Rendimento: idem, extrato ou informe da aplicação como anexo opcional `[SUPOSIÇÃO]`.
-- Estorno ou nova versão: motivo obrigatório (RN-020).
-- Importação: arquivo de extrato guardado com hash (RNF-12), se Q-02 incluir.
+- **Extrato importado:** arquivo original guardado com hash, período e autor, depois da varredura limpa (RF-052, RNF-12); só o líder o vê (RNF-23).
+- **Conciliação:** quem confirmou, quando, os motivos exibidos na sugestão e, ao desfazer, o motivo (RF-147).
+- **Justificativa de exceção:** motivo escrito do líder para lançamento "justificado" e para despesa "sem extrato" (RF-148).
+- **Despesa:** nota fiscal e comprovantes (fluxo 3).
+- **Crédito e rendimento:** o próprio lançamento do extrato é a evidência; sem extrato, anexar o comprovante é possível pelo mesmo mecanismo de anexos `[SUPOSIÇÃO]`.
+- **Estorno ou nova versão:** motivo obrigatório (RN-020).
 
 ### 4.6 Eventos de auditoria
 
+Nomes novos de extrato e conciliação são **propostos** (o 06 ainda os lista como `extrato.importado`; SEG-205 e SEG-062 serão ampliados pelo `seguranca`). Os demais seguem a seção 8.3 do 06.
+
 | Evento | Quando | Origem |
 |---|---|---|
-| `lancamento.criado` (tipo, valor, rubrica, origem) | Cada débito, crédito e rendimento | RF-112, RF-051 |
+| `extrato.arquivo_recebido` (hash, formato, tamanho, período, autor) | Envio do extrato | RF-112 (importação de extrato, DP-03); proposto o nome |
+| `extrato.arquivo_rejeitado` (motivo: limite, formato ou varredura) | Recusa do arquivo | proposto; ligado a `importacao.arquivo_rejeitado` do 06 |
+| `extrato.mapeamento_confirmado` (banco, colunas, formato de data e de número) | Líder confirma o mapeamento do CSV | proposto |
+| `extrato.importado` (quantidade criada, ignorada como repetida e rejeitada por erro) | Importação concluída | RF-112; proposto o conteúdo |
+| `lancamento.criado` (tipo, valor, classificação, **origem manual ou extrato**) | Cada débito, crédito e rendimento | RF-112, RF-051 |
 | `lancamento.estornado` e `lancamento.corrigido` (valor anterior e novo, motivo) | Correção | RF-112, RN-020 |
-| `lancamento.classificado` | Rubrica atribuída a lançamento importado | proposto |
-| `extrato.importado` (quantidade criada e ignorada) | Importação | proposto, só se Q-02 incluir |
+| `lancamento.classificado` (tipo do crédito: parcela, rendimento ou outro; quem confirmou) | Crédito classificado ou rendimento confirmado | proposto |
+| `conciliacao.confirmada` (lançamento do extrato, despesa, motivos da sugestão, líder) | Par confirmado | RF-112 (conciliação, DP-03); proposto o nome |
+| `conciliacao.recusada` | Sugestão recusada | proposto; pode ser só derivado |
+| `conciliacao.desfeita` (motivo) | Par desfeito | RF-112; proposto o nome |
+| `conciliacao.justificada` (lançamento ou despesa, motivo) | Exceção justificada | proposto |
+| `conciliacao.despesa_criada` (a partir do lançamento do extrato) | Despesa criada do extrato | proposto |
+| `arquivo.baixado` (extrato original) | Líder baixa o original | RF-112 (download do original); nome da seção 8.3 do 06 |
 | `orcamento.alterado` `[REMOVIDO v0.2]` | Substituído pelos eventos `linha_base.*` e `ajuste.*` (fluxos 8 e 9); o orçamento é derivado das linhas | cadastro separado deixou de existir (RF-050) |
+
+Logs de aplicação não guardam o conteúdo do extrato nem número de conta (RNF-23, `seguranca`).
 
 ### 4.7 Notificações
 
 | Quem | O quê | Canal |
 |---|---|---|
-| Líder | Classificação ou linha com saldo negativo; lançamentos "a classificar"; soma das linhas diferente do valor total do projeto (RF-050, RF-052, RF-053, RN-025) | Painel e pendências |
+| Líder | Classificação ou linha com saldo negativo; soma das linhas diferente do valor total do projeto (RF-050, RF-053, RN-025) | Painel e pendências |
+| Líder | Lançamentos do extrato "a classificar" ou sem despesa; despesas sem extrato há mais de 30 dias; créditos sugeridos como rendimento aguardando confirmação (RF-148, RF-149) | Painel e pendências |
+| Líder | Diferença entre o saldo final do extrato e o saldo calculado (RF-147) | Painel e conciliação |
 | Líder | Despesa sem nota fiscal há mais de 30 dias (RF-055) | Painel e pendências |
-| Líder | Lembrete mensal para registrar o rendimento | Não previsto no PRD; só faz sentido se Q-02 for lançamento manual. Pergunta na seção 15, item D6 |
+| Líder | Lembrete mensal para importar o extrato ou registrar o rendimento | Não previsto no PRD; só pendência. Pergunta na seção 15, item D6 |
 
 ### 4.8 Caminhos de exceção
 
-- **Extrato importado duas vezes:** nenhuma duplicidade (RF-052).
-- **Valor fracionado:** sem perda de centavos em nenhuma tela ou exportação (RF-050, RN-009, RNF-14).
-- **Rubrica com saldo negativo:** destaque e pendência; o lançamento **não** é impedido (RN-012, RF-053).
-- **Membro (registra) tenta lançar crédito ou rendimento:** recusado conforme a matriz, ou permitido se Q-09 mudar.
+- **Extrato importado duas vezes:** nenhuma duplicidade; a tela diz "extrato já importado: 0 novos lançamentos" (RF-052, RN-041).
+- **Extrato com período sobreposto a outro:** só os lançamentos novos entram; os repetidos são ignorados e contados na tela (RF-052).
+- **Arquivo acima do limite ou formato não reconhecido:** recusado, com o motivo e o limite (RNF-22).
+- **Varredura detecta problema:** o arquivo é recusado, não é guardado como original e a recusa vai para a auditoria (DP-09).
+- **CSV de banco sem mapeamento pronto:** o líder mapeia as colunas à mão e pode lembrar o mapeamento (RF-146); não depende do banco estar na lista de partida (Q-35).
+- **Linha do CSV com data inválida ou valor ilegível:** marcada com erro; o líder corrige o mapeamento ou ignora a linha, que fica listada. Nada é gravado pela metade; relatório das linhas rejeitadas.
+- **Valor fracionado:** sem perda de centavos em nenhuma tela, importação ou exportação (RF-050, RN-009, RNF-14, RNF-24).
+- **Soma de débitos e créditos importados diferente da do arquivo:** não pode ocorrer; o critério de aceite do RF-052 exige igualdade ao centavo (OFX fictício com 3 créditos e 5 débitos).
+- **Diferença entre o saldo do extrato e o saldo calculado:** mostrada em reais com a lista dos lançamentos sem correspondência; a plataforma não corrige sozinha (RF-147).
+- **Débito sem despesa (tarifa, débito não reconhecido):** o líder cria a despesa, liga a uma existente ou justifica; fica nas pendências até resolver (RF-148).
+- **Despesa sem extrato (dinheiro, ainda não compensada, data errada):** pendência "sem extrato"; depois de 30 dias sem motivo, destaque no painel e no checklist (RF-148, Q-48).
+- **Despesa de R$ 300,00 paga em dinheiro:** o líder marca "sem extrato: pagamento em dinheiro" e ela deixa de contar como pendência de conciliação, com o motivo visível `[SUPOSIÇÃO]` do PRD.
+- **Um débito, várias despesas (ou o inverso):** permitido só se as somas fecham `[SUPOSIÇÃO]` (Q-48); do contrário a plataforma recusa a confirmação.
+- **Sugestão errada ou confirmada às pressas:** a pessoa desfaz com motivo; a confirmação e o desfazer ficam na auditoria (RF-147, risco R-17).
+- **Lançamento manual e extrato posterior com o mesmo débito:** a plataforma sugere a conciliação, sem duplicar o lançamento (RF-148).
+- **Crédito sugerido como rendimento que o líder não confirma:** fica "a classificar" e não conta em rendimentos (RF-149).
+- **Extrato reimportado com rendimentos:** o acumulado não dobra (RN-041, RF-149).
+- **Membro (registra) tenta importar extrato, conciliar ou lançar crédito ou rendimento:** ação indisponível `[SUPOSIÇÃO]` do PRD; crédito e rendimento manuais mudam se Q-09 mudar.
 - **Membro (visualiza):** recusado em qualquer escrita.
-- **Lançamento em projeto encerrado:** recusado (RF-004).
-- **Tentativa de usar rendimento como saldo de rubrica:** não existe caminho; é a 2ª versão e exigirá autorização formal registrada (RN-011).
-- **Tentativa de apagar lançamento:** não existe; só estorno (RN-020).
-- **Falha parcial na importação:** nada é gravado pela metade; relatório de linhas rejeitadas `[SUPOSIÇÃO]`, só se Q-02 incluir importação.
+- **Lançamento em projeto encerrado:** recusado (RF-004). **Em atraso da assinatura:** somente leitura, sem apagar dados (RF-104).
+- **Tentativa de usar rendimento como saldo de linha ou classificação:** não existe caminho; é a 2ª versão e exigirá autorização formal registrada (RN-011).
+- **Tentativa de apagar lançamento ou despesa:** não existe; só estorno (RN-020).
 - **Lançamento com data fora da vigência:** o PRD não define. Ver seção 15, item D7.
 - **Mesmo valor, estornado e relançado:** os dois ficam no extrato do projeto, com origem e motivo.
+- **Mês já conferido que recebe nova conciliação ou lançamento:** aceito; a marca vira "reaberto, com pendência" (RN-044, RF-152).
 
 ### 4.9 Rastreio
 
-RF-050 a RF-055, RF-053, RF-054, RF-112 · RN-009, RN-010, RN-011, RN-012, RN-020 · RNF-14 · Q-02, Q-09.
+RF-050 a RF-055, RF-053, RF-054, RF-112, RF-146 a RF-149, RF-152 · RN-009, RN-010, RN-011, RN-012, RN-014, RN-020, RN-039 a RN-042, RN-044 · RNF-14, RNF-22 a RNF-24 · Q-09, Q-35, Q-36, Q-48 (Q-02 resolvida em 25/11/2026).
 
 ---
 
@@ -846,16 +980,16 @@ RF-030 a RF-034, RF-110, RF-111, RF-112, RF-114 · RN-001, RN-002, RN-003, RN-01
 - **Gatilho:** o líder contrata a assinatura do projeto (RF-100). R$ 50,00 por mês, por projeto (RN-017).
 - **Atores:** Líder (contrata, indica o pagador, cancela, vê a situação); Pagador (qualquer PF ou PJ, paga e recebe comprovante; não acessa o projeto, RN-019); Provedor de pagamento (confirma o pagamento por aviso autenticado, RNF-10); Sistema (aplica o efeito de cada situação, RF-104).
 - **Situações do PRD (RF-103):** em teste, ativa, aguardando pagamento, em atraso, cancelada. A situação **encerrada** (projeto encerrado) não consta no RF-103; é acrescentada aqui porque o pedido da T-015 e o RF-104 mencionam o efeito do encerramento. Ver seção 15, item D12.
-- **Efeito de cada situação é configuração (T-802), não regra fixa** (RF-104, RN-018): período de teste, atraso, cancelamento e encerramento. Provedor, meios e nota fiscal dependem de Q-04 (T-801).
+- **Decidido em 25/11/2026 (Q-05, parte de T-802):** **teste de 30 dias**; em **atraso, o projeto fica somente leitura**; **nenhum dado é apagado** por atraso, teste vencido ou cancelamento (RF-103, RF-104, RN-018). O efeito continua sendo configuração, não regra fixa no código. Que o teste conta da contratação, tem as funcionalidades completas e termina em "aguardando pagamento" são `[SUPOSIÇÃO]` do PRD.
+- **Ainda em aberto:** efeito do **cancelamento** e do **encerramento** do projeto sobre a assinatura e prazo de exportação dos dados (Q-12); cobrança depois do fim da vigência (Q-17). **Meios de pagamento decididos (Q-04, parcial):** Pix, boleto ou cartão. **Em aberto:** a **empresa processadora** (T-801) e a nota fiscal.
 
 ### 7.2 Diagrama
 
 ```mermaid
 stateDiagram-v2
     [*] --> SemAssinatura: projeto criado
-    SemAssinatura --> EmTeste: líder contrata e Q-05 define período de teste
-    SemAssinatura --> AguardandoPagamento: líder contrata e não há teste
-    EmTeste --> AguardandoPagamento: termina o teste
+    SemAssinatura --> EmTeste: líder contrata e começa o teste de 30 dias
+    EmTeste --> AguardandoPagamento: terminam os 30 dias de teste
     EmTeste --> Cancelada: líder cancela
     AguardandoPagamento --> Ativa: pagamento confirmado pelo provedor
     AguardandoPagamento --> EmAtraso: passa o vencimento sem pagamento
@@ -870,28 +1004,34 @@ stateDiagram-v2
     EmAtraso --> Encerrada: projeto encerrado
     AguardandoPagamento --> Encerrada: projeto encerrado
     EmTeste --> Encerrada: projeto encerrado
-    Encerrada --> [*]: sem novas cobranças, conforme Q-17 e Q-05
+    Encerrada --> [*]: sem novas cobranças, conforme Q-17 e Q-12
 
+    note right of EmTeste
+        Teste de 30 dias, decidido em 25 11 2026.
+        Início da contagem e funcionalidades
+        completas são SUPOSIÇÃO do PRD.
+    end note
     note right of EmAtraso
-        Efeito sobre o projeto depende de Q-05.
-        Nenhum dado é apagado por atraso.
+        Atraso deixa o projeto somente leitura,
+        decidido em 25 11 2026. Nenhum dado é apagado.
         Pagamento confirmado volta ao normal
-        sem perda de dados (RF-104).
+        sem perda de dados, RF-104.
     end note
     note right of Encerrada
         Cobrança após o fim da vigência
-        depende de Q-17.
+        depende de Q-17. Dados mantidos e exportáveis.
     end note
     note right of Cancelada
         Efeito do cancelamento e prazo para
-        exportar os dados dependem de Q-05.
+        exportar os dados dependem de Q-12.
+        Nenhum dado é apagado.
     end note
 ```
 
 ### 7.3 Passos
 
-1. **Contratar (RF-100).** Líder escolhe o pagador: ele mesmo ou um patrocinador (nome, CPF ou CNPJ, e-mail). Gera-se a cobrança de R$ 50,00; situação "aguardando pagamento" (ou "em teste", se Q-05 definir).
-2. **Enviar a cobrança (RF-101).** O pagador recebe por e-mail ou link enviado pelo líder. Vê só título do projeto, valor, vencimento e meios de pagamento (se Q-18 permitir mais, muda só o que ele vê, não o fluxo). O pagamento ocorre no ambiente do provedor; nenhum dado de cartão passa pela plataforma (RNF-10).
+1. **Contratar (RF-100).** Líder escolhe o pagador: ele mesmo ou um patrocinador (nome, CPF ou CNPJ, e-mail). A assinatura de R$ 50,00 por mês começa "em teste" por **30 dias** `[DECIDIDO 25/11/2026]`; ao fim do teste, a cobrança fica "aguardando pagamento" `[SUPOSIÇÃO]`.
+2. **Enviar a cobrança (RF-101).** O pagador recebe por e-mail ou link enviado pelo líder. Vê só título do projeto, valor, vencimento e meios de pagamento (se Q-18 permitir mais, muda só o que ele vê, não o fluxo). O pagamento é por **Pix, boleto ou cartão** `[DECIDIDO 25/11/2026]` e ocorre no ambiente do provedor; nenhum dado de cartão passa pela plataforma (RNF-10). A empresa processadora segue em aberto (Q-04, T-801).
 3. **Confirmar o pagamento.** O provedor avisa; o aviso é autenticado e **idempotente**. A situação passa a "ativa" em até 5 minutos `[SUPOSIÇÃO]` do PRD; aviso repetido não gera segundo crédito (RF-101).
 4. **Comprovante (RF-102).** Pagador e líder recebem comprovante (e nota fiscal, se Q-04 definir emissão).
 5. **Ciclo mensal.** A cada mês, gera-se nova cobrança para o mesmo pagador; a situação volta a "aguardando pagamento" até a confirmação `[SUPOSIÇÃO]` sobre o desenho do ciclo.
