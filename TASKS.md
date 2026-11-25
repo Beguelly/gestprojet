@@ -36,8 +36,8 @@ Toda tarefa de código só vira `[x]` depois de **testador** e **seguranca** apr
 - [x] ⭐ T-007 · Escrever o PRD (`docs/01-prd.md`) a partir do briefing, com RF/RN e critérios de aceite · analista-produto · Dep.: T-006 · Pronto quando: lista de verificação do prd-builder completa
 - [x] ⭐ T-008 · 🛑 **DECISÃO** · Aprovar o PRD · usuário · Dep.: T-007
 - [x] ⭐ T-007b · PRD v0.2: plano Meta → Etapa → Linha, importação de planilha/PDF/imagem com minuta e OK do líder (linha de base), ajustes versionados, execução mensal, práticas das ISO 21500/21502/21512 em versão enxuta · analista-produto · Dep.: T-008
-- [ ] ⭐ T-008b · 🛑 **DECISÃO** · Aprovar o PRD v0.2 · usuário · Dep.: T-007b
-- [ ] ⭐ T-020 · Revisar `docs/03-ux.md`, `design/`, `docs/04-workflows.md` e `docs/06-seguranca.md` contra o PRD v0.2 (telas de importação, conferência, linha de base, saúde do projeto; selo ISO; segurança dos documentos importados) · designer, analista-produto, seguranca · Dep.: T-008b
+- [x] ⭐ T-008b · 🛑 **DECISÃO** · Aprovar o PRD v0.2 · usuário · Dep.: T-007b
+- [~] ⭐ T-020 · Revisar `docs/03-ux.md`, `design/`, `docs/04-workflows.md` e `docs/06-seguranca.md` contra o PRD v0.2 (telas de importação, conferência, linha de base, saúde do projeto; selo ISO; segurança dos documentos importados) · designer, analista-produto, seguranca · Dep.: T-008b
 - [ ] ⭐ T-021 · 🛑 **DECISÃO** · Aprovar o protótipo atualizado (substitui a avaliação da T-017 sobre as telas novas) · usuário · Dep.: T-020
 - [x] ⭐ T-009 · Requisitos de segurança e LGPD (`docs/06-seguranca.md`): inventário de dados, matriz de permissões (líder concede acesso), RLS, auditoria, segurança da IA · seguranca · Dep.: T-008
 - [x] ⭐ T-010 · 🛑 **DECISÃO** · Stack: confirmar Next.js + Supabase + hospedagem (proposta: Vercel) · usuário · Dep.: T-008
@@ -177,3 +177,5 @@ Toda tarefa de código só vira `[x]` depois de **testador** e **seguranca** apr
 | 25/11/2026 | T-007b | Iniciada: PRD v0.2 delegado ao analista-produto. T-012 (dados da conta), T-019 (escala TRL/MRL) e demais decisões seguem abertas. | — |
 | 25/11/2026 | T-007b | PRD v0.2 escrito pelo analista-produto e **revisado pelo orquestrador** (1.086 linhas): 84 RFs ativos (26 novos, RF-120 a RF-145; RF-023 removido e substituído por RF-138), 38 RNs, 21 RNFs, 34 questões (Q-22 a Q-34 novas), riscos R-09 a R-14. Conferido por contagem: 57 Must; nenhuma afirmação de "conformidade" com normas; ISO 21500:2012 só citada como cancelada; RF-062 (caso real) mantido. Ressalva do analista: leitura de PDF/imagem é a parte mais cara e pode atrasar o piloto (R-10); há caminho mínimo sem IA (planilha ou cadastro manual). Fórmulas dos índices ainda a conferir. | `docs/01-prd.md` |
 | 25/11/2026 | T-008b | **Parada obrigatória 🛑:** aguardando o dono aprovar o PRD v0.2. | — |
+| 25/11/2026 | T-008b | **PRD v0.2 aprovado pelo dono** ("como está"): PDF e imagem permanecem na 1ª versão, como o dono pediu; o risco R-10 (custo/atraso da leitura por IA) segue registrado e o caminho mínimo sem IA fica como plano de corte. As suposições `[SUPOSIÇÃO]` valem até serem corrigidas. | mensagem do dono |
+| 25/11/2026 | T-020 | Iniciada em paralelo: designer → `docs/03-ux.md` e `design/`; analista-produto → `docs/04-workflows.md`; seguranca → `docs/06-seguranca.md`. | — |
