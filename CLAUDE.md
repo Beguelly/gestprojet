@@ -1,4 +1,4 @@
-# Gestprojet
+# GestProjet
 
 Plataforma de gestão de projetos de pesquisa (PD&I): gestão científica, maturidade tecnológica (TRL/MRL), execução financeira e conformidade com instituição e financiador, em uma só plataforma.
 
@@ -20,7 +20,7 @@ A segurança entra desde a etapa 1: rode `security-builder` logo após o PRD par
 
 ## Visão inicial (figura de referência do produto)
 
-- **Nome e slogan:** Gestprojet, "Plataforma de Gestão de Projetos de Pesquisa". Mensagem: do planejamento à prestação de contas, com TRL, MRL, ISO 21500 e evidências técnicas integradas.
+- **Nome e slogan:** GestProjet, "Plataforma de Gestão de Projetos de Pesquisa". Mensagem: do planejamento à prestação de contas, com TRL, MRL, ISO 21500 e evidências técnicas integradas.
 - **Funcionalidades apresentadas:**
   1. Gestão do projeto de pesquisa
   2. Aplicação automática de TRL e MRL
