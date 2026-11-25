@@ -379,7 +379,7 @@ stateDiagram-v2
 
     note right of SemChecagem
         Vai para as pendências do líder e
-        para a auditoria (RN-012).
+        para a auditoria, RN-012.
     end note
     note right of CompradaComPendente
         O PRD não define esta marca.
@@ -429,7 +429,7 @@ stateDiagram-v2
 
     note right of SemNotaHaMaisDe30Dias
         Aparece nas pendências do painel.
-        30 dias é SUPOSIÇÃO do PRD (RF-055).
+        30 dias é SUPOSIÇÃO do PRD, RF-055.
     end note
 ```
 
@@ -2116,7 +2116,7 @@ Alinhado à seção 8.3 de `docs/06-seguranca.md` na v0.2.1. **Renomeados** para
 
 ## Próximo passo
 
-1. Dono revisa este documento junto com as perguntas da seção 15 (em especial D18, D20, D22, D23 e D25) e as dependências da seção 14; responde Q-22 a Q-27, Q-31 e Q-34 do PRD.
-2. `seguranca` valida o catálogo de eventos da seção 16 em `docs/06-seguranca.md`, incluindo a confirmação de envio de documento a provedor de IA (fluxo 8) e os eventos de importação, minuta e leitura por IA.
-3. `designer` usa os estados e as mensagens destes fluxos no mapa de telas (`docs/03-ux.md`): importar, mapear colunas, conferir com a origem ao lado, OK, ajustes, execução mensal, saúde por fase.
-4. T-018: criar as skills de domínio a partir dos fluxos 3, 5, 7, 8, 9 e 10 (`agent-skill-builder`).
+1. Dono revisa as propostas ainda abertas da seção 15.4 (D18, D20, D21, D22, D23 e D24) e as dependências da seção 14.2; responde, em ordem, Q-24 (provedor de IA, contrato e RIPD), Q-04 (empresa processadora, T-801), Q-35 (extrato de exemplo anonimizado de cada banco), Q-12 e Q-37. Q-05, Q-26, Q-27, Q-31, Q-34, Q-38 e Q-40 já foram respondidas em 25/11/2026.
+2. `seguranca` valida o catálogo de eventos da seção 16 em `docs/06-seguranca.md` (repetindo a conferência da seção 8.3 com este documento v0.2.1), incluindo os eventos de extrato e conciliação, a varredura antes de guardar e a leitura por IA desligada (fluxos 4 e 8).
+3. `designer` usa os estados e as mensagens destes fluxos no mapa de telas (`docs/03-ux.md`): importar extrato, mapear colunas do CSV, conciliar, justificar exceções, conferir a minuta por risco e amostra, comparação de nova importação, OK, ajustes, execução mensal, mês conferido, saúde por fase.
+4. T-018: criar as skills de domínio a partir dos fluxos 3, 4, 5, 7, 8, 9 e 10 (`agent-skill-builder`).
