@@ -1,14 +1,18 @@
 # Gestprojet: fluxos de trabalho da 1ª versão
 
-Versão: 0.1 · Data: 2026-11-24 · Status: rascunho (aguarda revisão; tarefa T-015)
+Versão: 0.2 · Data: 2026-11-25 · Status: rascunho (aguarda revisão; tarefa T-020, parte fluxos). A v0.1 era da tarefa T-015.
 
-Fonte: `docs/01-prd.md` v0.1 (aprovado em T-008) e `docs/00-briefing.md`. Este documento descreve **como o trabalho acontece dentro da plataforma** (modo processo da skill `workflow-builder`). Não repete os critérios de aceite do PRD; aponta para eles.
+Fonte: `docs/01-prd.md` v0.2 (aprovado pelo dono, segundo o pedido da T-020; o cabeçalho do arquivo ainda diz "aguarda nova aprovação", T-008b) e `docs/00-briefing.md`. Este documento descreve **como o trabalho acontece dentro da plataforma** (modo processo da skill `workflow-builder`). Não repete os critérios de aceite do PRD; aponta para eles.
 
 ## Como ler
 
 - **Papéis:** Líder, Membro (registra), Membro (visualiza), Pagador, Sistema (regra automática da plataforma), IA (só sugere, RN-014). Os papéis vêm do PRD, seção 3.
-- **Depende de Q-xx:** o fluxo foi desenhado para funcionar com qualquer resposta à questão em aberto (PRD, seção 10). Este documento não escolhe nenhuma opção. A seção 9 resume, por questão, o que muda em cada fluxo.
-- **`[SUPOSIÇÃO]`:** ponto que o PRD não define e que este documento precisou preencher para o fluxo fechar. Vale até o dono corrigir. A seção 10 lista os que viram pergunta ao PRD.
+- **Depende de Q-xx:** o fluxo foi desenhado para funcionar com qualquer resposta à questão em aberto (PRD, seção 10). Este documento não escolhe nenhuma opção. A seção 14 resume, por questão, o que muda em cada fluxo.
+- **`[SUPOSIÇÃO]`:** ponto que o PRD não define e que este documento precisou preencher para o fluxo fechar. Vale até o dono corrigir. A seção 15 lista os que viram pergunta ao PRD.
+- **Mudanças da v0.2 deste documento:** fluxos novos 8 a 12 (importação do plano e linha de base, ajuste versionado, execução mensal e fechamento do período, gestão enxuta, checklist de saúde e fases); fluxos 1, 2, 3 e 4 revisados para o plano Meta → Etapa → Linha. As seções de apoio passaram de 8-12 para 13-17 (decisões humanas, dependências, divergências, catálogo de auditoria, lista de verificação). Os números dos fluxos 1 a 7 não mudaram.
+- **Termos:** "rubrica" nas partes não alteradas lê-se "classificação da despesa" (RN-026). Quem financia é o "financiador"; "pagador" só existe na assinatura (RN-036).
+- **Redação sobre normas:** "alinhado às práticas das ABNT NBR ISO 21500:2021, 21502:2021 e 21512:2026" ou "baseado em". Nunca "conformidade", "certificado" nem selo "ISO 21500" (RN-021). As normas não tratam de classificação da despesa, cotação, TRL/MRL nem regra de financiador.
+- **Marcas do PRD:** `[RF-xxx]` e `[RN-xxx]` são os do PRD v0.2; nenhum foi renumerado aqui.
 - **Eventos de auditoria:** nomes no formato `dominio.acao`, **propostos** para alinhamento com `docs/06-seguranca.md` (T-009). Os eventos marcados "RF-112" estão na lista obrigatória do PRD. Os marcados "proposto" não estão nela e dependem do `seguranca` aceitar. Todo registro de auditoria guarda autor, data e hora, detalhe e, quando couber, valor anterior e novo (RF-112), e é imutável.
 - **Notificações:** o PRD prevê aviso dentro da plataforma (RF-013, RF-103, RF-104) e e-mail em convite e cobrança (RF-030, RF-101, RF-102). Qualquer outro canal ou antecedência abaixo é `[SUPOSIÇÃO]`.
 - **Valores monetários** em centavos inteiros (RN-009); nenhuma etapa usa ponto flutuante.

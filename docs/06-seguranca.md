@@ -1,8 +1,10 @@
 # Gestprojet: segurança e LGPD
 
-Versão: 0.1 · Data: 2026-11-24 · Status: rascunho do agente `seguranca` (T-009), aguarda revisão do dono e revisão jurídica
+Versão: 0.2 · Data: 2026-11-25 · Status: rascunho do agente `seguranca` (T-009, atualizado na T-020), aguarda revisão do dono e revisão jurídica
 
-Fonte: `docs/00-briefing.md` e `docs/01-prd.md` (PRD v0.1, aprovado pelo dono em 24/11/2026, com as suposições vigentes). Este documento não decide nada que o PRD deixou em aberto (seção 10 do PRD, Q-01 a Q-21): onde o requisito depende de uma decisão pendente, aparece "depende de Q-xx" e a questão é repetida na seção 15. Nenhum segredo, chave ou credencial aparece aqui.
+Fonte: `docs/00-briefing.md` e `docs/01-prd.md` (PRD v0.2, tratado aqui como aprovado conforme a instrução da T-020; o cabeçalho do arquivo ainda diz "rascunho", ver divergência DP-01 na seção 15). Este documento não decide nada que o PRD deixou em aberto (seção 10 do PRD, Q-01 a Q-34): onde o requisito depende de uma decisão pendente, aparece "depende de Q-xx" e a questão é repetida na seção 15. Nenhum segredo, chave ou credencial aparece aqui. Prazos legais citados são propostas **a confirmar com revisão jurídica**.
+
+**O que mudou da v0.1 para a v0.2 deste documento:** (a) documentos importados (planilha, PDF, imagem) e sua proteção (seção 11.2, SEG-206 a SEG-217, SEG-237); (b) IA lendo o documento (seção 11.3, SEG-218 a SEG-227); (c) linha de base, ajustes, execução e registros enxutos (seções 11.4 e 11.5, SEG-228 a SEG-236); (d) inventário D-27 a D-37 e ajustes em D-10 a D-14, D-20; (e) matriz de permissões com as linhas 26 a 38; (f) eventos de auditoria novos (8.2) e conferência com `docs/04-workflows.md` (8.3); (g) STRIDE dos módulos novos; (h) incidente de documento importado (SEG-238, SEG-239); (i) QS-01 a QS-10 revistas e QS-11 a QS-18 novas (seção 15); (j) leitura "rubrica" como "classificação da despesa" (RN-026).
 
 ## 0. Como ler
 
@@ -13,14 +15,16 @@ Fonte: `docs/00-briefing.md` e `docs/01-prd.md` (PRD v0.1, aprovado pelo dono em
 
 ## 1. Escopo, premissas e papéis LGPD
 
-**Escopo:** 1ª versão (execução do projeto). Itens da 2ª versão (prestação de contas, relato fotográfico, relatórios por etapa, distribuição de rendimentos, remanejamento) ficam fora; quando entrarem, esta política volta para revisão.
+**Escopo:** camada 1 do PRD v0.2 (1ª versão: plano Meta → Etapa → Linha, importação, linha de base, ajustes, execução mensal, checagem por linha, gestão enxuta, TRL/MRL, busca, assinatura). Itens da camada seguinte (RF-139 a RF-145) e da 2ª versão (prestação de contas, relato fotográfico, relatórios por etapa, distribuição de rendimentos, remanejamento) ficam fora; quando entrarem, esta política volta para revisão.
 
 **Premissas de segurança**
 
 1. A plataforma é web (Next.js + Supabase é a proposta do TASKS.md; a stack só vale após T-010). Os requisitos são escritos para independer da stack, com indicações para PostgreSQL com RLS.
 2. A unidade de isolamento é o **projeto** (RN-022, RF-033). Se a SPEC adotar também organização (`tenant_id`), o isolamento por organização é camada adicional, nunca substitui o isolamento por projeto.
 3. A plataforma não faz compras nem pagamentos a fornecedores e não guarda dados de cartão (RNF-10, seção 4.3 do PRD).
-4. Não se prevê tratamento de dados pessoais **sensíveis** (art. 5º, II da LGPD) nem de crianças. Anexos enviados pelo usuário podem conter dado pessoal incidental; ver SEG-070.
+4. Não se prevê tratamento de dados pessoais **sensíveis** (art. 5º, II da LGPD) nem de crianças. Anexos e documentos importados enviados pelo usuário podem conter dado pessoal incidental (nomes, CPF de signatários, fotos com localização); ver SEG-070, SEG-213 e SEG-237.
+5. `[NOVO v0.2]` Os arquivos importados (RF-123 a RF-125) são **entrada não confiável** do usuário: o arquivo pode ser malicioso, o conteúdo pode conter injeção de prompt e a leitura por IA pode errar. Por isso o fluxo é: quarentena e varredura, leitura em ambiente isolado, minuta sem efeito (RN-030), conferência humana e OK do líder (RN-031). Nenhum desses controles é opcional.
+6. `[NOVO v0.2]` PDF e imagem do plano **saem da plataforma** rumo a um provedor externo de IA (RN-035, T-304). Enquanto Q-24 (provedor, contrato, região) estiver em aberto, a leitura por IA fica **desligada** (SEG-222). Planilha e cadastro manual não dependem disso.
 
 **Papéis LGPD (a confirmar por contrato e revisão jurídica)**
 
@@ -29,7 +33,9 @@ Fonte: `docs/00-briefing.md` e `docs/01-prd.md` (PRD v0.1, aprovado pelo dono em
 | Conta de usuário, autenticação, segurança, cobrança | Controladora | Gestprojet | Dados do próprio relacionamento com o cliente |
 | Dados do projeto, equipe, regras, financeiro, TRL/MRL, anexos | Operadora | Líder (PF) ou instituição executora | A definição depende do contrato: o PRD atende "pesquisadores de qualquer instituição" e o líder responde pessoalmente. Pode ser que o líder PF seja o controlador, ou que a instituição seja. **A confirmar.** |
 | Dados de pagador e cobrança | Controladora (a confirmar) | Gestprojet, com o provedor de pagamento como operador ou controlador próprio (depende de Q-04) | |
-| Registros enviados a provedores de IA e de busca | Suboperador (provedor) sob a Gestprojet | conforme linha de dados do projeto | Exige contrato (SEG-089, SEG-126) |
+| Registros enviados a provedores de IA e de busca | Suboperador (provedor) sob a Gestprojet | conforme linha de dados do projeto | Exige contrato (SEG-089, SEG-126, SEG-222) |
+| `[NOVO v0.2]` Documentos importados (plano aprovado em planilha, PDF, imagem), minutas, linha de base, ajustes, execução | Operadora (mesma proposta dos dados do projeto) | Líder (PF) ou instituição executora; a confirmar | O documento pertence ao financiador e à instituição; pode haver cláusula de sigilo no termo (QS-12). O envio à IA é tratamento por suboperador: o controlador precisa estar ciente e o contrato prever isso (SEG-240). |
+| `[NOVO v0.2]` Terceiros que aparecem em documentos e registros (signatários, partes interessadas, fornecedores) | Operadora; o titular não tem relação com a Gestprojet | Líder ou instituição, a confirmar | Atendimento de direitos por coordenação com o controlador (SEG-241) |
 
 ## 2. Inventário de dados (LGPD)
 
@@ -46,17 +52,17 @@ Base legal: **proposta**, citada pelo artigo da Lei 13.709/2018 (art. 7º; art. 
 | D-07 | Cobranças e comprovantes: valor, vencimento, situação, ID do provedor, histórico | Financeiro | Assinatura (RF-100 a RF-105) | Art. 7º, V e II | Banco e provedor (Q-04) | Líder; pagador (só a própria cobrança) | Igual a D-06 | Igual a D-06 |
 | D-08 | Dados de cartão (número, validade, código) | Financeiro | **Não tratados** | n/a | Só no ambiente do provedor (RNF-10) | n/a | n/a | n/a |
 | D-09 | Dados do projeto: título, instituição, financiador, edital, termo, vigência, valor aprovado | Financeiro e sigiloso | Gestão do projeto (RF-001) | Art. 7º, V | Banco | Líder e membros | Enquanto existir; depois, Q-12 | Conforme política de retenção (SEG-087) |
-| D-10 | Plano de trabalho, metas, tarefas, riscos, marcos, nomes dos responsáveis | Sigiloso (pesquisa) e pessoal (responsável) | Execução do projeto | Art. 7º, V | Banco | Líder e membros (escrita só para "registra") | Igual a D-09 | Igual a D-09 |
-| D-11 | Partes interessadas: nome, papel, contato (RF-021) | Pessoal de terceiros | Gestão ISO 21500 | Art. 7º, IX e V | Banco | Líder e membros do projeto | Igual a D-09 | Igual a D-09; o terceiro não é usuário (SEG-086) |
+| D-10 `[ALTERADO v0.2]` | Estrutura operacional do plano: etapas (datas, responsável, situação), tarefas, marcos, medida de progresso, nomes dos responsáveis | Sigiloso (pesquisa) e pessoal (responsável) | Execução do projeto | Art. 7º, V | Banco | Líder e membros (escrita só para "registra", só dados operacionais, RF-010) | Igual a D-09 | Igual a D-09 |
+| D-11 `[ALTERADO v0.2]` | Partes interessadas: nome, papel, interesse, contato, forma e frequência de comunicação (RF-021) | Pessoal de terceiros | Gestão do projeto (práticas da NBR ISO 21502) | Art. 7º, IX e V | Banco | Líder e membros do projeto | Igual a D-09 | Igual a D-09; o terceiro não é usuário (SEG-086, SEG-241) |
 | D-12 | Edital, termo de outorga e aditivos em PDF | Sigiloso/contratual; pode conter nomes e CPF de signatários | Fonte das regras (RF-040) | Art. 7º, V | Armazenamento privado de arquivos | Líder e membros | Igual a D-09 | Igual a D-09 |
 | D-13 | Regras do edital e suas versões, com fonte (cláusula e página) | Contratual | Checagem (RF-041, RF-042) | Art. 7º, V | Banco (imutável por versão) | Líder e membros | Igual a D-09; versões não se apagam (RN-020) | Igual a D-09 |
-| D-14 | Orçamento por rubrica, lançamentos (débito, crédito, rendimento), saldo | Financeiro | Execução financeira (RF-050 a RF-054) | Art. 7º, V; II quando exigido para prestação de contas | Banco (valores em centavos) | Líder (tudo); "registra" (despesas); "visualiza" (leitura, ver QS-03) | Igual a D-09; imutável (RN-020) | Igual a D-09 |
+| D-14 `[ALTERADO v0.2]` | Orçamento por classificação (soma das linhas, RF-050), lançamentos (débito, crédito, rendimento) com vínculo à linha, saldo | Financeiro | Execução financeira (RF-050 a RF-054, RF-130) | Art. 7º, V; II quando exigido para prestação de contas | Banco (valores em centavos) | Líder (tudo); "registra" (despesas); "visualiza" (leitura, ver QS-03) | Igual a D-09; imutável (RN-020) | Igual a D-09 |
 | D-15 | Comprovantes e cotações: nota fiscal, cotação, comprovante de pagamento | Financeiro; pessoal quando o fornecedor é PF | Comprovação (RF-055, RF-060) | Art. 7º, V e IX | Armazenamento privado, hash SHA-256 | Líder e membros | Igual a D-09 | Igual a D-09 |
 | D-16 | Fornecedor em cotação: nome, CPF/CNPJ | Pessoal quando PF | Validar cotações (RN-008) | Art. 7º, IX | Banco, CPF/CNPJ com criptografia por campo e identificador HMAC para comparar | Líder e membros | Igual a D-09 | Igual a D-09 |
 | D-17 | Checagens: item, valor, cotações, versão das regras, resultado, motivos, superação | Financeiro | Checagem antes da compra (RF-060 a RF-066) | Art. 7º, V | Banco (imutável) | Líder e membros | Igual a D-09; imutável (RF-064) | Igual a D-09 |
 | D-18 | Evidências e avaliações TRL/MRL, justificativas | Sigiloso (resultado de pesquisa, possível propriedade intelectual) | Maturidade tecnológica (RF-070 a RF-074) | Art. 7º, V | Banco e armazenamento privado | Líder e membros | Igual a D-09 | Igual a D-09 |
 | D-19 | Palavras-chave, publicações salvas e anotações | Baixa sensibilidade; palavras-chave podem revelar tema sigiloso | Busca científica (RF-080 a RF-083) | Art. 7º, V | Banco | Líder e membros | Igual a D-09 | Igual a D-09 |
-| D-20 | Registros de IA: prompt, trecho enviado, modelo, saída, quem aceitou | Pode conter trechos de D-12 e D-18 | Rastrear sugestões (RF-090, RN-014) | Art. 7º, V e IX | Banco | Líder (aceites); equipe de segurança em investigação | Depende de Q-12 | Igual a D-09 |
+| D-20 `[ALTERADO v0.2]` | Registros de IA: prompt, trecho enviado, modelo e versão, saída, quem aceitou; inclui as leituras do plano (D-32) | Pode conter trechos de D-12, D-18 e D-27 | Rastrear sugestões (RF-090, RN-014, RNF-21) | Art. 7º, V e IX | Banco | Líder (aceites); equipe de segurança em investigação | Depende de Q-12 | Igual a D-09 |
 | D-21 | Trilha de auditoria (seção 8) | Pessoal (autor) e financeiro | Rastreabilidade (RF-112) | Art. 7º, II, V, VI e IX | Banco append-only | Líder (filtrada pelo projeto); equipe de segurança em investigação | Mínimo enquanto o projeto existir; depois, Q-12 | Não se apaga; autor pseudonimizado se houver eliminação (SEG-084) |
 | D-22 | Aceite de termos e política: versão, data, IP | Pessoal | Prova do aceite | Art. 7º, VI e V | Banco | Equipe de segurança/jurídico | Enquanto a conta existir e prazo de prova a confirmar | Eliminação ao fim do prazo |
 | D-23 | Arquivos de exportação (RF-106, RF-113) | Cópia de dados do projeto ou do titular | Entrega ao titular ou ao líder | Art. 7º, V e art. 18 | Armazenamento temporário privado | Quem pediu | Expira em até 24 h (proposta, SEG-160) | Apagado no vencimento |
