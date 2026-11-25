@@ -196,4 +196,82 @@ sequenceDiagram
 **Domínios fechados:** colunas `text` com `check (col in (...))` em vez de tipos `enum` nativos (migração mais simples). A lista de valores está em 4.2.
 
 ---
-<!-- FIM-PARTE-1 -->
+## 3. Módulos, motores e responsabilidades
+
+### 3.1 Componentes e requisitos atendidos (RF e RN → componente)
+
+Cada componente é um módulo do monólito (pasta própria em `packages/dominio` e casos de uso). Os testes de cada um estão na seção 8. "Épico" refere-se à seção 10.
+
+| ID | Componente | Responsabilidade | RF | RN | Épico |
+|---|---|---|---|---|---|
+| C-IDN | Identidade e acesso | Cadastro, login, recuperação, MFA TOTP, passo-a-cima (step-up), sessão, limite de taxa; rotas próprias de autenticação | RF-110, RF-111 | n/a | E01 |
+| C-PRJ | Projetos e equipe | Cadastro do projeto, painel, fases, encerramento, convites, níveis, revogação, transferência de liderança, "quem aprova mudanças" | RF-001 a RF-004, RF-020, RF-030 a RF-034, RF-114, RF-151 | RN-001, RN-002, RN-003, RN-048, RN-050 | E01, E02 |
+| C-DAD | Camada de dados e RLS | Políticas por projeto, funções privadas de pertencimento, privilégios, triggers de imutabilidade e de somente leitura, índices | RF-033 | RN-020, RN-022 | E01 |
+| C-ARQ | Arquivos e documentos | Registro de arquivo, quarentena, hash, URL assinada, edital e termo, comprovantes, retenção e descarte | RF-040, RF-055 (anexos), RF-125 (original), RNF-12 | RN-020, RN-035 | E03 |
+| C-REG | Regras e classificações | Classificação da despesa configurável, regras com fonte e versões, confirmação pelo líder, enquadramento | RF-041 a RF-043, RF-066, RF-121 | RN-004, RN-005, RN-007, RN-008, RN-026 | E03 |
+| C-PLN | Plano e linha de base | Minuta, conferência, validações, OK, versões imutáveis, ajustes, comparação, medida de progresso, marcos, tarefas | RF-010 a RF-013, RF-120, RF-122, RF-126 a RF-129, RF-132, RF-135, RF-150 | RN-025, RN-027, RN-028, RN-030, RN-031, RN-033, RN-037, RN-045, RN-047, RN-050, RN-053 | E10, E11 |
+| C-IMP | Importação e leitura | Pipeline de arquivo, leitura de planilha e (desligada) de PDF e imagem, derivados, origem de cada campo | RF-123, RF-124 | RN-030, RN-035 | E10, E15 |
+| C-IA | Adaptador de IA | `IaPort`, esquema de saída, limites e custo, registro de cada chamada, chave de feature flag | RF-043, RF-067, RF-090, RF-091, RF-153 | RN-014, RN-015, RN-051 | E15 |
+| C-EXE | Execução e despesas | Despesa, estorno, comprovante, resumo mensal, "sem execução", painel previsto × executado, marca de mês conferido, rendimentos manuais | RF-050, RF-051, RF-053, RF-054, RF-055, RF-130, RF-131, RF-152 | RN-009, RN-010, RN-011, RN-012, RN-032, RN-038, RN-044, RN-046 | E04, E12 |
+| C-CHK | Checagem antes da compra | Motor de checagem, cotações, registro imutável, superação de bloqueio | RF-060 a RF-065 | RN-006, RN-008, RN-012, RN-013, RN-024, RN-029, RN-043 | E05 |
+| C-EXT | Extrato e conciliação | Conta, importação OFX e CSV, mapeamento, deduplicação, conciliação, exceções, rendimentos do extrato | RF-052, RF-146 a RF-149 | RN-039, RN-040, RN-041, RN-042 | E13 |
+| C-MAT | Maturidade TRL e MRL | Escala configurável, critérios "a validar", evidências, proposta, nível oficial, histórico | RF-070 a RF-074 | RN-016, RN-052 | E06 |
+| C-GES | Gestão enxuta e saúde | Riscos, questões, partes interessadas, calendário, lições, justificativa, checklist de saúde por fase | RF-020 a RF-024, RF-133 a RF-138 | RN-021, RN-033, RN-034, RN-049 | E14 |
+| C-BUS | Busca científica | Palavras-chave, busca nas fontes, deduplicação por DOI, marcas | RF-080 a RF-083 | RN-023 | E07 |
+| C-ASS | Assinatura e cobrança | Assinatura por projeto, pagador, cobrança, webhook, efeito da situação, teste de 30 dias | RF-100 a RF-105 | RN-017, RN-018, RN-019 | E08 |
+| C-AUD | Auditoria | Cadeia de eventos com hash, registro transacional, consulta do líder, verificação periódica | RF-112 | RN-020 | E01 |
+| C-LGPD | Titular e exportação | Exportação do projeto, direitos do titular, aceite de termos, retenção | RF-106, RF-113 | RN-020 | E09, E08 |
+| C-CRI | Criptografia e segredos | Cifra por campo, HMAC, chaves por ambiente, mascaramento | n/a | n/a | E01 |
+| C-OPS | Operação | Feature flags, jobs, retenção, backup, observabilidade, alertas, console de operação | RF-153, RNF-04, RNF-06 | RN-051 | E01, E09 |
+| C-UI | Interface | Telas T01 a T49 de `docs/03-ux.md`, componentes, acessibilidade | todos | RN-021, RN-036 | todos |
+
+Regra de dependência entre módulos: os módulos **não** acessam tabelas uns dos outros; falam por casos de uso do módulo dono do dado. Exceções documentadas: `C-PLN` e `C-EXE` compartilham `linha_uid` (identidade da linha); `C-CHK` lê regras (C-REG), linha de base (C-PLN) e saldo (C-EXE) por funções de leitura.
+
+### 3.2 Camadas e responsabilidades
+
+- **Domínio** (`packages/dominio`): funções puras (centavos, somas, validações da minuta, motor de checagem, sugestão de conciliação, proposta de nível, progresso, saúde, serialização canônica e hash). Sem acesso a rede, banco, relógio ou aleatoriedade (recebem tudo por parâmetro, o que torna os testes determinísticos).
+- **Aplicação** (casos de uso): abre a transação, carrega o contexto, chama o domínio, grava por funções do banco e **emite o evento de auditoria na mesma transação** (SEG-103). Uma função de aplicação por rota da seção 5.
+- **Dados**: tabelas, políticas, funções e triggers (seção 4). Operações **críticas** (OK da linha de base, ajuste vigente, confirmação de importação de extrato, conciliar, fechar período, registrar checagem, aplicar evento de pagamento) são funções `private.fn_*` com `SECURITY DEFINER`, `set search_path = ''`, verificação explícita de `auth.uid()`, papel, MFA recente e "projeto gravável", e `EXECUTE` concedido **só** ao papel `app_server`.
+- **Adaptadores**: implementam as portas (7.8); trocar fornecedor não toca domínio nem aplicação.
+
+### 3.3 Motores de domínio (regras de cálculo normativas)
+
+**3.3.1 Motor de checagem (RF-060 a RF-064, RN-006, RN-029, RN-043).** Entrada: item (categoria escolhida da lista ou "não encontrei"), valor estimado em centavos, quantidade, data prevista, etapa e linha escolhidas (ou "não encontrei linha"), declaração de correspondência, cotações; contexto lido de forma consistente: regras **confirmadas** na versão vigente, linha de base vigente **íntegra** (ou ausência de OK), saldo da linha, vigência do projeto. Oito verificações, cada uma com resultado `passou`, `bloqueou`, `pendente` ou `nao_verificada`, motivo em linguagem simples e fonte da regra (documento, cláusula, página):
+
+| # | Verificação | Passa | Bloqueia | Pendente | Sem OK da linha de base |
+|---|---|---|---|---|---|
+| 1 | Plano | há linha de base vigente | n/a | não há OK (RN-029) | vira aviso |
+| 2 | Item | permitido pelas regras confirmadas | vedado | fora das regras, ou regra não confirmada que afetaria o caso | continua feita |
+| 3 | Linha e objeto | linha da etapa informada e declaração registrada | n/a | "não encontrei linha" (saída: pedir ajuste, Q-31) | `nao_verificada` |
+| 4 | Classificação | a da linha é a admitida para o item (ou a regra não restringe) | outra classificação (indica a correta) | n/a | `nao_verificada` |
+| 5 | Saldo da linha | valor estimado ≤ saldo (RN-010) | maior que o saldo | n/a | `nao_verificada` |
+| 6 | Cotações | válidas distintas (RN-008) ≥ mínimo da faixa; ou "não exige" explícito | menos que o mínimo | nenhuma regra de cotação cadastrada | continua feita |
+| 7 | Limites | dentro dos limites cadastrados | acima de limite | n/a | continua feita |
+| 8 | Vigência | data prevista dentro da vigência | fora (RN-024) | n/a | continua feita |
+
+**Resultado:** `bloqueado` se qualquer verificação bloqueou; senão `pendente` se alguma ficou pendente (inclui "plano sem aprovação" quando nada bloqueia); senão `permitido`. O aviso "plano sem aprovação: linha, classificação e saldo da linha não foram verificados" acompanha qualquer resultado quando não há OK. A faixa de cotação respeita o campo `limite_inclusivo` da regra; cotações do mesmo fornecedor (mesmo HMAC de CPF/CNPJ ou, sem documento, mesmo nome normalizado) contam como uma (RN-008, `[SUPOSIÇÃO]` do PRD). A checagem **não reserva saldo** (RN-010). O resultado, as oito verificações, as versões de regra e de linha de base e a declaração ficam **imutáveis** (RF-064).
+
+Vetores de teste obrigatórios (RF-062, D25): (1) vedado + 1 de 3 cotações, com OK → `bloqueado` com 2 motivos; (2) o mesmo com 3 cotações → `bloqueado` só "item vedado"; (3) o mesmo **sem OK** → `bloqueado` com os 2 motivos e o aviso de plano; (4) permitido + 2 de 3 cotações → `bloqueado` só por cotações; (5) permitido + 3 cotações + **sem OK** → `pendente: plano sem aprovação`; (6) saldo R$ 500,00 e checagem R$ 500,00 → passa; R$ 500,01 → bloqueia; (7) limite inclusivo e exclusivo na fronteira da faixa; (8) duas das três cotações do mesmo fornecedor → conta 2.
+
+**3.3.2 Saldo e execução (RN-010, RN-032, RN-038, RN-046).** `saldo_linha(linha_uid) = valor_aprovado na versão vigente − Σ despesas da linha + Σ estornos`, calculado em transação com bloqueio da linha de identidade (`FOR UPDATE` em `plano_linha`, SEG-066, SEG-233). Executado da linha no mês = Σ despesas com data no mês + resumo vigente do mês **se não houver despesa detalhada** (o resumo substituído não entra na soma, por regra do banco). Trimestre = soma de três meses de calendário (`[SUPOSIÇÃO]`, Q-22). Totais de etapa, meta e projeto são sempre calculados (RN-025).
+
+**3.3.3 Validações da minuta (RF-127).** Executadas no servidor a cada alteração e **recalculadas no OK** (SEG-230). `impede` o OK: classificação fora da lista; valor ausente, zero, negativo, texto, notação científica ou `null` (a checagem é feita sobre o inteiro em centavos). Exigem `ciente` com justificativa: (a) soma ≠ total impresso, com a diferença em reais; classificação inconsistente (mesmo objeto normalizado com classificações diferentes em etapas diferentes, RN-037); duplicidade (mesma etapa, classificação, objeto normalizado e valor); períodos inconsistentes (repetido, fora de ordem, mês faltando ou fora da vigência); total ilegível (referência quebrada). Baixa confiança (< 0,80, configurável) → linha de risco, conferência obrigatória. Normalização do objeto para comparar: minúsculas, sem acentos, espaços colapsados.
+
+**3.3.4 Conferência obrigatória (RF-126, RN-053, SEG-266).** A origem da minuta (`ia`, `planilha`, `manual`) é gravada pelo servidor. `ia`, ou **qualquer linha vinda de IA** (minuta mista, comparação), exige 100% das linhas conferidas uma a uma, sem "marcar todas". `planilha` e `manual`: linhas de risco (baixa confiança, alerta, valor ou classificação corrigidos) + as 5 de maior valor + amostra de 20% das demais (mínimo 5; todas se forem menos de 5), sorteada por gerador criptograficamente seguro no servidor, com a **semente e o hash da minuta gravados**; a amostra é fixa por versão da minuta; correção que cria nova linha de risco acrescenta à lista. Parâmetros configuráveis (`conferencia.*` em `config_plataforma`). Cada conferência é um registro por linha (autor, hora, "origem exibida"); o OK é recusado se faltar linha obrigatória (verificado no servidor, nunca por marca do cliente).
+
+**3.3.5 Progresso (RF-132, RN-033).** Etapa: `marcos` = concluídos ÷ total; `zero_cem` = 0 ou 100; `percentual_estimado` = valor informado, rotulado "estimado" com data. Meta = média simples das etapas **com medida definida**; projeto = média simples das metas (`[SUPOSIÇÃO]`, Q-29). Etapa sem medida não entra e vira pendência.
+
+**3.3.6 Sugestão de conciliação (RF-147, RN-040, SEG-255, SEG-251).** Determinística, no servidor, sem IA. Para cada débito sem despesa conciliada: candidatos = despesas não estornadas do mesmo projeto com valor igual (tolerância configurável, padrão 0) e data dentro da janela (padrão 5 dias, `[SUPOSIÇÃO]` Q-48); pontuação por similaridade de descrição (interseção de termos normalizados, sem dado pessoal em log); motivos legíveis ("mesmo valor; data 2 dias antes; fornecedor igual"; "valor e data conferem; descrição diferente"). Sem candidato 1:1, tenta combinações de até 4 despesas cuja soma feche ao centavo (e o inverso, vários débitos para uma despesa). A sugestão **nunca grava** par; a confirmação é por par, pelo líder (3.3.7).
+
+**3.3.7 Regras de gravação da conciliação.** Na confirmação, a função verifica no banco: mesmo projeto; nenhum registro estornado; soma dos valores ligados fecha ao centavo; o lançamento não é ligado além do que fecha; `FOR UPDATE` nos registros; valor e data de nenhum dos dois mudam.
+
+**3.3.8 Crédito e rendimento (RF-149, RN-042).** Sugestão por termos configuráveis na descrição do banco (`extrato.termos_rendimento`); só vale com confirmação do tipo (`rendimento`, `parcela_recebida`, `outro`) pelo líder; mudança de tipo cria novo registro de histórico com motivo. O rendimento **nunca** altera saldo de linha nem de classificação (verificação no banco e teste); não existe rota nem função de "destinação".
+
+**3.3.9 Proposta de nível TRL e MRL (RF-072).** Por escala: nível proposto = maior N tal que todos os critérios dos níveis 1 a N têm ao menos uma evidência ligada ativa; lacunas = critérios do nível N+1 sem evidência. Se algum critério considerado estiver "a validar", a proposta leva o aviso `baseada_em_criterios_a_validar` (RF-072). A proposta não é nível oficial; só o líder confirma (RN-016). IA, quando ligada, apenas acrescenta citações às evidências. *Divergência registrada na seção 11.1 (PRD 5.8 × RF-072).*
+
+**3.3.10 Saúde do projeto (RF-138, RN-034, RN-049).** Cada item do catálogo tem fase, tipo [A] (calculado por função SQL de leitura) ou [L] (última resposta do líder) e retorna **três estados distintos**: `atendido`, `nao_atendido`, `nao_verificavel` (com motivo e dependência, ex.: "depende de Q-12"). `nao_verificavel` nunca entra como atendido em total, painel ou exportação (SEG-236). Nada muda de estado por o checklist estar completo; não há código que leia o checklist como condição de operação (teste).
+
+**3.3.11 Hash e serialização canônica (SEG-229).** Uma só implementação, **no banco**, para hash de versão da linha de base e de evento de auditoria: texto canônico = campos em ordem fixa documentada, valores `jsonb::text` (chaves ordenadas pelo Postgres), `NULL` representado por marcador fixo, inteiros sem formatação; hash `sha256`. Verificações periódicas usam a mesma função.
+
+---
+<!-- FIM-PARTE-2 -->
