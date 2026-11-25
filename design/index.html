@@ -1811,11 +1811,12 @@ body.sub-atraso .btn[data-write] { background: var(--c-surface-2); color: var(--
   <nav class="seg subnav" data-sub="plan" aria-label="Planejamento"></nav>
 
   <div class="stack">
+    <div class="banner info membro-only" role="note"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg><div><b>Você vê o plano, mas não muda datas de etapa nem valores da linha de base.</b> Só o líder muda, por ajuste. Você atualiza situação, andamento, entregas e tarefas.</div></div>
     <div class="banner warn if-semok" role="status"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg><div><b>Este plano ainda é uma minuta.</b> Confira cada linha com o documento de origem ao lado e dê o OK para travar a linha de base v1.<br><a class="btn" href="#/conferir">Conferir a minuta</a></div></div>
 
     <div class="grid g-2">
       <section class="card" aria-labelledby="h-lb">
-        <div class="card-head"><h2 id="h-lb">Linha de base</h2><a href="#/ajustes">Ajustes e versões</a></div>
+        <div class="card-head"><h2 id="h-lb">Linha de base</h2><a class="lider-only" href="#/ajustes">Ajustes e versões</a></div>
         <dl class="facts">
           <dt>Versão vigente</dt><dd>v2, desde 12/11/2026</dd>
           <dt>Decisor</dt><dd>Líder (exemplo)</dd>
@@ -1921,9 +1922,10 @@ body.sub-atraso .btn[data-write] { background: var(--c-surface-2); color: var(--
           <li><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Concluído</span><div class="txt"><b>30/09/2026</b> · Formulação 2 validada</div></li>
           <li><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Prevista</span><div class="txt"><b>15/12/2026</b> · Relatório de formulação ao financiador</div></li>
         </ul>
+        <div class="row" style="margin-top:var(--s-3)"><button class="btn ghost" type="button" data-write data-demo="Exemplo: o marco não foi marcado.">Marcar o marco de 15/12/2026 como concluído</button></div>
         <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Membro com nível &quot;registra&quot; marca marcos concluídos; só o líder escolhe a medida.</p>
       </section>
-      <section class="card" aria-labelledby="h-med">
+      <section class="card lider-only" aria-labelledby="h-med">
         <div class="card-head"><h2 id="h-med">Definir a medida da etapa 2.2</h2></div>
         <form class="stack" novalidate>
           <fieldset>
@@ -1949,7 +1951,7 @@ body.sub-atraso .btn[data-write] { background: var(--c-surface-2); color: var(--
 <!-- =====================================================
      5c. IMPORTAR O PLANO (escolha, mapeamento, leitura, erro)
      ===================================================== -->
-<section class="screen" id="s-importar" data-title="Importar o plano" aria-labelledby="h-imp">
+<section class="screen lider" id="s-importar" data-title="Importar o plano" aria-labelledby="h-imp">
   <header>
     <div>
       <p class="crumb">Projeto Exemplo · Planejamento · <span class="tag-example">EXEMPLO</span></p>
@@ -1957,11 +1959,13 @@ body.sub-atraso .btn[data-write] { background: var(--c-surface-2); color: var(--
       <p>Envie o plano aprovado pelo financiador. A plataforma monta uma minuta, você confere cada linha com o documento ao lado e dá o OK. Nada vale antes disso.</p>
     </div>
   </header>
+  <div class="banner info membro-only" role="note"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg><div><b>Só o líder importa, confere, dá o OK e pede ajuste do plano.</b> Você vê o plano e o progresso. <a href="#/plano">Voltar ao plano</a></div></div>
   <nav class="seg subnav" data-sub="plan" aria-label="Planejamento"></nav>
   <nav class="seg" id="segImp" aria-label="Estados da importação (exemplos)" style="margin-bottom:var(--s-5)">
     <a href="#/importar/escolher" data-i="escolher">Exemplo: escolher o arquivo</a>
     <a href="#/importar/mapear" data-i="mapear">Exemplo: mapear colunas (planilha)</a>
-    <a href="#/importar/lendo" data-i="lendo">Exemplo: lendo o PDF</a>
+    <a href="#/importar/lendo" data-i="lendo">Exemplo: lendo o PDF (quando a IA for ligada)</a>
+    <a href="#/importar/comparar" data-i="comparar">Exemplo: novo arquivo depois do OK (comparação)</a>
     <a href="#/importar/erro" data-i="erro">Exemplo: erros</a>
   </nav>
 
@@ -1978,24 +1982,24 @@ body.sub-atraso .btn[data-write] { background: var(--c-surface-2); color: var(--
         <legend>Que tipo de arquivo você tem?</legend>
         <div class="choices" style="margin-top:var(--s-3)">
           <label class="choice"><input type="radio" name="fmt" value="xlsx" checked><span><b>Planilha</b><small>XLSX ou CSV. Leitura direta na plataforma, sem IA.</small></span></label>
-          <label class="choice"><input type="radio" name="fmt" value="pdf"><span><b>PDF com texto</b><small>Leitura por IA: texto do PDF.</small></span></label>
-          <label class="choice"><input type="radio" name="fmt" value="img"><span><b>PDF escaneado ou foto</b><small>Leitura por IA: reconhecimento do texto na imagem (JPG, PNG).</small></span></label>
+          <div class="choice off" role="group" aria-labelledby="off-pdf" aria-describedby="off-pdf-h"><span><b id="off-pdf">PDF com texto <span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg>Indisponível agora</span></b><small id="off-pdf-h">A leitura por IA está desligada. Use planilha ou cadastre à mão.</small></span></div>
+          <div class="choice off" role="group" aria-labelledby="off-img" aria-describedby="off-img-h"><span><b id="off-img">PDF escaneado ou foto <span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg>Indisponível agora</span></b><small id="off-img-h">A leitura por IA está desligada. Use planilha ou cadastre à mão.</small></span></div>
         </div>
       </fieldset>
       <div class="field">
         <label for="f-arq">Arquivo do plano</label>
         <input id="f-arq" type="file" aria-describedby="f-arq-h">
-        <span class="help" id="f-arq-h">Limites: planilha até 10 MB e 2.000 linhas · PDF até 25 MB e 50 páginas · imagem até 25 MB, no máximo 10 imagens. Os limites ainda serão confirmados (Q-23).</span>
+        <span class="help" id="f-arq-h">Limite da planilha: até 10 MB e 2.000 linhas. Quando a leitura por IA for ligada: PDF até 25 MB e 50 páginas, imagem até 25 MB e no máximo 10 imagens. Os limites ainda serão confirmados (Q-23). Todo arquivo só é guardado depois da verificação de segurança; um arquivo com problema é recusado.</span>
       </div>
-      <div class="banner info" role="note">
-        <svg class="i" aria-hidden="true"><use href="#i-info"/></svg>
-        <div><b>PDF e imagem são lidos por IA, fora da plataforma.</b> O conteúdo do arquivo é enviado a um provedor externo de IA, só o necessário e sob contrato que proteja os dados do projeto (provedor e contrato ainda a definir: Q-24). O texto do documento é tratado só como dado. Planilha é lida aqui, sem IA, e macros nunca são executadas.</div>
+      <div class="banner warn" role="status">
+        <svg class="i" aria-hidden="true"><use href="#i-lock"/></svg>
+        <div><b>A leitura de PDF e imagem por IA está desligada.</b> Nenhum conteúdo do projeto é enviado a provedor externo de IA. A equipe da Gestprojet só liga a leitura quando houver contrato com o provedor de IA e a avaliação de impacto à proteção de dados (RIPD) estiver concluída; você não precisa fazer nada para isso (Q-24). <b>Enquanto isso, planilha e cadastro à mão cobrem o fluxo inteiro:</b> a conferência, o OK e a linha de base funcionam do mesmo jeito. Só tem o PDF? Copie os dados para uma planilha ou use o cadastro à mão. Planilha é lida aqui, sem IA, e macros nunca são executadas.</div>
       </div>
       <div class="row">
         <button class="btn accent lg" type="button" data-write data-demo="Exemplo: nenhum arquivo foi enviado."><svg class="i" aria-hidden="true"><use href="#i-upload"/></svg>Enviar e ler o arquivo</button>
         <a class="btn ghost lg" href="#/plano">Cadastrar o plano à mão</a>
       </div>
-      <p class="muted">O cadastro à mão gera a mesma minuta e passa pelas mesmas conferências e pelo mesmo OK. Sem IA disponível, ele e a planilha continuam funcionando.</p>
+      <p class="muted">O cadastro à mão gera a mesma minuta e passa pelas mesmas conferências e pelo mesmo OK. Ele e a planilha não dependem de IA.</p>
     </form>
   </div>
 
@@ -2023,6 +2027,7 @@ body.sub-atraso .btn[data-write] { background: var(--c-surface-2); color: var(--
   <div class="stack imp" id="i-lendo" hidden>
     <section class="card stack" aria-labelledby="h-len" aria-busy="true">
       <div class="card-head"><h2 id="h-len">Lendo o documento</h2><span class="badge b-info dashed"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Leitura por IA: sugestão, ainda não vale</span></div>
+      <div class="banner info" role="note"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg><div>Esta tela só aparece quando a equipe da Gestprojet liga a leitura por IA (hoje desligada). É assim que ela ficará.</div></div>
       <p role="status">Lendo o PDF: página 12 de 38.</p>
       <div class="bar-row">
         <div class="meta"><span>Andamento da leitura</span><b class="num">32%</b></div>
@@ -2039,7 +2044,43 @@ body.sub-atraso .btn[data-write] { background: var(--c-surface-2); color: var(--
     </section>
   </div>
 
-  <!-- 4. erros -->
+  <!-- 5. novo arquivo depois do OK: comparação (RF-150) -->
+  <div class="stack imp" id="i-comparar" hidden>
+    <div class="banner warn if-semok" role="status"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg><div><b>O plano ainda está sem OK.</b> Antes do OK, um novo arquivo cria uma nova minuta, e não uma comparação. <a href="#/conferir">Conferir a minuta</a></div></div>
+    <div class="stack if-ok">
+      <div class="banner info" role="note"><svg class="i" aria-hidden="true"><use href="#i-layers"/></svg><div><b>Comparação com a linha de base v2.</b> Você enviou plano-exemplo-novo.xlsx depois do OK. <b>A linha de base não mudou.</b> Abaixo está o que é diferente. Só vira ajuste o que você confirmar, linha a linha.</div></div>
+      <div class="cmp-sum">
+        <div class="card kpi"><span class="label">Iguais</span><span class="value">7</span><span class="hint">sem diferença</span></div>
+        <div class="card kpi"><span class="label">Alteradas</span><span class="value">1</span><span class="hint">valor diferente</span></div>
+        <div class="card kpi"><span class="label">Novas</span><span class="value">1</span><span class="hint">só no arquivo novo</span></div>
+        <div class="card kpi"><span class="label">Ausentes</span><span class="value">0</span><span class="hint">só na versão vigente</span></div>
+      </div>
+      <section class="card" aria-labelledby="h-cmp">
+        <div class="card-head"><h2 id="h-cmp">O que é diferente</h2><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg>Linha de base v2 não alterada</span></div>
+        <div class="table-wrap">
+          <table class="stack-m">
+            <caption class="sr-only">Linhas diferentes entre a linha de base v2 e o arquivo novo, em reais</caption>
+            <thead><tr><th scope="col">Linha</th><th scope="col">Situação</th><th scope="col" class="num">Versão 2 (vigente)</th><th scope="col" class="num">Arquivo novo</th><th scope="col" class="num">Diferença</th><th scope="col">Aproveitar</th></tr></thead>
+            <tbody>
+              <tr class="d-alt"><td data-label="Linha">1.1.1 · Reagentes e insumos para ensaios de formulação</td><td data-label="Situação"><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg>Alterada</span></td><td class="num" data-label="Versão 2">R$ 18.000,00</td><td class="num" data-label="Arquivo novo">R$ 19.500,00</td><td class="num" data-label="Diferença">+R$ 1.500,00</td><td data-label="Aproveitar"><label class="chk"><input type="checkbox" class="cmpck" data-c="150000" aria-label="Aproveitar a diferença da linha 1.1.1"><span>Aproveitar</span></label></td></tr>
+              <tr class="d-new"><td data-label="Linha">Nova · Taxa de publicação em periódico (339039)</td><td data-label="Situação"><span class="badge b-info"><svg class="i" aria-hidden="true"><use href="#i-up"/></svg>Nova</span></td><td class="num" data-label="Versão 2">não existe</td><td class="num" data-label="Arquivo novo">R$ 3.000,00</td><td class="num" data-label="Diferença">+R$ 3.000,00</td><td data-label="Aproveitar"><label class="chk"><input type="checkbox" class="cmpck" data-c="300000" aria-label="Aproveitar a linha nova: taxa de publicação"><span>Aproveitar</span></label></td></tr>
+            </tbody>
+            <tfoot><tr><th scope="row">Total do projeto</th><td></td><td class="num" data-label="Versão 2">R$ 100.000,00</td><td class="num" data-label="Arquivo novo">R$ 104.500,00</td><td class="num" data-label="Diferença">+R$ 4.500,00</td><td></td></tr></tfoot>
+          </table>
+        </div>
+        <details class="edit"><summary><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>7 linhas iguais (sem diferença)</summary><p style="padding:0 var(--s-3) var(--s-3)">1.1.2, 1.2.1, 2.1.1, 2.1.2, 2.1.3, 2.2.1 e 3.1.1.</p></details>
+        <p id="cmpTxt" role="status" style="margin-top:var(--s-3)"></p>
+        <div class="row" style="margin-top:var(--s-2)">
+          <button class="btn" type="button" id="cmpGo" aria-disabled="true" aria-describedby="cmpTxt" data-write><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg>Criar rascunho de ajuste com as diferenças marcadas</button>
+          <button class="btn ghost" type="button" data-demo="Exemplo: a comparação foi descartada. Nada mudou na linha de base, nos ajustes nem na execução; a minuta fica consultável no histórico.">Descartar a comparação</button>
+        </div>
+        <p class="muted" style="margin-top:var(--s-3)">O rascunho de ajuste ainda não vale: ele segue as regras de qualquer ajuste, com justificativa, decisor e, se o financiador precisar aprovar, o registro da aprovação. A linha de base só muda quando você o torna vigente.</p>
+        <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Fonte: linha de base v2 e a minuta criada do arquivo novo. Só o líder importa e confirma.</p>
+      </section>
+    </div>
+  </div>
+
+  <!-- 6. erros -->
   <div class="stack imp" id="i-erro" hidden>
     <div class="grid g-2">
       <section class="state error" role="alert" aria-labelledby="er1">
@@ -2054,6 +2095,12 @@ body.sub-atraso .btn[data-write] { background: var(--c-surface-2); color: var(--
         <p>Você pode tentar de novo mais tarde, enviar uma planilha (lida sem IA) ou cadastrar o plano à mão.</p>
         <div class="row"><button class="btn ghost" type="button" style="color:inherit;border-color:currentColor" data-demo="Exemplo: nada foi reenviado.">Tentar de novo</button><a class="btn ghost" href="#/plano" style="color:inherit;border-color:currentColor">Cadastrar à mão</a></div>
       </section>
+      <section class="state error" role="alert" aria-labelledby="er3">
+        <h2 id="er3"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg> Arquivo recusado pela verificação de segurança</h2>
+        <p><b>O arquivo não foi guardado como original.</b> O fato ficou registrado na auditoria e nenhuma minuta foi criada.</p>
+        <p>Isto vale para qualquer arquivo, com ou sem IA. Baixe o arquivo de novo da fonte e tente outra vez, ou cadastre o plano à mão.</p>
+        <div class="row"><a class="btn ghost" href="#/importar/escolher" style="color:inherit;border-color:currentColor">Escolher outro arquivo</a><a class="btn ghost" href="#/plano" style="color:inherit;border-color:currentColor">Cadastrar à mão</a></div>
+      </section>
     </div>
     <p class="muted">Os mesmos avisos valem para foto pouco nítida: a leitura termina, e as linhas de baixa confiança vêm destacadas para você conferir (ver &quot;Conferir minuta&quot;).</p>
   </div>
@@ -2062,7 +2109,7 @@ body.sub-atraso .btn[data-write] { background: var(--c-surface-2); color: var(--
 <!-- =====================================================
      5d. CONFERIR A MINUTA
      ===================================================== -->
-<section class="screen" id="s-conferir" data-title="Conferir a minuta" aria-labelledby="h-conf">
+<section class="screen lider" id="s-conferir" data-title="Conferir a minuta" aria-labelledby="h-conf">
   <header>
     <div>
       <p class="crumb">Projeto Exemplo · Planejamento · <span class="tag-example">EXEMPLO</span></p>
@@ -2074,10 +2121,11 @@ body.sub-atraso .btn[data-write] { background: var(--c-surface-2); color: var(--
       <span class="badge b-info dashed"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Sugestão da IA</span>
     </div>
   </header>
+  <div class="banner info membro-only" role="note"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg><div><b>Só o líder importa, confere, dá o OK e pede ajuste do plano.</b> Você vê o plano e o progresso. <a href="#/plano">Voltar ao plano</a></div></div>
   <nav class="seg subnav" data-sub="plan" aria-label="Planejamento"></nav>
 
   <div class="stack">
-    <div class="banner info" role="note"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg><div><span class="if-ok">Exemplo: esta é a conferência que antecedeu a linha de base v1 do projeto de exemplo. </span><span class="if-semok">Este é o plano que aguarda o seu OK. </span>Experimente corrigir as linhas 2.1.2 e 2.2.2, marcar os &quot;ciente&quot; e conferir as linhas: o botão do fim da página só fica ativo quando tudo for atendido. Nada é salvo no protótipo.</div></div>
+    <div class="banner info" role="note"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg><div><span class="if-ok">Exemplo: esta é a conferência que antecedeu a linha de base v1 do projeto de exemplo. </span><span class="if-semok">Este é o plano que aguarda o seu OK. </span>Esta minuta mostra como fica a conferência de um PDF lido por IA, quando a leitura por IA for ligada; hoje, a minuta vem de planilha (origem: aba e célula) ou do cadastro à mão, e a conferência é a mesma. Experimente corrigir as linhas 2.1.2 e 2.2.2, marcar os &quot;ciente&quot; e conferir as linhas: o botão do fim da página só fica ativo quando tudo for atendido. Nada é salvo no protótipo.</div></div>
 
     <section aria-labelledby="h-falta">
       <h2 id="h-falta" style="margin-bottom:var(--s-3)">O que falta para o OK</h2>
@@ -2105,14 +2153,13 @@ body.sub-atraso .btn[data-write] { background: var(--c-surface-2); color: var(--
           </ul>
         </div>
         <div class="gate-col">
-          <h3><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg>Conferir linha a linha (7)</h3>
-          <p class="muted" style="font-size:var(--fs-sm)">Baixa confiança de leitura ou alerta: marque &quot;Conferi esta linha&quot; em cada uma.</p>
+          <h3><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg>Conferir uma a uma (10 de 10)</h3>
+          <p class="muted" style="font-size:var(--fs-sm)">Não existe &quot;li a minuta inteira&quot;. Você confere as linhas de risco, as 5 de maior valor e uma amostra das demais.</p>
           <ul>
-            <li><span class="t">Linha 1.2.1: leitura de baixa confiança (0,74).</span><a href="#l-1-2-1">Ir</a></li>
-            <li><span class="t">Linhas 2.1.2 e 2.2.2: impedimentos.</span><a href="#l-2-1-2">Ir</a></li>
-            <li><span class="t">Linhas 2.1.3 e 2.2.1: classificação inconsistente.</span><a href="#l-2-1-3">Ir</a></li>
-            <li><span class="t">Linhas 3.1.1 e 3.1.2: duplicadas.</span><a href="#l-3-1-1">Ir</a></li>
-            <li><span class="t"><b id="cnt-need">0 de 7</b> linhas conferidas.</span><span id="st-need"></span></li>
+            <li><span class="t"><b>Risco (7):</b> 1.2.1 (baixa confiança, 0,74); 2.1.2 e 2.2.2 (impedem o OK); 2.1.3 e 2.2.1 (classificação inconsistente); 3.1.1 e 3.1.2 (duplicadas).</span><a href="#l-1-2-1">Ir</a></li>
+            <li><span class="t"><b>5 maiores valores (3 a mais):</b> 1.2.1 (R$ 40.000,00) e 2.1.2 (R$ 12.000,00) já são de risco; faltam 1.1.1 (R$ 18.000,00), 2.1.1 (R$ 12.000,00) e 1.1.2 (R$ 10.000,00).</span><a href="#l-1-1-1">Ir</a></li>
+            <li><span class="t"><b>Amostra (0):</b> nenhuma linha sobrou neste exemplo. Em planos maiores, a plataforma sorteia 20% das demais, no mínimo 5.</span></li>
+            <li><span class="t"><b id="cnt-need">0 de 10</b> linhas conferidas.</span><span id="st-need"></span></li>
           </ul>
         </div>
       </div>
@@ -2127,9 +2174,10 @@ body.sub-atraso .btn[data-write] { background: var(--c-surface-2); color: var(--
       <div class="mrows">
         <article class="mrow" id="l-1-1-1" aria-labelledby="t-1-1-1">
           <div class="mmain">
-            <div class="mhead"><h5 id="t-1-1-1" style="font-size:var(--fs-md)">Linha 1.1.1</h5><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Confiança 0,97</span></div>
+            <div class="mhead"><h5 id="t-1-1-1" style="font-size:var(--fs-md)">Linha 1.1.1</h5><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Confiança 0,97</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-up"/></svg>Entre os 5 maiores valores</span></div>
             <dl class="facts"><dt>Classificação</dt><dd><span class="cls">339030</span> Material de consumo</dd><dt>Objeto previsto</dt><dd>Reagentes e insumos para ensaios de formulação</dd><dt>Valor aprovado</dt><dd class="num" style="text-align:left">R$ 18.000,00</dd></dl>
             <details class="edit"><summary><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg>Corrigir esta linha</summary><div class="form-grid"><div class="field"><label for="e111c">Classificação</label><select id="e111c"><option>339030 Material de consumo</option><option>339039 Serviços de terceiros</option><option>339014 Diárias de viagem</option><option>449052 Equipamentos</option></select></div><div class="field"><label for="e111v">Valor aprovado (R$)</label><input id="e111v" inputmode="decimal" value="18.000,00"></div><div class="field full"><label for="e111o">Objeto previsto</label><textarea id="e111o">Reagentes e insumos para ensaios de formulação</textarea><span class="help">Valor lido: R$ 18.000,00. Se você corrigir, a plataforma guarda o valor lido e o corrigido.</span></div></div></details>
+            <label class="chk"><input type="checkbox" class="need"><span>Conferi esta linha</span></label>
           </div>
           <aside class="origin" aria-label="Origem da linha 1.1.1 no documento">
             <h4><svg class="i" aria-hidden="true"><use href="#i-doc"/></svg>Página 7 · tabela de despesas</h4>
@@ -2140,9 +2188,10 @@ body.sub-atraso .btn[data-write] { background: var(--c-surface-2); color: var(--
         </article>
         <article class="mrow" id="l-1-1-2" aria-labelledby="t-1-1-2">
           <div class="mmain">
-            <div class="mhead"><h5 id="t-1-1-2" style="font-size:var(--fs-md)">Linha 1.1.2</h5><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Confiança 0,91</span></div>
+            <div class="mhead"><h5 id="t-1-1-2" style="font-size:var(--fs-md)">Linha 1.1.2</h5><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Confiança 0,91</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-up"/></svg>Entre os 5 maiores valores</span></div>
             <dl class="facts"><dt>Classificação</dt><dd><span class="cls">339039</span> Serviços de terceiros</dd><dt>Objeto previsto</dt><dd>Análises químicas por laboratório externo</dd><dt>Valor aprovado</dt><dd class="num" style="text-align:left">R$ 10.000,00</dd></dl>
             <details class="edit"><summary><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg>Corrigir esta linha</summary><div class="form-grid"><div class="field"><label for="e112v">Valor aprovado (R$)</label><input id="e112v" inputmode="decimal" value="10.000,00"></div></div></details>
+            <label class="chk"><input type="checkbox" class="need"><span>Conferi esta linha</span></label>
           </div>
           <aside class="origin" aria-label="Origem da linha 1.1.2 no documento">
             <h4><svg class="i" aria-hidden="true"><use href="#i-doc"/></svg>Página 7 · tabela de despesas</h4>
@@ -2157,7 +2206,7 @@ body.sub-atraso .btn[data-write] { background: var(--c-surface-2); color: var(--
       <div class="mrows">
         <article class="mrow warn" id="l-1-2-1" aria-labelledby="t-1-2-1">
           <div class="mmain">
-            <div class="mhead"><h5 id="t-1-2-1" style="font-size:var(--fs-md)">Linha 1.2.1</h5><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>Baixa confiança: 0,74</span></div>
+            <div class="mhead"><h5 id="t-1-2-1" style="font-size:var(--fs-md)">Linha 1.2.1</h5><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>Baixa confiança: 0,74</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-up"/></svg>Entre os 5 maiores valores</span></div>
             <dl class="facts"><dt>Classificação</dt><dd><span class="cls">449052</span> Equipamentos</dd><dt>Objeto previsto</dt><dd>Biorreator de bancada de 5 L, com controle de temperatura e pH</dd><dt>Valor aprovado</dt><dd class="num" style="text-align:left">R$ 40.000,00</dd></dl>
             <ul class="alerts"><li><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg><span>O trecho está pouco nítido (foto). Compare o valor e o objeto com o documento ao lado.</span></li></ul>
             <details class="edit"><summary><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg>Corrigir esta linha</summary><div class="form-grid"><div class="field"><label for="e121v">Valor aprovado (R$)</label><input id="e121v" inputmode="decimal" value="40.000,00"></div><div class="field full"><label for="e121o">Objeto previsto</label><textarea id="e121o">Biorreator de bancada de 5 L, com controle de temperatura e pH</textarea><span class="help">Valor lido: R$ 40.000,00.</span></div></div></details>
@@ -2177,9 +2226,10 @@ body.sub-atraso .btn[data-write] { background: var(--c-surface-2); color: var(--
       <div class="mrows">
         <article class="mrow" id="l-2-1-1" aria-labelledby="t-2-1-1">
           <div class="mmain">
-            <div class="mhead"><h5 id="t-2-1-1" style="font-size:var(--fs-md)">Linha 2.1.1</h5><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Confiança 0,95</span></div>
+            <div class="mhead"><h5 id="t-2-1-1" style="font-size:var(--fs-md)">Linha 2.1.1</h5><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Confiança 0,95</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-up"/></svg>Entre os 5 maiores valores</span></div>
             <dl class="facts"><dt>Classificação</dt><dd><span class="cls">339030</span> Material de consumo</dd><dt>Objeto previsto</dt><dd>Insumos para ensaio de campo, lote 2</dd><dt>Valor aprovado</dt><dd class="num" style="text-align:left">R$ 12.000,00</dd></dl>
             <details class="edit"><summary><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg>Corrigir esta linha</summary><div class="form-grid"><div class="field"><label for="e211v">Valor aprovado (R$)</label><input id="e211v" inputmode="decimal" value="12.000,00"></div></div></details>
+            <label class="chk"><input type="checkbox" class="need"><span>Conferi esta linha</span></label>
           </div>
           <aside class="origin" aria-label="Origem da linha 2.1.1 no documento">
             <h4><svg class="i" aria-hidden="true"><use href="#i-doc"/></svg>Página 9 · tabela de despesas</h4>
@@ -2191,7 +2241,7 @@ body.sub-atraso .btn[data-write] { background: var(--c-surface-2); color: var(--
 
         <article class="mrow err" id="l-2-1-2" aria-labelledby="t-2-1-2">
           <div class="mmain">
-            <div class="mhead"><h5 id="t-2-1-2" style="font-size:var(--fs-md)">Linha 2.1.2</h5><span class="badge b-err" id="b-cls"><svg class="i" aria-hidden="true"><use href="#i-stop"/></svg>Impede o OK</span><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Confiança 0,93</span></div>
+            <div class="mhead"><h5 id="t-2-1-2" style="font-size:var(--fs-md)">Linha 2.1.2</h5><span class="badge b-err" id="b-cls"><svg class="i" aria-hidden="true"><use href="#i-stop"/></svg>Impede o OK</span><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Confiança 0,93</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-up"/></svg>Entre os 5 maiores valores</span></div>
             <dl class="facts"><dt>Classificação</dt><dd><span class="cls" id="v-cls">339031</span></dd><dt>Objeto previsto</dt><dd>Serviço de análise de solo e tecido vegetal</dd><dt>Valor aprovado</dt><dd class="num" style="text-align:left">R$ 12.000,00</dd></dl>
             <ul class="alerts"><li id="a-cls"><svg class="i" aria-hidden="true" style="color:var(--c-err-fg)"><use href="#i-stop"/></svg><span><b>Classificação fora da lista do projeto.</b> 339031 não existe entre 339030, 339039, 339014 e 449052. Escolha a classificação correta.</span></li></ul>
             <details class="edit" open><summary><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg>Corrigir esta linha</summary><div class="form-grid"><div class="field"><label for="e212c">Classificação</label><select id="e212c" aria-invalid="true" aria-describedby="e212c-m"><option value="339031">339031 (fora da lista)</option><option value="339030">339030 Material de consumo</option><option value="339039">339039 Serviços de terceiros</option><option value="339014">339014 Diárias de viagem</option><option value="449052">449052 Equipamentos</option></select><span class="err-msg" id="e212c-m"><svg class="i" aria-hidden="true"><use href="#i-stop"/></svg>Escolha uma classificação da lista.</span></div><div class="field"><label for="e212v">Valor aprovado (R$)</label><input id="e212v" inputmode="decimal" value="12.000,00"><span class="help">Valor lido: R$ 12.000,00.</span></div></div></details>
@@ -2291,7 +2341,10 @@ body.sub-atraso .btn[data-write] { background: var(--c-surface-2); color: var(--
 
     <section class="gate-bar" id="gate" aria-labelledby="h-ok">
       <h2 id="h-ok">Dar o OK</h2>
-      <label class="chk"><input type="checkbox" id="lidoTudo"><span>Li a minuta inteira, inclusive as linhas que não têm alerta (1.1.1, 1.1.2 e 2.1.1).</span></label>
+      <div class="sumbox" id="resumoConf" role="status"></div>
+      <label class="chk"><input type="checkbox" id="confResumo"><span id="confResumoTxt">Confirmo o resumo da conferência.</span></label>
+      <details class="edit"><summary><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Como fica num plano maior (exemplo de 100 linhas)</summary>
+        <p style="padding:0 var(--s-3) var(--s-3)">Num plano de 100 linhas com 6 de risco, a plataforma lista as 6 de risco e as 5 de maior valor (as que já eram de risco não contam duas vezes). Se as 5 forem novas, são 11 de risco; das outras 89, ela sorteia 20% (18 linhas, arredondando para cima). O resumo fica: &quot;conferi 29 de 100 linhas: 11 de risco e 18 de amostra; as outras 71 não foram conferidas uma a uma&quot;. O OK só fica ativo com todas essas linhas conferidas, e o resumo vai para a auditoria.</p></details>
       <p id="gateTxt" role="status"></p>
       <div class="row">
         <button class="btn lg" type="button" id="btnOk" data-write aria-disabled="true" aria-describedby="gateTxt"><svg class="i" aria-hidden="true"><use id="okIco" href="#i-lock"/></svg>Dar OK e liberar a execução</button>
@@ -2311,7 +2364,7 @@ body.sub-atraso .btn[data-write] { background: var(--c-surface-2); color: var(--
 <!-- =====================================================
      5e. AJUSTES E VERSÕES DA LINHA DE BASE
      ===================================================== -->
-<section class="screen" id="s-ajustes" data-title="Ajustes e versões" aria-labelledby="h-aj">
+<section class="screen lider" id="s-ajustes" data-title="Ajustes e versões" aria-labelledby="h-aj">
   <header>
     <div>
       <p class="crumb">Projeto Exemplo · Planejamento · <span class="tag-example">EXEMPLO</span></p>
@@ -2319,6 +2372,7 @@ body.sub-atraso .btn[data-write] { background: var(--c-surface-2); color: var(--
       <p>Depois do OK, o plano não é editado: cada mudança é um ajuste, com pedido, justificativa, decisor e versão nova. As versões antigas continuam consultáveis.</p>
     </div>
   </header>
+  <div class="banner info membro-only" role="note"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg><div><b>Só o líder importa, confere, dá o OK e pede ajuste do plano.</b> Você vê o plano e o progresso. <a href="#/plano">Voltar ao plano</a></div></div>
   <nav class="seg subnav" data-sub="plan" aria-label="Planejamento"></nav>
 
   <div class="stack">
@@ -2406,6 +2460,33 @@ body.sub-atraso .btn[data-write] { background: var(--c-surface-2); color: var(--
       </form>
     </section>
 
+    <section class="card" aria-labelledby="h-rem">
+      <div class="card-head"><h2 id="h-rem">Remover uma linha do plano</h2></div>
+      <p class="muted">Uma linha com despesas ligadas nunca é removida: só pode ser zerada, por ajuste. Escolha uma linha para ver o que a plataforma faz.</p>
+      <div class="field" style="max-width:560px;margin-top:var(--s-3)"><label for="rem-l">Linha a remover</label><select id="rem-l"><option value="com">2.1.2 · Serviço de análise de solo e tecido vegetal (3 despesas)</option><option value="sem">2.2.1 · Diárias de viagem para visita técnica (sem despesas)</option></select></div>
+      <div id="rem-com" class="stack" style="margin-top:var(--s-3)" role="status">
+        <div class="banner err"><svg class="i" aria-hidden="true"><use href="#i-stop"/></svg><div><b>Remoção recusada: a linha 2.1.2 tem 3 despesas ligadas.</b> Ela só pode ser zerada por ajuste. Zerada, continua visível na versão nova com R$ 0,00 e as despesas seguem ligadas a ela, com saldo negativo e pendência, até você movê-las para outra linha por novo ajuste, uma a uma.</div></div>
+        <div class="table-wrap">
+          <table class="stack-m">
+            <caption class="sr-only">Despesas ligadas à linha 2.1.2, em reais</caption>
+            <thead><tr><th scope="col">Data</th><th scope="col">Despesa</th><th scope="col" class="num">Valor</th></tr></thead>
+            <tbody>
+              <tr><td data-label="Data">14/09/2026</td><td data-label="Despesa">Serviço de análise (exemplo), setembro</td><td class="num" data-label="Valor">R$ 5.100,00</td></tr>
+              <tr><td data-label="Data">15/10/2026</td><td data-label="Despesa">Serviço de análise (exemplo), outubro</td><td class="num" data-label="Valor">R$ 4.000,00</td></tr>
+              <tr><td data-label="Data">12/11/2026</td><td data-label="Despesa">Serviço de análise (exemplo), novembro</td><td class="num" data-label="Valor">R$ 4.100,00</td></tr>
+            </tbody>
+            <tfoot><tr><th scope="row">Total ligado à linha</th><td></td><td class="num" data-label="Valor">R$ 13.200,00</td></tr></tfoot>
+          </table>
+        </div>
+        <div class="row"><button class="btn" type="button" data-write data-demo="Exemplo: o formulário de ajuste seria preenchido com o valor R$ 0,00 para a linha 2.1.2, marcada &quot;sem previsão&quot;. Nada foi salvo.">Zerar a linha por ajuste</button><button class="btn ghost" type="button" data-write data-demo="Exemplo: o formulário de ajuste seria aberto para mover valor para outra linha. Nada foi salvo.">Pedir ajuste para mover as despesas</button></div>
+      </div>
+      <div id="rem-sem" class="stack" style="margin-top:var(--s-3)" hidden role="status">
+        <div class="banner ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg><div><b>Pode pedir a remoção.</b> A linha 2.2.1 não tem despesas ligadas. Informe a justificativa; a versão anterior continua mostrando a linha.</div></div>
+        <div class="field"><label for="rem-j">Justificativa (obrigatória)</label><textarea id="rem-j" aria-required="true"></textarea></div>
+        <div class="row"><button class="btn" type="button" data-write data-demo="Exemplo: nada foi salvo.">Pedir a remoção como ajuste</button></div>
+      </div>
+    </section>
+
     <section class="card" aria-labelledby="h-dv">
       <div class="card-head"><h2 id="h-dv">O que mudou da versão 1 para a 2</h2></div>
       <div class="table-wrap">
@@ -2420,6 +2501,25 @@ body.sub-atraso .btn[data-write] { background: var(--c-surface-2); color: var(--
         </table>
       </div>
       <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Fonte: versões da linha de base. Cada mudança de total do projeto é destacada em reais e vai para a trilha de auditoria.</p>
+    </section>
+
+    <section class="card" aria-labelledby="h-dt">
+      <div class="card-head"><h2 id="h-dt">Datas e situação das etapas</h2></div>
+      <div class="banner info membro-only" role="note" style="margin-bottom:var(--s-3)"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg><div>Você atualiza a situação, o andamento e as entregas. As datas de início e prazo das etapas e os valores da linha de base só o líder muda, por ajuste.</div></div>
+      <div class="table-wrap">
+        <table class="stack-m">
+          <caption class="sr-only">Início, prazo e situação de cada etapa</caption>
+          <thead><tr><th scope="col">Etapa</th><th scope="col">Início</th><th scope="col">Prazo</th><th scope="col">Situação</th><th scope="col">Ação</th></tr></thead>
+          <tbody>
+            <tr><td data-label="Etapa">Etapa 1.1 · Formulação em laboratório</td><td data-label="Início">01/03/2026</td><td data-label="Prazo">31/12/2026</td><td data-label="Situação"><span class="badge b-info"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Em andamento</span></td><td data-label="Ação"><button class="btn ghost" type="button" data-write data-demo="Exemplo: a situação não foi alterada.">Atualizar a situação</button></td></tr>
+            <tr><td data-label="Etapa">Etapa 1.2 · Produção do lote piloto</td><td data-label="Início">01/07/2026</td><td data-label="Prazo">30/06/2027</td><td data-label="Situação"><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Prevista</span></td><td data-label="Ação"><button class="btn ghost" type="button" data-write data-demo="Exemplo: a situação não foi alterada.">Atualizar a situação</button></td></tr>
+            <tr><td data-label="Etapa">Etapa 2.1 · Ensaios de campo</td><td data-label="Início">01/08/2026</td><td data-label="Prazo">31/03/2027</td><td data-label="Situação"><span class="badge b-info"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Em andamento</span></td><td data-label="Ação"><button class="btn ghost" type="button" data-write data-demo="Exemplo: a situação não foi alterada.">Atualizar a situação</button></td></tr>
+            <tr><td data-label="Etapa">Etapa 2.2 · Análise de resultados</td><td data-label="Início">01/04/2027</td><td data-label="Prazo">30/09/2027</td><td data-label="Situação"><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Prevista</span></td><td data-label="Ação"><button class="btn ghost" type="button" data-write data-demo="Exemplo: a situação não foi alterada.">Atualizar a situação</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="row lider-only" style="margin-top:var(--s-3)"><button class="btn ghost" type="button" data-write data-demo="Exemplo: as datas não foram alteradas. A mudança de data de etapa fica registrada na auditoria.">Alterar as datas das etapas</button></div>
+      <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Início e prazo das etapas: só o líder altera. Situação, andamento, entregas e tarefas: líder e membros com nível &quot;registra&quot;.</p>
     </section>
   </div>
 </section>
@@ -2470,8 +2570,8 @@ body.sub-atraso .btn[data-write] { background: var(--c-surface-2); color: var(--
         <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Fonte: valor aprovado da versão escolhida da linha de base e despesas lançadas por linha, no mês da data da despesa. O trimestre é só a soma de três meses de calendário (suposição do PRD, Q-22). Totais são calculados na hora, nunca digitados. Visível a líder e membros; só o líder lança o executado resumido.</p>
       </section>
 
-      <section class="card" aria-labelledby="h-fecha">
-        <div class="card-head"><h2 id="h-fecha">Fechar novembro de 2026</h2><span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Mês em andamento</span></div>
+      <section class="card lider-only" aria-labelledby="h-fecha">
+        <div class="card-head"><h2 id="h-fecha">Linhas sem execução em novembro de 2026</h2><span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Mês em andamento</span></div>
         <p>Estas linhas não têm execução em novembro. Marque &quot;sem execução neste mês&quot; para as que de fato não gastaram. O item &quot;executado do mês lançado&quot; do checklist de saúde fica atendido quando todas estiverem lançadas ou marcadas.</p>
         <ul class="todo" id="fechaList">
           <li><div class="txt"><b>Linha 1.1.2</b> · Análises químicas por laboratório externo<small>Executado em novembro: R$ 0,00</small></div><label class="chk"><input type="checkbox"><span>Sem execução neste mês</span></label></li>
@@ -2481,10 +2581,63 @@ body.sub-atraso .btn[data-write] { background: var(--c-surface-2); color: var(--
           <li><div class="txt"><b>Linha 3.1.1</b> · Serviços de contabilidade e apoio administrativo<small>Executado em novembro: R$ 0,00</small></div><label class="chk"><input type="checkbox"><span>Sem execução neste mês</span></label></li>
         </ul>
         <div class="row" style="margin-top:var(--s-3)">
-          <button class="btn ghost" type="button" aria-disabled="true" aria-describedby="resumo-h"><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg>Lançar executado do mês (resumo)</button>
-          <span class="badge b-info dashed"><svg class="i" aria-hidden="true"><use href="#i-question"/></svg>Depende de decisão do dono: Q-28</span>
+          <button class="btn ghost" type="button" data-write data-demo="Exemplo: nenhum resumo foi lançado.">Lançar executado do mês (resumo)</button>
+          <span class="badge b-info dashed"><svg class="i" aria-hidden="true"><use href="#i-question"/></svg>Proposta ainda não decidida: Q-28</span>
         </div>
-        <p class="muted" id="resumo-h" style="margin-top:var(--s-2)">Lançar um valor resumido direto na linha, sem detalhar as despesas, só será liberado se o dono decidir que isso é permitido (Q-28). Se for, o lançamento terá a origem &quot;resumo&quot; e, talvez, comprovante obrigatório.</p>
+        <p class="muted" id="resumo-h" style="margin-top:var(--s-2)">Lançar um valor resumido direto na linha, sem detalhar as despesas, é uma proposta que o dono ainda não decidiu (Q-28). Se valer, o lançamento terá a origem &quot;resumo&quot; e comprovante opcional. Quando você lançar a primeira despesa detalhada na mesma linha e no mesmo mês, o resumo é substituído (veja abaixo).</p>
+      </section>
+
+      <section class="card" aria-labelledby="h-rd">
+        <div class="card-head"><h2 id="h-rd">Resumo do mês × despesas detalhadas</h2><span class="badge b-info dashed"><svg class="i" aria-hidden="true"><use href="#i-question"/></svg>Proposta: Q-41</span></div>
+        <div class="banner warn" role="status"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg><div><b>Ao lançar esta despesa, o resumo de outubro será substituído.</b> A linha 2.2.1 tem &quot;executado do mês&quot; resumido de R$ 600,00 em outubro de 2026 (exemplo). Você está lançando a primeira despesa detalhada dela nesse mês, de R$ 250,00. O executado de outubro passa a R$ 250,00, o resumo fica no histórico como &quot;substituído&quot; e o saldo da linha diminui só R$ 250,00, nunca R$ 850,00.<br><button class="btn" type="button" data-write data-demo="Exemplo: nada foi lançado.">Lançar a despesa e substituir o resumo</button> <button class="btn ghost" type="button" data-demo="Exemplo: nada foi lançado." style="color:inherit;border-color:currentColor">Voltar</button></div></div>
+        <div class="table-wrap">
+          <table class="stack-m">
+            <caption class="sr-only">Linha 2.2.1, outubro de 2026: antes e depois de lançar a despesa detalhada, em reais</caption>
+            <thead><tr><th scope="col">Linha 2.2.1 · outubro de 2026</th><th scope="col" class="num">Antes (resumo)</th><th scope="col" class="num">Depois (despesa detalhada)</th></tr></thead>
+            <tbody>
+              <tr><td data-label="Item">Executado do mês</td><td class="num" data-label="Antes">R$ 600,00</td><td class="num" data-label="Depois">R$ 250,00</td></tr>
+              <tr><td data-label="Item">Valor que sai do saldo da linha</td><td class="num" data-label="Antes">R$ 600,00</td><td class="num" data-label="Depois">R$ 250,00</td></tr>
+              <tr><td data-label="Item">Situação do resumo</td><td class="num" data-label="Antes">Vigente</td><td class="num" data-label="Depois">Substituído, no histórico</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="muted" style="margin-top:var(--s-2)">Se o resumo for maior ou menor que a soma das despesas, a diferença aparece como informação: aqui, R$ 350,00 a menos.</p>
+      </section>
+
+      <section class="card" aria-labelledby="h-mc">
+        <div class="card-head"><h2 id="h-mc">Conferência do mês</h2><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-cal"/></svg>Não trava lançamentos</span></div>
+        <p class="muted">Quando terminar de revisar a execução, a conciliação e as pendências de um mês, marque-o como conferido. A marca é só a sua conferência: lançamentos, estornos, correções e conciliações naquele mês continuam possíveis. Se algo mudar depois, a marca vira &quot;reaberto, com pendência&quot; e mostra o que mudou.</p>
+        <ul class="rec" style="margin-top:var(--s-3)">
+          <li class="late">
+            <div class="rt"><b>Setembro de 2026</b><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>Reaberto, com pendência</span></div>
+            <p>Conferido em 05/10/2026 por Líder (exemplo). Depois disso, uma conciliação foi desfeita em 12/11/2026.</p>
+            <details class="edit" open><summary><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>O que mudou desde a conferência</summary>
+              <div class="table-wrap" style="padding:0 var(--s-3) var(--s-3)">
+                <table class="stack-m">
+                  <caption class="sr-only">Totais de setembro de 2026 na conferência e agora, em reais</caption>
+                  <thead><tr><th scope="col">Total</th><th scope="col" class="num">Na conferência</th><th scope="col" class="num">Agora</th></tr></thead>
+                  <tbody>
+                    <tr><td data-label="Total">Executado do mês</td><td class="num" data-label="Na conferência">R$ 21.080,00</td><td class="num" data-label="Agora">R$ 21.080,00</td></tr>
+                    <tr><td data-label="Total">Saldo do projeto no fim do mês</td><td class="num" data-label="Na conferência">R$ 66.220,00</td><td class="num" data-label="Agora">R$ 66.220,00</td></tr>
+                    <tr><td data-label="Total">Lançamentos do banco sem conciliação</td><td class="num" data-label="Na conferência">0</td><td class="num" data-label="Agora"><b>1 (mudou)</b></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </details>
+            <div class="row lider-only" style="margin-top:var(--s-2)"><button class="btn ghost" type="button" data-write data-demo="Exemplo: setembro seria conferido de novo, com uma nova foto dos totais.">Conferir setembro de novo</button></div>
+          </li>
+          <li>
+            <div class="rt"><b>Outubro de 2026</b><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Conferido</span></div>
+            <p>Conferido em 04/11/2026 por Líder (exemplo). Nada mudou desde então.</p>
+            <p class="meta">Totais na conferência: executado R$ 16.150,00 · saldo do projeto R$ 50.070,00 · 0 lançamentos do banco sem conciliação.</p>
+          </li>
+          <li class="late" id="mesNovLi">
+            <div class="rt"><b>Novembro de 2026</b><span class="badge b-neutral dashed" id="mesNovBadge"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Ainda não conferido</span></div>
+            <p id="mesNovTxt">Mês em andamento. Você pode marcá-lo como conferido quando terminar a revisão.</p>
+            <div class="row lider-only" style="margin-top:var(--s-2)"><button class="btn ghost" type="button" id="mesNovBtn" data-write>Marcar novembro como conferido</button></div>
+          </li>
+        </ul>
+        <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Só o líder marca e desmarca. A marca guarda quem, quando e os totais do mês para comparação; não é prestação de contas nem aprovação do financiador. Proposta ainda não decidida pelo dono (Q-45).</p>
       </section>
     </div>
   </div>
@@ -2514,9 +2667,9 @@ body.sub-atraso .btn[data-write] { background: var(--c-surface-2); color: var(--
       <ol class="phases">
         <li class="phase"><b>1. Iniciação</b><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Fase concluída</span><small>5 atendidos</small></li>
         <li class="phase"><b>2. Planejamento</b><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Fase concluída</span><small>5 atendidos · 1 aguardando você</small></li>
-        <li class="phase cur" aria-current="step"><b>3. Execução</b><span class="badge b-info"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Fase atual</span><small>1 atendido · 4 pendentes · 1 não verificável · 1 aguardando você</small></li>
+        <li class="phase cur" aria-current="step"><b>3. Execução</b><span class="badge b-info"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Fase atual</span><small>1 atendido · 5 pendentes · 2 não verificáveis · 1 aguardando você</small></li>
         <li class="phase cur" aria-current="step"><b>4. Controle</b><span class="badge b-info"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Fase atual</span><small>2 atendidos · 1 pendente · 1 aguardando você</small></li>
-        <li class="phase next"><b>5. Encerramento</b><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Próxima fase</span><small>1 pendente · 2 não verificáveis · 2 aguardando você</small></li>
+        <li class="phase next"><b>5. Encerramento</b><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Próxima fase</span><small>2 pendentes · 1 não verificável · 2 aguardando você</small></li>
       </ol>
       <p class="muted" style="margin-top:var(--s-2)">Execução e controle acontecem juntas durante a vigência. Quem marca a fase atual é o líder; a plataforma só sugere avançar quando o checklist da fase está respondido.</p>
     </section>
@@ -2531,13 +2684,13 @@ body.sub-atraso .btn[data-write] { background: var(--c-surface-2); color: var(--
         <ul class="stack" style="gap:var(--s-2)">
           <li class="row"><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Atendido</span> <span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Pendente</span></li>
           <li class="row"><span class="badge b-info dashed"><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg>Aguardando sua resposta</span></li>
-          <li class="row"><span class="badge b-neutral dashed"><svg class="i" aria-hidden="true"><use href="#i-question"/></svg>Não verificável</span> Depende de uma decisão em aberto; não conta como atendido nem como falha.</li>
+          <li class="row"><span class="badge b-neutral dashed"><svg class="i" aria-hidden="true"><use href="#i-question"/></svg>Não verificável</span> Depende de uma decisão em aberto ou de um dado que ainda não existe, como uma despesa sem checagem; não conta como atendido nem como falha.</li>
         </ul>
       </div>
     </section>
 
     <details class="fase" open>
-      <summary>3. Execução e 4. Controle: fase atual <span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>5 pendentes</span></summary>
+      <summary>3. Execução e 4. Controle: fase atual <span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>6 pendentes</span></summary>
       <div class="inner">
         <h3>Execução</h3>
         <ul class="stack" style="gap:var(--s-3)">
@@ -2545,10 +2698,10 @@ body.sub-atraso .btn[data-write] { background: var(--c-surface-2); color: var(--
             <div class="top"><h4 style="font-size:var(--fs-md)">Executado do mês lançado ou &quot;sem execução no mês&quot; marcado</h4></div>
             <div class="top"><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Atendido</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Plataforma verifica</span></div>
             <p class="why">Outubro de 2026 está lançado. <a href="#/execucao">Ver execução mensal</a>. Novembro ainda está em andamento.</p></div></li>
-          <li class="citem warn"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg></span><div>
+          <li class="citem nv"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-question"/></svg></span><div>
             <div class="top"><h4 style="font-size:var(--fs-md)">Despesa sem comprovante ou compra sem cotações mínimas</h4></div>
-            <div class="top"><span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Pendente</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Plataforma verifica</span></div>
-            <p class="why">1 despesa de R$ 4.100,00, lançada em 12/11/2026, está sem checagem. <a href="#/financeiro">Ver despesa</a></p></div></li>
+            <div class="top"><span class="badge b-neutral dashed"><svg class="i" aria-hidden="true"><use href="#i-question"/></svg>Não verificável sem checagem</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Plataforma verifica</span></div>
+            <p class="why">1 despesa (R$ 4.100,00, lançada em 12/11/2026) está sem checagem e, por isso, sem dado de cotação. Ela não conta como atendida nem como falha e continua sinalizada como &quot;sem checagem&quot;. <a href="#/financeiro">Ver despesa</a></p></div></li>
           <li class="citem warn"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg></span><div>
             <div class="top"><h4 style="font-size:var(--fs-md)">Item fora do objeto ou da classificação aprovada</h4></div>
             <div class="top"><span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Pendente</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Plataforma verifica</span></div>
@@ -2557,6 +2710,14 @@ body.sub-atraso .btn[data-write] { background: var(--c-surface-2); color: var(--
             <div class="top"><h4 style="font-size:var(--fs-md)">Saldo negativo em linha</h4></div>
             <div class="top"><span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Pendente</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Plataforma verifica</span></div>
             <p class="why">Linha 2.1.2 com saldo de −R$ 1.200,00. <a href="#/ajustes">Ver ajuste pendente</a></p></div></li>
+          <li class="citem warn"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg></span><div>
+            <div class="top"><h4 style="font-size:var(--fs-md)">Lançamentos do banco sem despesa ou despesas sem extrato há mais de 30 dias</h4></div>
+            <div class="top"><span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Pendente</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Plataforma verifica</span></div>
+            <p class="why">2 lançamentos do banco sem despesa e 1 despesa sem extrato há 58 dias, sem motivo. <a href="#/excecoes">Ver exceções</a></p></div></li>
+          <li class="citem warn"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg></span><div>
+            <div class="top"><h4 style="font-size:var(--fs-md)">Mês conferido pelo líder</h4></div>
+            <div class="top"><span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Pendente</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Plataforma verifica</span></div>
+            <p class="why">Setembro de 2026 está reaberto, com pendência, e novembro ainda não foi conferido. A marca não trava lançamentos. <a href="#/execucao">Ver a conferência do mês</a></p></div></li>
           <li class="citem nv"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-question"/></svg></span><div>
             <div class="top"><h4 style="font-size:var(--fs-md)">Desvio acima do limite configurável entre previsto e executado</h4></div>
             <div class="top"><span class="badge b-neutral dashed"><svg class="i" aria-hidden="true"><use href="#i-question"/></svg>Não verificável</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Plataforma verifica</span></div>
@@ -2595,7 +2756,7 @@ body.sub-atraso .btn[data-write] { background: var(--c-surface-2); color: var(--
           <li class="citem ok"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><div><div class="top"><b>Plano aprovado importado e minuta confirmada (OK dado)</b><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Atendido</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Plataforma verifica</span></div><p class="why"><a href="#/plano">Linha de base v1, de 03/03/2026</a></p></div></li>
           <li class="citem ok"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><div><div class="top"><b>Justificativa e resultado esperado registrados</b><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Atendido</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-person"/></svg>Você responde</span></div><p class="why">Respondido por você em 02/03/2026: sim.</p></div></li>
           <li class="citem ok"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><div><div class="top"><b>Financiador, instituição e parceiros cadastrados</b><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Atendido</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Plataforma verifica</span></div></div></li>
-          <li class="citem ok"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><div><div class="top"><b>Equipe e papéis, incluindo quem aprova mudanças</b><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Atendido</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Plataforma verifica</span></div></div></li>
+          <li class="citem ok"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><div><div class="top"><b>Equipe e papéis, incluindo quem aprova mudanças</b><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Atendido</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Plataforma verifica</span></div><p class="why">Quem aprova mudanças: o líder (padrão). <a href="#/cadastro">Ver os dados do projeto</a></p></div></li>
           <li class="citem ok"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span><div><div class="top"><b>Vigência e datas de relatório</b><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Atendido</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Plataforma verifica</span></div></div></li>
         </ul>
         <h3 style="margin-top:var(--s-3)">Planejamento</h3>
@@ -2611,11 +2772,11 @@ body.sub-atraso .btn[data-write] { background: var(--c-surface-2); color: var(--
     </details>
 
     <details class="fase">
-      <summary>5. Encerramento: próxima fase <span class="badge b-neutral dashed"><svg class="i" aria-hidden="true"><use href="#i-question"/></svg>2 não verificáveis</span></summary>
+      <summary>5. Encerramento: próxima fase <span class="badge b-neutral dashed"><svg class="i" aria-hidden="true"><use href="#i-question"/></svg>1 não verificável</span></summary>
       <div class="inner">
         <ul class="stack" style="gap:var(--s-2)">
           <li class="citem warn"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg></span><div><div class="top"><b>Entregas aceitas ou com pendência</b><span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Pendente</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Plataforma verifica</span></div></div></li>
-          <li class="citem nv"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-question"/></svg></span><div><div class="top"><b>Comprovante e conciliação em todas as despesas</b><span class="badge b-neutral dashed"><svg class="i" aria-hidden="true"><use href="#i-question"/></svg>Não verificável</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Plataforma verifica</span></div><p class="why">A conciliação depende de como os dados da conta entram (decisão do dono: T-012).</p></div></li>
+          <li class="citem nv"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-question"/></svg></span><div><div class="top"><b>Comprovante e conciliação em todas as despesas</b><span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Pendente</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Plataforma verifica</span></div><p class="why">Não atendido: 1 despesa sem lançamento no extrato e sem motivo registrado (a outra está justificada) e 7 lançamentos do banco ainda sem conciliação. <a href="#/conciliacao">Ver a conciliação</a> · <a href="#/excecoes">Ver exceções</a></p></div></li>
           <li class="citem ask"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg></span><div><div class="top"><b>Lições aprendidas registradas</b><span class="badge b-info dashed"><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg>Aguardando sua resposta</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-person"/></svg>Você responde</span></div><p class="why">2 lições já registradas. <a href="#/registros/licoes">Ver lições</a></p></div></li>
           <li class="citem ask"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg></span><div><div class="top"><b>Resultado comparado ao esperado</b><span class="badge b-info dashed"><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg>Aguardando sua resposta</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-person"/></svg>Você responde</span></div></div></li>
           <li class="citem nv"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-question"/></svg></span><div><div class="top"><b>Documentos arquivados pelo prazo de guarda</b><span class="badge b-neutral dashed"><svg class="i" aria-hidden="true"><use href="#i-question"/></svg>Não verificável</span><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Plataforma verifica</span></div><p class="why">Depende do prazo de retenção, ainda a definir (Q-12).</p></div></li>
@@ -2791,6 +2952,679 @@ body.sub-atraso .btn[data-write] { background: var(--c-surface-2); color: var(--
 </section>
 
 <!-- =====================================================
+     5g. FINANCEIRO: IMPORTAR O EXTRATO (OFX ou CSV)   [v0.3 · T-022c]
+     ===================================================== -->
+<section class="screen lider" id="s-extrato" data-title="Importar o extrato" aria-labelledby="h-exi">
+  <header>
+    <div>
+      <p class="crumb">Projeto Exemplo · Financeiro · <span class="tag-example">EXEMPLO</span></p>
+      <h1 id="h-exi" tabindex="-1">Importar o extrato da conta</h1>
+      <p>Envie o extrato do banco em OFX ou CSV. A plataforma lê os lançamentos aqui, sem IA, e depois você os liga às despesas na conciliação.</p>
+    </div>
+  </header>
+  <div class="banner info membro-only" role="note"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg><div><b>Só o líder importa o extrato.</b> Ele traz número de conta e dados de terceiros. Como membro, você vê os lançamentos e o saldo no Financeiro, sem o arquivo original. <a href="#/financeiro">Voltar ao Financeiro</a></div></div>
+  <nav class="seg subnav" data-sub="fin" aria-label="Financeiro"></nav>
+  <nav class="seg" id="segExt" aria-label="Estados da importação do extrato (exemplos)" style="margin-bottom:var(--s-5)">
+    <a href="#/extrato/escolher" data-i="escolher">Exemplo: escolher o arquivo</a>
+    <a href="#/extrato/mapear" data-i="mapear">Exemplo: indicar as colunas (CSV)</a>
+    <a href="#/extrato/lendo" data-i="lendo">Exemplo: lendo o extrato</a>
+    <a href="#/extrato/pronto" data-i="pronto">Exemplo: extrato importado</a>
+    <a href="#/extrato/erro" data-i="erro">Exemplo: erros</a>
+  </nav>
+
+  <!-- 1. escolher -->
+  <div class="stack ext" id="x-escolher" hidden>
+    <ol class="steps" aria-label="Etapas da importação do extrato">
+      <li><span class="badge b-info"><svg class="i" aria-hidden="true"><use href="#i-upload"/></svg>1. Escolher o arquivo</span></li>
+      <li><span class="badge b-neutral">2. Indicar as colunas (só CSV)</span></li>
+      <li><span class="badge b-neutral">3. Ler</span></li>
+      <li><span class="badge b-neutral">4. Conciliar</span></li>
+    </ol>
+    <form class="card stack" novalidate aria-labelledby="h-exi">
+      <fieldset>
+        <legend>Que tipo de extrato você tem?</legend>
+        <div class="choices two" style="margin-top:var(--s-3)">
+          <label class="choice"><input type="radio" name="xfmt" value="ofx" checked><span><b>OFX</b><small>Formato padronizado de extrato. As colunas já vêm definidas: você não precisa indicar nada.</small></span></label>
+          <label class="choice"><input type="radio" name="xfmt" value="csv"><span><b>CSV</b><small>Cada banco organiza as colunas de um jeito. Na próxima etapa você indica qual é a data, a descrição e o valor.</small></span></label>
+        </div>
+      </fieldset>
+      <div class="form-grid">
+        <div class="field">
+          <label for="x-banco">Banco da conta do projeto</label>
+          <select id="x-banco" aria-describedby="x-banco-h"><option>Banco do Brasil</option><option>Caixa Econômica Federal</option><option>Outro banco: indicar as colunas à mão</option></select>
+          <span class="help" id="x-banco-h">Bancos de partida. Os formatos de cada banco ainda não foram verificados com extratos reais (Q-35): se o modelo não servir, você indica as colunas.</span>
+        </div>
+        <div class="field">
+          <label for="x-conta">Conta do projeto</label>
+          <select id="x-conta" aria-describedby="x-conta-h"><option>Conta final 12-3 · agência 0000 (exemplo)</option></select>
+          <span class="help" id="x-conta-h">Só os últimos dígitos aparecem na tela.</span>
+        </div>
+        <div class="field full">
+          <label for="x-arq">Arquivo do extrato (.ofx ou .csv)</label>
+          <input id="x-arq" type="file" accept=".ofx,.csv" aria-describedby="x-arq-h">
+          <span class="help" id="x-arq-h">Limites: até 5 MB e 20.000 lançamentos por arquivo. Os limites ainda serão confirmados com o extrato do banco do piloto (Q-35).</span>
+        </div>
+      </div>
+      <div class="banner info" role="note"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg><div><b>Importar o mesmo extrato duas vezes não duplica nada.</b> Lançamentos repetidos, no mesmo arquivo ou em extratos com período sobreposto, são ignorados e contados na tela.</div></div>
+      <div class="banner info" role="note"><svg class="i" aria-hidden="true"><use href="#i-shield"/></svg><div><b>Cuidado com os dados do extrato.</b> Ele traz número de conta, agência e, às vezes, nome e CPF ou CNPJ de terceiros. O arquivo só é guardado depois da verificação de segurança, e só você, como líder, o vê. Em CSV, uma célula que começa com &quot;=&quot; é lida como texto e nunca é executada. A leitura do extrato não usa IA.</div></div>
+      <div class="row">
+        <button class="btn accent lg" type="button" data-write data-demo="Exemplo: nenhum arquivo foi enviado."><svg class="i" aria-hidden="true"><use href="#i-upload"/></svg>Enviar e ler o extrato</button>
+        <a class="btn ghost lg" href="#/excecoes">Lançar à mão, sem extrato</a>
+      </div>
+      <p class="muted">O lançamento à mão serve para o que não passa pelo extrato, como um pagamento em dinheiro, ou ainda não compensou. Ele fica &quot;manual, sem extrato&quot; até ser conciliado ou justificado.</p>
+    </form>
+  </div>
+
+  <!-- 2. indicar as colunas (CSV) -->
+  <div class="stack ext" id="x-mapear" hidden>
+    <section class="card stack" aria-labelledby="h-xmap">
+      <div class="card-head"><h2 id="h-xmap">Diga o que é cada coluna</h2><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-grid"/></svg>extrato-exemplo.csv · 7 colunas · 42 linhas</span></div>
+      <p class="muted">Este é um exemplo genérico: os nomes das colunas do seu banco podem ser outros. Indique o formato do arquivo, diga o que é cada coluna e confira, abaixo, como a plataforma vai ler as primeiras linhas antes de continuar.</p>
+      <div class="form-grid">
+        <div class="field"><label for="xm-sep">Separador de colunas</label><select id="xm-sep"><option>Ponto e vírgula ( ; )</option><option>Vírgula ( , )</option><option>Tabulação</option></select></div>
+        <div class="field"><label for="xm-cod">Codificação do arquivo</label><select id="xm-cod"><option>UTF-8</option><option>Windows-1252 (ANSI)</option></select></div>
+        <div class="field"><label for="xm-dat">Formato da data</label><select id="xm-dat"><option>DD/MM/AAAA</option><option>AAAA-MM-DD</option><option>MM/DD/AAAA</option></select></div>
+        <div class="field"><label for="xm-num">Formato dos números</label><select id="xm-num"><option>1.234,56 (ponto nos milhares, vírgula nos centavos)</option><option>1,234.56 (vírgula nos milhares, ponto nos centavos)</option></select></div>
+      </div>
+
+      <h3>As primeiras linhas do arquivo</h3>
+      <div class="table-wrap">
+        <table class="stack-m">
+          <caption class="sr-only">Primeiras linhas do arquivo CSV, como vieram do banco</caption>
+          <thead><tr><th scope="col">Linha</th><th scope="col">Data</th><th scope="col">Histórico</th><th scope="col">Débito</th><th scope="col">Crédito</th><th scope="col">Saldo</th><th scope="col">Documento</th></tr></thead>
+          <tbody>
+            <tr><td data-label="Linha">Linha 1</td><td data-label="Data">03/11/2026</td><td data-label="Histórico">PAGAMENTO FORNECEDOR A (exemplo)</td><td class="num" data-label="Débito">1.850,00</td><td></td><td class="num" data-label="Saldo">42.100,00</td><td data-label="Documento">000101</td></tr>
+            <tr><td data-label="Linha">Linha 2</td><td data-label="Data">05/11/2026</td><td data-label="Histórico">TARIFA MANUTENCAO CONTA (exemplo)</td><td class="num" data-label="Débito">15,90</td><td></td><td class="num" data-label="Saldo">42.084,10</td><td data-label="Documento">000102</td></tr>
+            <tr><td data-label="Linha">Linha 3</td><td data-label="Data">10/11/2026</td><td data-label="Histórico">PIX ENVIADO (exemplo)</td><td class="num" data-label="Débito">500,00</td><td></td><td class="num" data-label="Saldo">41.584,10</td><td data-label="Documento">000103</td></tr>
+            <tr><td data-label="Linha">Linha 4</td><td data-label="Data">24/11/2026</td><td data-label="Histórico">REND PAGO APLIC AUT (exemplo)</td><td></td><td class="num" data-label="Crédito">98,40</td><td class="num" data-label="Saldo">41.682,50</td><td data-label="Documento">000104</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>O que é cada coluna</h3>
+      <ul class="stack" style="gap:var(--s-3)">
+        <li class="quote map"><div><span class="qn">Coluna A · &quot;Data&quot;</span><br><span class="muted">03/11/2026</span></div><div class="field"><label for="xc-a">É</label><select id="xc-a"><option>Data do lançamento</option><option>Ignorar esta coluna</option></select></div></li>
+        <li class="quote map"><div><span class="qn">Coluna B · &quot;Histórico&quot;</span><br><span class="muted">PAGAMENTO FORNECEDOR A</span></div><div class="field"><label for="xc-b">É</label><select id="xc-b"><option>Descrição do banco</option><option>Ignorar esta coluna</option></select></div></li>
+        <li class="quote map"><div><span class="qn">Coluna C · &quot;Débito&quot;</span><br><span class="muted">1.850,00</span></div><div class="field"><label for="xc-c">É</label><select id="xc-c"><option>Débito (saída)</option><option>Valor, com sinal</option><option>Ignorar esta coluna</option></select></div></li>
+        <li class="quote map"><div><span class="qn">Coluna D · &quot;Crédito&quot;</span><br><span class="muted">98,40</span></div><div class="field"><label for="xc-d">É</label><select id="xc-d"><option>Crédito (entrada)</option><option>Valor, com sinal</option><option>Ignorar esta coluna</option></select></div></li>
+        <li class="quote map"><div><span class="qn">Coluna E · &quot;Saldo&quot;</span><br><span class="muted">42.100,00</span></div><div class="field"><label for="xc-e">É</label><select id="xc-e"><option>Saldo (opcional)</option><option>Ignorar esta coluna</option></select></div></li>
+        <li class="quote map"><div><span class="qn">Coluna F · &quot;Documento&quot;</span><br><span class="muted">000101</span></div><div class="field"><label for="xc-f">É</label><select id="xc-f"><option>Identificador do banco (opcional)</option><option>Ignorar esta coluna</option></select></div></li>
+      </ul>
+
+      <h3>Como a plataforma vai ler as primeiras linhas</h3>
+      <div class="table-wrap">
+        <table class="stack-m">
+          <caption class="sr-only">Primeiras linhas como a plataforma as lerá, com entrada ou saída e valor com sinal, em reais</caption>
+          <thead><tr><th scope="col">Data</th><th scope="col">Descrição</th><th scope="col">Tipo</th><th scope="col" class="num">Valor</th></tr></thead>
+          <tbody>
+            <tr><td data-label="Data">03/11/2026</td><td data-label="Descrição">PAGAMENTO FORNECEDOR A (exemplo)</td><td data-label="Tipo"><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-minus"/></svg>Saída</span></td><td class="num" data-label="Valor">−R$ 1.850,00</td></tr>
+            <tr><td data-label="Data">05/11/2026</td><td data-label="Descrição">TARIFA MANUTENCAO CONTA (exemplo)</td><td data-label="Tipo"><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-minus"/></svg>Saída</span></td><td class="num" data-label="Valor">−R$ 15,90</td></tr>
+            <tr><td data-label="Data">10/11/2026</td><td data-label="Descrição">PIX ENVIADO (exemplo)</td><td data-label="Tipo"><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-minus"/></svg>Saída</span></td><td class="num" data-label="Valor">−R$ 500,00</td></tr>
+            <tr><td data-label="Data">24/11/2026</td><td data-label="Descrição">REND PAGO APLIC AUT (exemplo)</td><td data-label="Tipo"><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-up"/></svg>Entrada</span></td><td class="num" data-label="Valor">+R$ 98,40</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Linhas que pedem a sua atenção (2)</h3>
+      <ul class="stack" style="gap:var(--s-3)">
+        <li class="citem warn"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg></span><div>
+          <div class="top"><b>Linha 14: a data &quot;31/02/2026&quot; não existe.</b><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>Erro na linha</span></div>
+          <fieldset style="margin-top:var(--s-2)"><legend>O que fazer com esta linha?</legend><div class="radios"><label class="chk"><input type="radio" name="xl14" checked><span>Corrigir o mapeamento (a data pode estar em outro formato)</span></label><label class="chk"><input type="radio" name="xl14"><span>Ignorar esta linha: ela fica listada no resultado da importação</span></label></div></fieldset></div></li>
+        <li class="citem ok"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg></span><div>
+          <div class="top"><b>Linha 9: o histórico começa com &quot;=&quot; (=SOMA(A1:A3)).</b><span class="badge b-info"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Lida como texto</span></div>
+          <p class="why">O conteúdo é tratado só como texto e nunca é executado.</p></div></li>
+      </ul>
+      <label class="chk"><input type="checkbox" checked><span>Lembrar este mapeamento para o próximo extrato deste banco</span></label>
+      <div class="row"><button class="btn accent lg" type="button" data-write data-demo="Exemplo: o extrato não foi lido de verdade.">Ler o extrato com este mapeamento</button><a class="btn ghost lg" href="#/extrato/escolher">Escolher outro arquivo</a></div>
+      <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Leitura direta, sem IA. Cada valor tem sinal explícito: saída em −R$ e entrada em +R$. O arquivo original só é guardado depois da verificação de segurança, e só o líder o vê.</p>
+    </section>
+  </div>
+
+  <!-- 3. lendo -->
+  <div class="stack ext" id="x-lendo" hidden>
+    <section class="card stack" aria-labelledby="h-xlen" aria-busy="true">
+      <div class="card-head"><h2 id="h-xlen">Lendo o extrato</h2><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Leitura direta, sem IA</span></div>
+      <p role="status">Lendo os lançamentos: 3.200 de 5.000.</p>
+      <div class="bar-row">
+        <div class="meta"><span>Andamento da leitura</span><b class="num">64%</b></div>
+        <div class="bar" role="progressbar" aria-label="Andamento da leitura do extrato" aria-valuemin="0" aria-valuemax="100" aria-valuenow="64"><i style="width:64%"></i></div>
+      </div>
+      <ul class="stack" style="gap:var(--s-2)">
+        <li class="row"><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Feito</span> Arquivo recebido, verificado e guardado sem alteração, com identificador de integridade.</li>
+        <li class="row"><span class="badge b-info"><svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>Em andamento</span> Lendo os lançamentos: data, valor, descrição e identificador do banco.</li>
+        <li class="row"><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Aguardando</span> Procurando lançamentos repetidos.</li>
+        <li class="row"><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Aguardando</span> Preparando as sugestões de conciliação.</li>
+      </ul>
+      <p class="muted">Para até 5.000 lançamentos, o extrato fica pronto para conciliar em até 30 segundos. Você pode sair desta tela: o resultado aparece em Financeiro quando estiver pronto.</p>
+      <div class="row"><button class="btn ghost" type="button" data-demo="Exemplo: nada foi cancelado.">Cancelar a leitura</button></div>
+    </section>
+  </div>
+
+  <!-- 4. pronto -->
+  <div class="stack ext" id="x-pronto" hidden>
+    <div class="grid g-2">
+      <section class="card stack" aria-labelledby="h-xpr1">
+        <div class="card-head"><h2 id="h-xpr1">Extrato importado</h2><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Pronto para conciliar</span></div>
+        <dl class="facts">
+          <dt>Arquivo</dt><dd>extrato-out-nov-exemplo.ofx · conta final 12-3</dd>
+          <dt>Período coberto</dt><dd>01/10/2026 a 24/11/2026</dd>
+          <dt>Lançamentos novos</dt><dd>41: 3 entradas e 38 saídas</dd>
+          <dt>Repetidos, ignorados</dt><dd>12 (já estavam na plataforma; não foram somados)</dd>
+          <dt>Linhas com erro</dt><dd>0</dd>
+          <dt>Entradas</dt><dd>+R$ 50.118,40</dd>
+          <dt>Saídas</dt><dd>−R$ 9.405,90</dd>
+          <dt>Saldo final do extrato</dt><dd>R$ 41.399,30, em 24/11/2026</dd>
+        </dl>
+        <p class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Confere com o arquivo: entradas e saídas iguais às do banco, ao centavo</p>
+        <div class="row"><a class="btn accent" href="#/conciliacao">Conciliar agora (7 débitos aguardam)</a><a class="btn ghost" href="#/rendimentos">Classificar 3 créditos</a></div>
+        <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Fonte: arquivo OFX original, guardado sem alteração depois da verificação de segurança. Visível só ao líder.</p>
+      </section>
+      <section class="card stack" aria-labelledby="h-xpr2">
+        <div class="card-head"><h2 id="h-xpr2">Se você importar de novo</h2><span class="badge b-info"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Nada é duplicado</span></div>
+        <div class="banner info" role="status"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg><div><b>Extrato já importado: 0 novos lançamentos.</b> Os 53 lançamentos do arquivo já estavam na plataforma e foram ignorados. Nada foi somado de novo.</div></div>
+        <div class="banner info" role="status"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg><div><b>Extrato com período sobreposto: 23 novos lançamentos.</b> 10 dias repetem o extrato anterior: os 18 lançamentos desses dias foram ignorados e contados.</div></div>
+        <p class="muted">Rendimentos e saldos também não dobram.</p>
+      </section>
+    </div>
+  </div>
+
+  <!-- 5. erros -->
+  <div class="stack ext" id="x-erro" hidden>
+    <div class="grid g-2">
+      <section class="state error" role="alert" aria-labelledby="xer1">
+        <h2 id="xer1"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg> Arquivo acima do limite</h2>
+        <p><b>Este arquivo tem 7,4 MB e o limite é 5 MB.</b> Nada foi enviado nem guardado.</p>
+        <p>Peça ao banco um período menor, por exemplo um mês por arquivo.</p>
+        <a class="btn ghost" href="#/extrato/escolher" style="color:inherit;border-color:currentColor">Escolher outro arquivo</a>
+      </section>
+      <section class="state error" role="alert" aria-labelledby="xer2">
+        <h2 id="xer2"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg> Lançamentos demais</h2>
+        <p><b>Este arquivo tem 23.400 lançamentos e o limite é 20.000.</b> Nada foi enviado nem guardado.</p>
+        <p>Divida o período em dois ou mais arquivos e importe um de cada vez.</p>
+        <a class="btn ghost" href="#/extrato/escolher" style="color:inherit;border-color:currentColor">Escolher outro arquivo</a>
+      </section>
+      <section class="state error" role="alert" aria-labelledby="xer3">
+        <h2 id="xer3"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg> Formato não reconhecido</h2>
+        <p><b>Não foi possível reconhecer este arquivo como OFX nem como CSV.</b> Nada foi guardado.</p>
+        <p>Baixe o extrato de novo no internet banking, em OFX ou CSV. Se o banco não oferece nenhum dos dois, lance à mão.</p>
+        <div class="row"><a class="btn ghost" href="#/extrato/escolher" style="color:inherit;border-color:currentColor">Escolher outro arquivo</a><a class="btn ghost" href="#/excecoes" style="color:inherit;border-color:currentColor">Lançar à mão</a></div>
+      </section>
+      <section class="state error" role="alert" aria-labelledby="xer4">
+        <h2 id="xer4"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg> Arquivo recusado pela verificação de segurança</h2>
+        <p><b>O arquivo não foi guardado.</b> O fato ficou registrado na auditoria. Nenhum lançamento entrou.</p>
+        <p>Baixe o extrato de novo, direto do banco, e tente outra vez.</p>
+        <a class="btn ghost" href="#/extrato/escolher" style="color:inherit;border-color:currentColor">Escolher outro arquivo</a>
+      </section>
+      <section class="state error" role="alert" aria-labelledby="xer5">
+        <h2 id="xer5"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg> 3 linhas com data inválida</h2>
+        <p><b>O restante do arquivo foi lido; estas 3 linhas ainda não entraram.</b></p>
+        <p>Corrija o mapeamento (a data pode estar em outro formato) ou ignore as linhas: elas ficam listadas no resultado da importação.</p>
+        <a class="btn ghost" href="#/extrato/mapear" style="color:inherit;border-color:currentColor">Rever o mapeamento</a>
+      </section>
+    </div>
+    <p class="muted">A leitura do extrato é direta, sem IA: ela funciona mesmo com a leitura de PDF e imagem por IA desligada.</p>
+  </div>
+</section>
+
+<!-- =====================================================
+     5h. FINANCEIRO: CONCILIAÇÃO   [v0.3 · T-022c]
+     ===================================================== -->
+<section class="screen lider" id="s-conciliacao" data-title="Conciliar o extrato" aria-labelledby="h-con">
+  <header>
+    <div>
+      <p class="crumb">Projeto Exemplo · Financeiro · <span class="tag-example">EXEMPLO</span></p>
+      <h1 id="h-con" tabindex="-1">Conciliar o extrato com as despesas</h1>
+      <p>A plataforma sugere quais lançamentos do banco correspondem às despesas que você registrou. Você confirma ou recusa cada uma.</p>
+    </div>
+  </header>
+  <div class="banner info membro-only" role="note"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg><div><b>Só o líder concilia.</b> Você vê o resultado no Financeiro. <a href="#/financeiro">Voltar ao Financeiro</a></div></div>
+  <nav class="seg subnav" data-sub="fin" aria-label="Financeiro"></nav>
+
+  <div class="stack">
+    <div class="banner info" role="note"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg><div><b>A plataforma sugere; você confirma.</b> Conciliar só liga os dois registros: o valor e a data da despesa e do lançamento do banco continuam como foram gravados. Você pode desfazer com um motivo, e tudo fica na auditoria.</div></div>
+
+    <div class="grid g-3">
+      <div class="card kpi"><span class="label">Débitos conciliados</span><span class="value">31 de 38</span>
+        <div class="bar" role="img" aria-label="31 de 38 débitos conciliados: 81,6%" style="margin:var(--s-1) 0"><i style="width:81.6%"></i></div>
+        <span class="hint">81,6% · 7 aguardam: 5 com sugestão e 2 sem despesa</span></div>
+      <div class="card kpi"><span class="label">Saldo final do extrato</span><span class="value">R$ 41.399,30</span><span class="hint">informado pelo banco, em 24/11/2026</span></div>
+      <div class="card kpi"><span class="label">Saldo calculado</span><span class="value">R$ 41.025,10</span><span class="hint">pela plataforma, com as suas despesas e créditos</span></div>
+    </div>
+
+    <section class="card" aria-labelledby="h-sal">
+      <div class="card-head"><h2 id="h-sal">Saldo do extrato × saldo calculado</h2><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>A diferença está explicada</span></div>
+      <div class="table-wrap">
+        <table class="stack-m">
+          <caption class="sr-only">Diferença entre o saldo do extrato e o saldo calculado, e o que a explica, em reais</caption>
+          <thead><tr><th scope="col">Item</th><th scope="col" class="num">Valor</th></tr></thead>
+          <tbody>
+            <tr><td data-label="Item">Saldo final informado no extrato</td><td class="num" data-label="Valor">R$ 41.399,30</td></tr>
+            <tr><td data-label="Item">Saldo calculado pela plataforma</td><td class="num" data-label="Valor">R$ 41.025,10</td></tr>
+          </tbody>
+          <tfoot><tr><th scope="row">Diferença (extrato − calculado)</th><td class="num" data-label="Valor">+R$ 374,20</td></tr></tfoot>
+        </table>
+      </div>
+      <h3 style="margin-top:var(--s-4)">O que explica a diferença</h3>
+      <div class="table-wrap">
+        <table class="stack-m">
+          <caption class="sr-only">Itens que explicam a diferença entre o saldo do extrato e o saldo calculado, em reais</caption>
+          <thead><tr><th scope="col">Item</th><th scope="col" class="num">Efeito</th></tr></thead>
+          <tbody>
+            <tr><td data-label="Item">Despesa sem extrato: pagamento em dinheiro, 15/11/2026 (justificada)</td><td class="num" data-label="Efeito">+R$ 300,00</td></tr>
+            <tr><td data-label="Item">Despesa sem extrato há 58 dias e sem motivo, 28/09/2026</td><td class="num" data-label="Efeito">+R$ 180,00</td></tr>
+            <tr><td data-label="Item">Débito do banco sem despesa: tarifa de manutenção, 05/11/2026</td><td class="num" data-label="Efeito">−R$ 15,90</td></tr>
+            <tr><td data-label="Item">Débito do banco sem despesa: DEB AUT CONV 4471, 19/11/2026</td><td class="num" data-label="Efeito">−R$ 89,90</td></tr>
+          </tbody>
+          <tfoot><tr><th scope="row">Total explicado · sem explicação: R$ 0,00</th><td class="num" data-label="Efeito">+R$ 374,20</td></tr></tfoot>
+        </table>
+      </div>
+      <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Fonte: saldo final do arquivo importado e lançamentos da conta. Despesa que o banco não mostra deixa o extrato maior que o calculado (+); débito do banco sem despesa deixa o extrato menor (−). <a href="#/excecoes">Ver as exceções</a></p>
+    </section>
+
+    <section aria-labelledby="h-sug">
+      <h2 id="h-sug">Sugestões para você confirmar (4)</h2>
+      <div class="stack" style="margin-top:var(--s-3)">
+
+        <article class="sugg" aria-labelledby="sg1">
+          <div class="sg-body stack">
+            <h3 id="sg1">Sugestão 1 <span class="badge b-info dashed"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Sugestão da plataforma</span></h3>
+            <div class="pair">
+              <div class="side"><span class="kind"><svg class="i" aria-hidden="true"><use href="#i-bank"/></svg>Lançamento do banco</span><span>18/11/2026 · TED ENVIADA FORNECEDOR B (exemplo)</span><span class="amt">−R$ 1.850,00</span><span class="muted">saída</span></div>
+              <div class="side"><span class="kind"><svg class="i" aria-hidden="true"><use href="#i-doc"/></svg>Despesa que você registrou</span><span>18/11/2026 · Reagente de exemplo (item A) · linha 1.1.1</span><span class="amt">−R$ 1.850,00</span><span class="muted">saída</span></div>
+            </div>
+            <div><p style="font-weight:700">Por que a plataforma sugere este par</p>
+              <ul class="alerts"><li><svg class="i" aria-hidden="true" style="color:var(--c-ok-fg)"><use href="#i-check"/></svg><span>Mesmo valor: R$ 1.850,00.</span></li><li><svg class="i" aria-hidden="true" style="color:var(--c-ok-fg)"><use href="#i-check"/></svg><span>Mesma data: 18/11/2026.</span></li><li><svg class="i" aria-hidden="true" style="color:var(--c-ok-fg)"><use href="#i-check"/></svg><span>Fornecedor parecido: &quot;Fornecedor B (exemplo)&quot;.</span></li></ul></div>
+            <div class="row"><button class="btn" type="button" data-write data-conc="confirm">Confirmar: é a mesma operação</button><button class="btn ghost" type="button" data-write data-conc="refuse">Não é esta</button></div>
+          </div>
+          <div class="banner ok sg-done" hidden role="status"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg><div><b>Conciliado (exemplo).</b> Despesa e lançamento do banco ligados por Líder (exemplo), em 25/11/2026. Nenhum valor nem data foi alterado.
+            <details class="edit"><summary><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg>Desfazer com motivo</summary><div class="stack" style="padding:var(--s-3)"><div class="field"><label for="ud-sg1">Motivo (obrigatório)</label><input id="ud-sg1" class="undo-why" autocomplete="off"><span class="err-msg undo-m" hidden><svg class="i" aria-hidden="true"><use href="#i-stop"/></svg>Escreva o motivo para desfazer.</span></div><button class="btn ghost" type="button" data-write data-conc="undo">Desfazer a conciliação</button></div></details></div></div>
+          <div class="banner info sg-ref" hidden role="status"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg><div><b>Sugestão recusada.</b> O lançamento do banco e a despesa continuam sem correspondência e aparecem em Exceções. <button class="btn ghost" type="button" data-conc="back" style="color:inherit;border-color:currentColor">Voltar atrás</button></div></div>
+        </article>
+
+        <article class="sugg warn" aria-labelledby="sg2">
+          <div class="sg-body stack">
+            <h3 id="sg2">Sugestão 2 <span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>Confira: descrição diferente</span></h3>
+            <div class="pair">
+              <div class="side"><span class="kind"><svg class="i" aria-hidden="true"><use href="#i-bank"/></svg>Lançamento do banco</span><span>13/11/2026 · PIX ENVIADO 000123 (exemplo)</span><span class="amt">−R$ 4.100,00</span><span class="muted">saída</span></div>
+              <div class="side"><span class="kind"><svg class="i" aria-hidden="true"><use href="#i-doc"/></svg>Despesa que você registrou</span><span>12/11/2026 · Serviço de análise (exemplo) · linha 2.1.2</span><span class="amt">−R$ 4.100,00</span><span class="muted">saída</span></div>
+            </div>
+            <div><p style="font-weight:700">Por que a plataforma sugere este par</p>
+              <ul class="alerts"><li><svg class="i" aria-hidden="true" style="color:var(--c-ok-fg)"><use href="#i-check"/></svg><span>Mesmo valor: R$ 4.100,00.</span></li><li><svg class="i" aria-hidden="true" style="color:var(--c-ok-fg)"><use href="#i-check"/></svg><span>Data 1 dia depois da despesa.</span></li><li><svg class="i" aria-hidden="true" style="color:var(--c-warn-fg)"><use href="#i-alert"/></svg><span><b>Valor e data conferem; descrição diferente.</b> O banco não cita o fornecedor. Confira o comprovante antes de confirmar.</span></li></ul></div>
+            <div class="row"><button class="btn" type="button" data-write data-conc="confirm">Confirmar mesmo assim</button><button class="btn ghost" type="button" data-write data-conc="refuse">Não é esta</button></div>
+          </div>
+          <div class="banner ok sg-done" hidden role="status"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg><div><b>Conciliado (exemplo).</b> Despesa e lançamento do banco ligados por Líder (exemplo), em 25/11/2026. Nenhum valor nem data foi alterado.
+            <details class="edit"><summary><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg>Desfazer com motivo</summary><div class="stack" style="padding:var(--s-3)"><div class="field"><label for="ud-sg2">Motivo (obrigatório)</label><input id="ud-sg2" class="undo-why" autocomplete="off"><span class="err-msg undo-m" hidden><svg class="i" aria-hidden="true"><use href="#i-stop"/></svg>Escreva o motivo para desfazer.</span></div><button class="btn ghost" type="button" data-write data-conc="undo">Desfazer a conciliação</button></div></details></div></div>
+          <div class="banner info sg-ref" hidden role="status"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg><div><b>Sugestão recusada.</b> O lançamento do banco e a despesa continuam sem correspondência e aparecem em Exceções. <button class="btn ghost" type="button" data-conc="back" style="color:inherit;border-color:currentColor">Voltar atrás</button></div></div>
+        </article>
+
+        <article class="sugg warn" aria-labelledby="sg3">
+          <div class="sg-body stack">
+            <h3 id="sg3">Sugestão 3 <span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>Dois débitos iguais, uma despesa</span></h3>
+            <div class="side"><span class="kind"><svg class="i" aria-hidden="true"><use href="#i-doc"/></svg>Despesa que você registrou</span><span>10/11/2026 · Taxa de inscrição em congresso (exemplo) · linha 2.1.3</span><span class="amt">−R$ 500,00</span><span class="muted">saída</span></div>
+            <fieldset>
+              <legend>Qual lançamento do banco corresponde a esta despesa?</legend>
+              <div class="choices two" style="margin-top:var(--s-3)">
+                <label class="choice"><input type="radio" name="sg3" id="sg3a"><span><b>10/11/2026 · PIX ENVIADO · −R$ 500,00</b><small>Mesma data da despesa.</small></span></label>
+                <label class="choice"><input type="radio" name="sg3" id="sg3b"><span><b>12/11/2026 · PIX ENVIADO · −R$ 500,00</b><small>2 dias depois da despesa.</small></span></label>
+              </div>
+            </fieldset>
+            <p class="muted">A despesa serve para os dois débitos, mas só dá para ligá-la a um. O outro continua sem despesa e vai para Exceções.</p>
+            <div class="row"><button class="btn" type="button" id="sg3ok" aria-disabled="true" aria-describedby="sg3h" data-write data-conc="confirm"><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg>Confirmar o débito escolhido</button></div>
+            <p id="sg3h" role="status">Escolha um dos dois débitos para poder confirmar.</p>
+          </div>
+          <div class="banner ok sg-done" hidden role="status"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg><div><b>Conciliado (exemplo).</b> A despesa ficou ligada ao débito escolhido. <b>O outro débito de R$ 500,00 continua sem despesa:</b> <a href="#/excecoes">ver Exceções</a>.
+            <details class="edit"><summary><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg>Desfazer com motivo</summary><div class="stack" style="padding:var(--s-3)"><div class="field"><label for="ud-sg3">Motivo (obrigatório)</label><input id="ud-sg3" class="undo-why" autocomplete="off"><span class="err-msg undo-m" hidden><svg class="i" aria-hidden="true"><use href="#i-stop"/></svg>Escreva o motivo para desfazer.</span></div><button class="btn ghost" type="button" data-write data-conc="undo">Desfazer a conciliação</button></div></details></div></div>
+        </article>
+
+        <article class="sugg" aria-labelledby="sg4">
+          <div class="sg-body stack">
+            <h3 id="sg4">Sugestão 4 <span class="badge b-info dashed"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Um débito, várias despesas</span></h3>
+            <div class="side"><span class="kind"><svg class="i" aria-hidden="true"><use href="#i-bank"/></svg>Lançamento do banco</span><span>05/11/2026 · TED ENVIADA 77201 (exemplo)</span><span class="amt">−R$ 2.100,00</span><span class="muted">saída</span></div>
+            <fieldset>
+              <legend>Marque as despesas que este débito pagou</legend>
+              <div class="stack" style="margin-top:var(--s-3)">
+                <label class="choice"><input type="checkbox" class="sg4c" data-c="60000" checked><span><b>Frete do lote 2 (exemplo)</b><small>04/11/2026 · linha 2.1.1 · R$ 600,00</small></span></label>
+                <label class="choice"><input type="checkbox" class="sg4c" data-c="150000" checked><span><b>Embalagens (exemplo)</b><small>04/11/2026 · linha 1.1.1 · R$ 1.500,00</small></span></label>
+                <label class="choice"><input type="checkbox" class="sg4c" data-c="100000"><span><b>Diárias de viagem, Caio (exemplo)</b><small>03/11/2026 · linha 2.1.3 · R$ 1.000,00</small></span></label>
+              </div>
+            </fieldset>
+            <div class="sumbox ok" id="sg4sum" role="status"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg><span><b>A soma fecha.</b> Despesas marcadas: R$ 2.100,00 · débito do banco: R$ 2.100,00 · diferença: R$ 0,00.</span></div>
+            <p class="muted">Um débito pode pagar mais de uma despesa, desde que a soma feche ao centavo.</p>
+            <div class="row"><button class="btn" type="button" id="sg4ok" aria-describedby="sg4sum" data-write data-conc="confirm">Confirmar as despesas marcadas</button></div>
+          </div>
+          <div class="banner ok sg-done" hidden role="status"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg><div><b>Conciliado (exemplo).</b> O débito de R$ 2.100,00 ficou ligado às despesas marcadas, por Líder (exemplo), em 25/11/2026.
+            <details class="edit"><summary><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg>Desfazer com motivo</summary><div class="stack" style="padding:var(--s-3)"><div class="field"><label for="ud-sg4">Motivo (obrigatório)</label><input id="ud-sg4" class="undo-why" autocomplete="off"><span class="err-msg undo-m" hidden><svg class="i" aria-hidden="true"><use href="#i-stop"/></svg>Escreva o motivo para desfazer.</span></div><button class="btn ghost" type="button" data-write data-conc="undo">Desfazer a conciliação</button></div></details></div></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="h-cdo">
+      <div class="card-head"><h2 id="h-cdo">Já conciliados (31)</h2></div>
+      <p class="muted">Os dois últimos. Cada par guarda quem confirmou e quando.</p>
+      <div class="table-wrap">
+        <table class="stack-m">
+          <caption class="sr-only">Pares já conciliados, com quem confirmou e quando</caption>
+          <thead><tr><th scope="col">Lançamento do banco</th><th scope="col">Despesa</th><th scope="col" class="num">Valor</th><th scope="col">Confirmado por</th><th scope="col">Ação</th></tr></thead>
+          <tbody>
+            <tr><td data-label="Banco">22/11/2026 · PAG DIVERSOS (exemplo)</td><td data-label="Despesa">Material X (exemplo) · 20/11/2026</td><td class="num" data-label="Valor">−R$ 3.200,00</td><td data-label="Confirmado por">Líder (exemplo), 23/11/2026</td><td data-label="Ação"><details class="edit"><summary><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg>Desfazer</summary><div class="stack" style="padding:var(--s-3)"><div class="field"><label for="ud-c1">Motivo (obrigatório)</label><input id="ud-c1" autocomplete="off"></div><button class="btn ghost" type="button" data-write data-demo="Exemplo: nada foi desfeito.">Desfazer a conciliação</button></div></details></td></tr>
+            <tr><td data-label="Banco">31/10/2026 · PAGAMENTO LAB (exemplo)</td><td data-label="Despesa">Serviço de análise (exemplo) · 30/10/2026</td><td class="num" data-label="Valor">−R$ 4.000,00</td><td data-label="Confirmado por">Líder (exemplo), 04/11/2026</td><td data-label="Ação"><details class="edit"><summary><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg>Desfazer</summary><div class="stack" style="padding:var(--s-3)"><div class="field"><label for="ud-c2">Motivo (obrigatório)</label><input id="ud-c2" autocomplete="off"></div><button class="btn ghost" type="button" data-write data-demo="Exemplo: nada foi desfeito.">Desfazer a conciliação</button></div></details></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="h-fora">
+      <div class="card-head"><h2 id="h-fora">Fora desta lista</h2><span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>4 nas pendências</span></div>
+      <p>2 lançamentos do banco sem despesa e 2 despesas sem lançamento no extrato. A plataforma nunca resolve isso sozinha. <a href="#/excecoes">Ver as exceções</a></p>
+      <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Fonte: lançamentos do extrato importado e despesas registradas. Critérios de sugestão: mesmo valor, data próxima e descrição parecida; a janela de datas (hoje 5 dias) e a tolerância de valor ainda serão confirmadas (Q-48). Visível a líder e membros; só o líder concilia.</p>
+    </section>
+  </div>
+</section>
+
+<!-- =====================================================
+     5i. FINANCEIRO: EXCEÇÕES DA CONCILIAÇÃO   [v0.3 · T-022c]
+     ===================================================== -->
+<section class="screen lider" id="s-excecoes" data-title="Exceções da conciliação" aria-labelledby="h-exc">
+  <header>
+    <div>
+      <p class="crumb">Projeto Exemplo · Financeiro · <span class="tag-example">EXEMPLO</span></p>
+      <h1 id="h-exc" tabindex="-1">Exceções da conciliação</h1>
+      <p>O que o banco mostra e você não registrou, o que você registrou e o banco não mostra, e o lançamento à mão. Nada aqui se resolve sozinho: você decide, e enquanto não decidir fica nas pendências.</p>
+    </div>
+  </header>
+  <div class="banner info membro-only" role="note"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg><div><b>Só o líder resolve as exceções.</b> Você vê o resultado no Financeiro. <a href="#/financeiro">Voltar ao Financeiro</a></div></div>
+  <nav class="seg subnav" data-sub="fin" aria-label="Financeiro"></nav>
+
+  <div class="stack">
+    <section class="card" aria-labelledby="h-ex1">
+      <div class="card-head"><h2 id="h-ex1">Lançamentos do banco sem despesa (2)</h2><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Nas pendências</span></div>
+      <ul class="rec">
+        <li class="late">
+          <div class="rt"><b>05/11/2026 · TARIFA MANUTENCAO CONTA (exemplo)</b><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>Sem despesa</span></div>
+          <p><b class="num">−R$ 15,90</b> <span class="muted">saída</span></p>
+          <div class="row" style="margin-top:var(--s-2)">
+            <button class="btn ghost" type="button" data-write data-demo="Exemplo: a despesa não foi criada. Ela nasceria com o valor e a data do lançamento, já conciliada, sem checagem e sem linha.">Criar despesa a partir do lançamento</button>
+            <button class="btn ghost" type="button" data-write data-demo="Exemplo: nada foi ligado.">Ligar a uma despesa existente</button>
+          </div>
+          <details class="edit"><summary><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg>Justificar</summary>
+            <div class="form-grid">
+              <div class="field"><label for="j1-m">Motivo</label><select id="j1-m"><option>Tarifa bancária</option><option>Débito de outra origem</option><option>Outro</option></select></div>
+              <div class="field"><label for="j1-t">Explique em uma frase (obrigatório)</label><input id="j1-t" autocomplete="off"></div>
+              <div class="full"><button class="btn" type="button" data-write data-demo="Exemplo: o lançamento seria marcado como justificado e sairia das pendências. O lançamento do banco não é alterado.">Salvar a justificativa</button></div>
+            </div>
+          </details>
+        </li>
+        <li class="late">
+          <div class="rt"><b>19/11/2026 · DEB AUT CONV 4471 (exemplo)</b><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>Sem despesa</span></div>
+          <p><b class="num">−R$ 89,90</b> <span class="muted">saída</span></p>
+          <p class="muted">Não reconhece este débito? Confirme com o banco antes de justificar. Criar a despesa pede linha, classificação e comprovante.</p>
+          <div class="row" style="margin-top:var(--s-2)">
+            <button class="btn ghost" type="button" data-write data-demo="Exemplo: a despesa não foi criada.">Criar despesa a partir do lançamento</button>
+            <button class="btn ghost" type="button" data-write data-demo="Exemplo: nada foi ligado.">Ligar a uma despesa existente</button>
+          </div>
+          <details class="edit"><summary><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg>Justificar</summary>
+            <div class="form-grid">
+              <div class="field"><label for="j2-m">Motivo</label><select id="j2-m"><option>Tarifa bancária</option><option>Débito de outra origem</option><option>Outro</option></select></div>
+              <div class="field"><label for="j2-t">Explique em uma frase (obrigatório)</label><input id="j2-t" autocomplete="off"></div>
+              <div class="full"><button class="btn" type="button" data-write data-demo="Exemplo: o lançamento seria marcado como justificado.">Salvar a justificativa</button></div>
+            </div>
+          </details>
+        </li>
+      </ul>
+      <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Ao criar a despesa a partir do lançamento, ela nasce com o valor e a data do banco, já conciliada, e fica &quot;sem checagem&quot; e &quot;sem linha&quot; até você completar.</p>
+    </section>
+
+    <section class="card" aria-labelledby="h-ex2">
+      <div class="card-head"><h2 id="h-ex2">Despesas sem lançamento no extrato (2)</h2><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>1 nas pendências</span></div>
+      <ul class="rec">
+        <li>
+          <div class="rt"><b>15/11/2026 · Coleta de amostras, pago em dinheiro (exemplo)</b><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Justificada</span></div>
+          <p><b class="num">−R$ 300,00</b> <span class="muted">saída · linha 2.1.3</span></p>
+          <p class="meta">Motivo registrado por Líder (exemplo) em 16/11/2026: &quot;pagamento em dinheiro&quot;. O motivo aparece no painel e na auditoria.</p>
+        </li>
+        <li class="late">
+          <div class="rt"><b>28/09/2026 · Material de escritório (exemplo)</b><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>Sem extrato há 58 dias</span></div>
+          <p><b class="num">−R$ 180,00</b> <span class="muted">saída · lançada em 10/10/2026</span></p>
+          <p class="muted">Passou de 30 dias sem aparecer num extrato e sem motivo. Se um extrato mais novo trouxer o débito, a plataforma sugere a conciliação.</p>
+          <details class="edit"><summary><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg>Registrar o motivo</summary>
+            <div class="form-grid">
+              <div class="field"><label for="j3-m">Motivo</label><select id="j3-m"><option>Pagamento em dinheiro</option><option>Ainda não compensou</option><option>Data da despesa errada</option><option>Outro</option></select></div>
+              <div class="field"><label for="j3-t">Explique em uma frase (obrigatório)</label><input id="j3-t" autocomplete="off"></div>
+              <div class="full row"><button class="btn" type="button" data-write data-demo="Exemplo: o motivo seria registrado e a despesa sairia das pendências de conciliação.">Salvar o motivo</button><button class="btn ghost" type="button" data-write data-demo="Exemplo: nada foi alterado. A data errada seria corrigida por estorno ou nova versão, com motivo.">Corrigir a data da despesa</button></div>
+            </div>
+          </details>
+        </li>
+      </ul>
+    </section>
+
+    <section class="card" id="manual" aria-labelledby="h-ex3">
+      <div class="card-head"><h2 id="h-ex3">Lançamento à mão, sem extrato</h2><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg>Alternativa ao extrato</span></div>
+      <p class="muted">Use para o que não passa pelo extrato, como um pagamento em dinheiro, ou ainda não compensou. O lançamento fica &quot;manual, sem extrato&quot; até um extrato posterior trazer o débito (a plataforma sugere a conciliação, sem duplicar) ou até você justificar.</p>
+      <form class="stack" novalidate aria-labelledby="h-ex3" style="margin-top:var(--s-3)">
+        <div class="form-grid">
+          <fieldset class="full"><legend>Tipo</legend><div class="radios"><label class="chk"><input type="radio" name="mtipo" checked><span>Saída (débito)</span></label><label class="chk"><input type="radio" name="mtipo"><span>Entrada (crédito)</span></label></div></fieldset>
+          <div class="field"><label for="mn-d">Data</label><input id="mn-d" inputmode="numeric" placeholder="DD/MM/AAAA" aria-describedby="mn-d-h"><span class="help" id="mn-d-h">Formato DD/MM/AAAA.</span></div>
+          <div class="field"><label for="mn-v">Valor (R$)</label><input id="mn-v" inputmode="decimal" placeholder="1.234,56" aria-describedby="mn-v-h"><span class="help" id="mn-v-h">Exemplo: 1.234,56</span></div>
+          <div class="field full"><label for="mn-t">Descrição</label><input id="mn-t" autocomplete="off"></div>
+          <div class="field full"><label for="mn-m">Por que não vem do extrato?</label><select id="mn-m"><option>Pagamento em dinheiro</option><option>Ainda não compensou</option><option>Outro</option></select></div>
+        </div>
+        <div class="row"><button class="btn" type="button" data-write data-demo="Exemplo: nenhum lançamento foi registrado.">Registrar o lançamento à mão</button></div>
+      </form>
+      <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Todo lançamento tem origem: &quot;extrato&quot; ou &quot;manual&quot;. Correções são feitas por estorno ou nova versão, com motivo; nada é apagado.</p>
+    </section>
+
+    <p>Créditos do extrato sem tipo (rendimento, parcela recebida ou outro) estão em <a href="#/rendimentos">Rendimentos e créditos</a>.</p>
+  </div>
+</section>
+
+<!-- =====================================================
+     5j. FINANCEIRO: RENDIMENTOS E CRÉDITOS DO EXTRATO   [v0.3 · T-022c]
+     ===================================================== -->
+<section class="screen" id="s-rendimentos" data-title="Rendimentos e créditos" aria-labelledby="h-ren">
+  <header>
+    <div>
+      <p class="crumb">Projeto Exemplo · Financeiro · <span class="tag-example">EXEMPLO</span></p>
+      <h1 id="h-ren" tabindex="-1">Rendimentos e créditos</h1>
+      <p>Os rendimentos vêm do extrato. Eles ficam acumulados, sem destinação: não aumentam o saldo de nenhuma linha nem classificação.</p>
+    </div>
+  </header>
+  <nav class="seg subnav" data-sub="fin" aria-label="Financeiro"></nav>
+
+  <div class="stack">
+    <div class="banner info" role="note"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg><div><b>Acumulado, sem destinação.</b> O uso dos rendimentos em atividades do projeto exige autorização formal e chega na 2ª versão. Até lá eles só são somados e mostrados aqui.</div></div>
+
+    <section class="card lider-only" aria-labelledby="h-rc">
+      <div class="card-head"><h2 id="h-rc">Créditos do extrato a classificar (3)</h2><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Nas pendências</span></div>
+      <p class="muted">A plataforma sugere o tipo pela descrição do banco. Você confirma. Sem confirmação, o crédito fica &quot;a classificar&quot; e não entra em rendimentos.</p>
+      <ul class="rec" style="margin-top:var(--s-3)">
+        <li class="late">
+          <fieldset><legend>24/11/2026 · REND PAGO APLIC AUT (exemplo) · +R$ 98,40</legend>
+            <p><span class="badge b-info dashed"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Sugestão da plataforma: parece rendimento</span></p>
+            <div class="radios" style="margin-top:var(--s-2)"><label class="chk"><input type="radio" name="cr1"><span>Rendimento</span></label><label class="chk"><input type="radio" name="cr1"><span>Parcela recebida</span></label><label class="chk"><input type="radio" name="cr1"><span>Outro crédito</span></label></div>
+            <button class="btn" type="button" data-write data-demo="Exemplo: o tipo seria confirmado e R$ 98,40 entrariam nos rendimentos de novembro.">Confirmar o tipo</button></fieldset>
+        </li>
+        <li class="late">
+          <fieldset><legend>10/10/2026 · CRED TED ORGAO FINANCIADOR (exemplo) · +R$ 50.000,00</legend>
+            <p><span class="badge b-info dashed"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Sugestão da plataforma: parece parcela recebida</span></p>
+            <div class="radios" style="margin-top:var(--s-2)"><label class="chk"><input type="radio" name="cr2"><span>Rendimento</span></label><label class="chk"><input type="radio" name="cr2"><span>Parcela recebida</span></label><label class="chk"><input type="radio" name="cr2"><span>Outro crédito</span></label></div>
+            <button class="btn" type="button" data-write data-demo="Exemplo: o tipo seria confirmado. Parcela recebida não entra em rendimentos.">Confirmar o tipo</button></fieldset>
+        </li>
+        <li class="late">
+          <fieldset><legend>14/11/2026 · CRED DIVERSOS (exemplo) · +R$ 20,00</legend>
+            <p><span class="badge b-neutral dashed"><svg class="i" aria-hidden="true"><use href="#i-question"/></svg>Sem sugestão: a descrição não diz o tipo</span></p>
+            <div class="radios" style="margin-top:var(--s-2)"><label class="chk"><input type="radio" name="cr3"><span>Rendimento</span></label><label class="chk"><input type="radio" name="cr3"><span>Parcela recebida</span></label><label class="chk"><input type="radio" name="cr3"><span>Outro crédito</span></label></div>
+            <button class="btn" type="button" data-write data-demo="Exemplo: o tipo seria confirmado.">Confirmar o tipo</button></fieldset>
+        </li>
+      </ul>
+    </section>
+    <div class="banner info membro-only" role="note"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg><div><b>Só o líder confirma o tipo dos créditos.</b> Você vê os rendimentos já confirmados abaixo.</div></div>
+
+    <section class="card" aria-labelledby="h-rm">
+      <div class="card-head"><h2 id="h-rm">Rendimentos confirmados</h2><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg>Sem destinação</span></div>
+      <div class="table-wrap">
+        <table class="stack-m">
+          <caption class="sr-only">Rendimentos de aplicação por mês, vindos do extrato, em reais</caption>
+          <thead><tr><th scope="col">Mês</th><th scope="col">Origem</th><th scope="col" class="num">Rendimento</th></tr></thead>
+          <tbody>
+            <tr><td data-label="Mês">Setembro de 2026</td><td data-label="Origem">Extrato, confirmado em 03/10/2026</td><td class="num" data-label="Rendimento">R$ 120,00</td></tr>
+            <tr><td data-label="Mês">Outubro de 2026</td><td data-label="Origem">Extrato, confirmado em 04/11/2026</td><td class="num" data-label="Rendimento">R$ 135,50</td></tr>
+          </tbody>
+          <tfoot><tr><th scope="row">Acumulado, sem destinação</th><td></td><td class="num" data-label="Rendimento">R$ 255,50</td></tr></tfoot>
+        </table>
+      </div>
+      <p class="record" style="margin-top:var(--s-3)"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg><span>Os R$ 98,40 de novembro ainda não entram: aguardam a sua confirmação acima. Importar o mesmo extrato de novo não dobra o acumulado. Nenhum saldo de linha ou classificação inclui estes valores.</span></p>
+      <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Fonte: créditos do extrato confirmados como rendimento pelo líder, mais rendimentos lançados à mão. Visível a líder e membros.</p>
+    </section>
+
+    <section class="card lider-only" aria-labelledby="h-rmn">
+      <div class="card-head"><h2 id="h-rmn">O extrato não trouxe o rendimento?</h2></div>
+      <details class="edit"><summary><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg>Registrar rendimento à mão</summary>
+        <div class="form-grid">
+          <div class="field"><label for="rm-m">Mês</label><input id="rm-m" placeholder="MM/AAAA" inputmode="numeric"></div>
+          <div class="field"><label for="rm-v">Valor (R$)</label><input id="rm-v" inputmode="decimal" placeholder="1.234,56"></div>
+          <div class="full"><button class="btn" type="button" data-write data-demo="Exemplo: o rendimento seria registrado com a origem &quot;manual&quot;.">Registrar com origem manual</button></div>
+        </div>
+      </details>
+    </section>
+  </div>
+</section>
+
+<!-- =====================================================
+     5k. DADOS DO PROJETO (cadastro) com "quem aprova mudanças"   [v0.3 · T-022c]
+     ===================================================== -->
+<section class="screen" id="s-cadastro" data-title="Dados do projeto" aria-labelledby="h-cad">
+  <header>
+    <div>
+      <p class="crumb">Projeto Exemplo · <span class="tag-example">EXEMPLO</span></p>
+      <h1 id="h-cad" tabindex="-1">Dados do projeto</h1>
+      <p>O cadastro do projeto. Só o líder altera.</p>
+    </div>
+  </header>
+  <div class="banner info membro-only" role="note"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg><div><b>Só o líder altera os dados do projeto.</b> Você os vê sem os botões de edição.</div></div>
+  <form class="card stack" novalidate aria-labelledby="h-cad">
+    <div class="form-grid">
+      <div class="field full"><label for="c-tit">Título do projeto</label><input id="c-tit" value="Projeto Exemplo: biofertilizante de resíduos"></div>
+      <div class="field"><label for="c-inst">Instituição executora</label><input id="c-inst" value="Instituição de exemplo"></div>
+      <div class="field"><label for="c-fin">Financiador</label><input id="c-fin" value="Financiador de exemplo"></div>
+      <div class="field"><label for="c-edi">Número do edital</label><input id="c-edi" value="00/2026 (exemplo)"></div>
+      <div class="field"><label for="c-ter">Número do termo de outorga</label><input id="c-ter" value="0000/2026 (exemplo)"></div>
+      <div class="field"><label for="c-ini">Início da vigência</label><input id="c-ini" value="01/03/2026" inputmode="numeric"></div>
+      <div class="field"><label for="c-fim">Fim da vigência</label><input id="c-fim" value="28/02/2028" inputmode="numeric"></div>
+      <div class="field"><label for="c-val">Valor total aprovado (R$)</label><input id="c-val" value="100.000,00" inputmode="decimal"></div>
+      <div class="field"><label for="c-lid">Líder do projeto</label><input id="c-lid" value="Líder (exemplo)" readonly></div>
+    </div>
+    <fieldset>
+      <legend>Quem aprova mudanças neste projeto?</legend>
+      <div class="radios" style="margin-top:var(--s-2)">
+        <label class="chk"><input type="radio" name="aprova" id="ap-lider" checked><span><b>Eu mesmo, o líder</b> (padrão)</span></label>
+        <label class="chk"><input type="radio" name="aprova" id="ap-outra"><span><b>Outra pessoa</b> do financiador ou da instituição, como informação</span></label>
+      </div>
+      <div class="form-grid" id="ap-campos" hidden style="margin-top:var(--s-3)">
+        <div class="field"><label for="ap-nome">Nome da pessoa</label><input id="ap-nome" autocomplete="off"></div>
+        <div class="field"><label for="ap-papel">Papel</label><input id="ap-papel" placeholder="Ex.: gestor da fundação de apoio" autocomplete="off"></div>
+      </div>
+      <p class="help" style="margin-top:var(--s-3)">Vale para ajustes da linha de base, regras do edital e mudança de classificação. <b>É só informação:</b> essa pessoa não ganha acesso ao projeto e não muda quem dá o OK do plano, que continua sendo só o líder. O nome de uma pessoa externa é dado pessoal e só quem tem acesso ao projeto o vê.</p>
+    </fieldset>
+    <div class="row lider-only"><button class="btn" type="button" data-write data-demo="Exemplo: nada foi salvo.">Salvar os dados do projeto</button></div>
+    <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Esta informação alimenta o item &quot;equipe e papéis, incluindo quem aprova mudanças&quot; da <a href="#/saude">saúde do projeto</a>.</p>
+  </form>
+</section>
+
+<!-- =====================================================
+     5l. ASSINATURA: teste de 30 dias, ativa, atraso (somente leitura)   [v0.3 · T-022c]
+     ===================================================== -->
+<section class="screen lider" id="s-assinatura" data-title="Assinatura" aria-labelledby="h-ass">
+  <header>
+    <div>
+      <p class="crumb">Projeto Exemplo · <span class="tag-example">EXEMPLO</span></p>
+      <h1 id="h-ass" tabindex="-1">Assinatura do projeto</h1>
+      <p>R$ 50,00 por mês, por projeto. Todas as funções da 1ª versão, para você e para toda a equipe.</p>
+    </div>
+  </header>
+  <div class="banner info membro-only" role="note"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg><div><b>Só o líder vê e cuida da assinatura.</b> Se ela estiver em atraso, você vê o aviso no topo e fala com o líder. <a href="#/painel">Voltar ao painel</a></div></div>
+  <nav class="seg" id="segAss" aria-label="Situações da assinatura (exemplos)" style="margin-bottom:var(--s-5)">
+    <a href="#/assinatura/teste" data-a="teste">Exemplo: em teste de 30 dias</a>
+    <a href="#/assinatura/ativa" data-a="ativa">Exemplo: ativa</a>
+    <a href="#/assinatura/atraso" data-a="atraso">Exemplo: em atraso (somente leitura)</a>
+  </nav>
+
+  <div class="stack asub" id="a-teste" hidden>
+    <section class="card stack" aria-labelledby="h-at1">
+      <div class="card-head"><h2 id="h-at1">Em teste de 30 dias</h2><span class="badge b-info"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Restam 25 dias</span></div>
+      <div class="bar-row">
+        <div class="meta"><span>Teste de 20/11/2026 a 20/12/2026</span><b class="num">5 de 30 dias</b></div>
+        <div class="bar" role="progressbar" aria-label="Dias do teste usados" aria-valuemin="0" aria-valuemax="30" aria-valuenow="5"><i style="width:16.7%"></i></div>
+      </div>
+      <p>Durante o teste você usa tudo, sem cobrança. No fim, a cobrança de R$ 50,00 por mês começa para a pessoa que você indicar como pagador.</p>
+      <div class="banner warn" role="note"><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg><div><b>Se a assinatura não for contratada até o fim do teste</b>, o projeto passa a somente leitura, como no atraso. Nada é apagado.</div></div>
+      <form class="stack" novalidate aria-labelledby="h-at1">
+        <div class="form-grid">
+          <fieldset class="full"><legend>Quem vai pagar?</legend><div class="radios"><label class="chk"><input type="radio" name="pg" checked><span>Eu mesmo</span></label><label class="chk"><input type="radio" name="pg"><span>Um patrocinador (pessoa física ou empresa)</span></label></div></fieldset>
+        </div>
+        <div class="row"><button class="btn accent lg" type="button" data-write data-demo="Exemplo: nenhuma cobrança foi gerada.">Contratar a assinatura</button></div>
+      </form>
+      <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Meios de pagamento: Pix, boleto ou cartão. A empresa que processa o pagamento ainda será definida (T-801); dados de cartão nunca ficam na plataforma.</p>
+    </section>
+  </div>
+
+  <div class="stack asub" id="a-ativa" hidden>
+    <section class="card stack" aria-labelledby="h-at2">
+      <div class="card-head"><h2 id="h-at2">Assinatura ativa</h2><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Em dia</span></div>
+      <dl class="facts"><dt>Valor</dt><dd>R$ 50,00 por mês</dd><dt>Próximo vencimento</dt><dd>05/12/2026</dd><dt>Quem paga</dt><dd>Pagador de exemplo (empresa)</dd></dl>
+      <h3>Pagamentos</h3>
+      <div class="table-wrap">
+        <table class="stack-m">
+          <caption class="sr-only">Histórico de pagamentos da assinatura, em reais</caption>
+          <thead><tr><th scope="col">Vencimento</th><th scope="col">Situação</th><th scope="col" class="num">Valor</th><th scope="col">Comprovante</th></tr></thead>
+          <tbody>
+            <tr><td data-label="Vencimento">05/11/2026</td><td data-label="Situação"><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Pago em 04/11/2026</span></td><td class="num" data-label="Valor">R$ 50,00</td><td data-label="Comprovante"><a href="#/assinatura/ativa" data-demo="Exemplo: nenhum arquivo foi baixado.">Baixar</a></td></tr>
+            <tr><td data-label="Vencimento">05/10/2026</td><td data-label="Situação"><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Pago em 05/10/2026</span></td><td class="num" data-label="Valor">R$ 50,00</td><td data-label="Comprovante"><a href="#/assinatura/ativa" data-demo="Exemplo: nenhum arquivo foi baixado.">Baixar</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="row"><a class="btn ghost" href="#/assinatura/ativa" data-demo="Exemplo: os dados do projeto não foram exportados.">Exportar os dados do projeto</a><button class="btn ghost" type="button" data-write data-demo="Exemplo: a assinatura não foi cancelada.">Cancelar a assinatura</button></div>
+    </section>
+  </div>
+
+  <div class="stack asub" id="a-atraso" hidden>
+    <section class="result warn" role="region" aria-labelledby="w-atr">
+      <div class="glyph"><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg></div>
+      <div>
+        <div class="word" id="w-atr" style="font-size:var(--fs-3xl)">SOMENTE LEITURA</div>
+        <p class="sub">A assinatura está em atraso. Você continua vendo tudo; o que muda dados fica pausado até o pagamento. Nada foi apagado e nada será apagado por causa do atraso.</p>
+      </div>
+    </section>
+    <section class="card stack" aria-labelledby="h-at3">
+      <div class="card-head"><h2 id="h-at3">A cobrança em atraso</h2><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>Vencida há 20 dias</span></div>
+      <dl class="facts"><dt>Valor</dt><dd>R$ 50,00</dd><dt>Venceu em</dt><dd>05/11/2026</dd><dt>Quem paga</dt><dd>Pagador de exemplo (empresa)</dd></dl>
+      <div class="row"><button class="btn accent lg" type="button" data-demo="Exemplo: nenhum pagamento foi iniciado. O projeto volta ao normal em até 5 minutos depois da confirmação.">Pagar agora</button><button class="btn ghost lg" type="button" data-demo="Exemplo: nenhum link foi enviado.">Enviar o link ao pagador</button></div>
+      <p class="muted">Quando o pagamento for confirmado, o projeto volta ao normal em até 5 minutos, sem perda de dados. Pix, boleto ou cartão.</p>
+    </section>
+    <div class="grid g-2">
+      <section class="card" aria-labelledby="h-at4">
+        <h2 id="h-at4">O que continua funcionando</h2>
+        <ul class="stack" style="gap:var(--s-2)">
+          <li class="row"><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-eye"/></svg>Ver</span> painel, plano, execução, extrato, conciliação e checagens já feitas</li>
+          <li class="row"><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-eye"/></svg>Ver</span> auditoria e histórico de versões</li>
+          <li class="row"><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-upload"/></svg>Levar</span> exportar os dados do projeto e baixar os comprovantes</li>
+          <li class="row"><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-card"/></svg>Pagar</span> pagar a cobrança, pelo líder ou pelo pagador</li>
+        </ul>
+      </section>
+      <section class="card" aria-labelledby="h-at5">
+        <h2 id="h-at5">O que fica pausado</h2>
+        <ul class="stack" style="gap:var(--s-2)">
+          <li class="row"><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg>Pausado</span> nova checagem &quot;Vou comprar&quot;</li>
+          <li class="row"><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg>Pausado</span> lançar despesas e lançamentos</li>
+          <li class="row"><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg>Pausado</span> importar plano ou extrato, conciliar</li>
+          <li class="row"><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg>Pausado</span> dar OK, pedir ajuste, editar regras e equipe</li>
+        </ul>
+      </section>
+    </div>
+    <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Fonte: situação da assinatura. Todos os membros veem o aviso de atraso no topo de qualquer tela; só o líder e o pagador pagam. O efeito do atraso é configuração da plataforma, não apaga dado algum.</p>
+  </div>
+</section>
+
+<!-- =====================================================
      6. ESTADOS (vazio, carregando, erro)
      ===================================================== -->
 <section class="screen" id="s-estados" data-title="Estados de tela" aria-labelledby="h-est">
@@ -2842,12 +3676,45 @@ body.sub-atraso .btn[data-write] { background: var(--c-surface-2); color: var(--
       <button class="btn ghost" type="button" style="color:inherit;border-color:currentColor">Tentar de novo</button>
     </section>
   </div>
+  <h2 style="margin:var(--s-6) 0 var(--s-3)">Extrato, IA desligada e somente leitura</h2>
+  <div class="grid g-3">
+    <section class="state" aria-labelledby="e7">
+      <h2 id="e7">Vazio: sem extrato</h2>
+      <p>Nenhum extrato importado ainda.</p>
+      <p class="muted">Importe o extrato do banco (OFX ou CSV) para a plataforma sugerir a conciliação com as suas despesas. Se o seu banco não oferece o arquivo, lance à mão.</p>
+      <div class="row"><a class="btn" href="#/extrato/escolher">Importar o extrato</a><a class="btn ghost" href="#/excecoes">Lançar à mão</a></div>
+    </section>
+    <section class="state" aria-labelledby="e8" aria-busy="true">
+      <h2 id="e8">Carregando: conciliação</h2>
+      <p role="status">Procurando correspondências entre 38 débitos e as suas despesas…</p>
+      <div class="skel" style="width:90%"></div><div class="skel" style="width:75%"></div><div class="skel" style="width:85%"></div>
+      <p class="muted">Para até 5.000 lançamentos, em até 30 segundos.</p>
+    </section>
+    <section class="state error" aria-labelledby="e9" role="alert">
+      <h2 id="e9"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg> Erro: não foi possível ler o extrato</h2>
+      <p><b>Nenhum lançamento entrou.</b> O arquivo continua com você e nada foi conciliado.</p>
+      <p>Confira se o arquivo é OFX ou CSV e tente de novo. Se continuar, lance à mão.</p>
+      <button class="btn ghost" type="button" style="color:inherit;border-color:currentColor">Tentar de novo</button>
+    </section>
+    <section class="state" aria-labelledby="e10">
+      <h2 id="e10"><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg> Leitura por IA desligada</h2>
+      <p>Leitura de PDF e imagem indisponível por enquanto.</p>
+      <p class="muted">Nenhum conteúdo do projeto é enviado a provedor de IA. Use planilha ou cadastre à mão: o resto do fluxo é igual.</p>
+      <div class="row"><a class="btn" href="#/importar/escolher">Importar uma planilha</a><a class="btn ghost" href="#/plano">Cadastrar à mão</a></div>
+    </section>
+    <section class="state" aria-labelledby="e11">
+      <h2 id="e11"><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg> Somente leitura</h2>
+      <p>A assinatura está em atraso, então lançar e editar está pausado.</p>
+      <p class="muted">Você vê tudo e pode exportar os dados. Nada foi apagado. O projeto volta ao normal depois do pagamento.</p>
+      <a class="btn" href="#/assinatura/atraso">Ver a assinatura</a>
+    </section>
+  </div>
 </section>
 
 <!-- Telas fora do protótipo -->
 <section class="screen" id="s-outra" data-title="Tela fora do protótipo" aria-labelledby="h-outra">
   <header><div><h1 id="h-outra" tabindex="-1">Esta tela não faz parte do protótipo</h1>
-  <p>Ela existe no mapa de telas do guia (docs/03-ux.md, seção 3). O protótipo cobre painel, plano e importação, conferência da minuta, ajustes, execução mensal, saúde e registros de gestão, &quot;Vou comprar&quot;, financeiro e TRL/MRL.</p></div></header>
+  <p>Ela existe no mapa de telas do guia (docs/03-ux.md, seção 3). O protótipo cobre painel, dados do projeto, plano e importação, conferência da minuta, ajustes, execução mensal, saúde e registros de gestão, &quot;Vou comprar&quot;, financeiro (extrato, conciliação, exceções e rendimentos), TRL/MRL e assinatura.</p></div></header>
   <a class="btn" href="#/painel">Voltar ao painel do projeto</a>
 </section>
 
@@ -2863,16 +3730,21 @@ body.sub-atraso .btn[data-write] { background: var(--c-surface-2); color: var(--
 <script>
 (function () {
   var screens = {painel:'s-painel', comprar:'s-comprar', financeiro:'s-financeiro', maturidade:'s-maturidade', estados:'s-estados',
-    plano:'s-plano', progresso:'s-progresso', importar:'s-importar', conferir:'s-conferir', ajustes:'s-ajustes', execucao:'s-execucao', saude:'s-saude', registros:'s-registros'};
-  var navMap = {progresso:'plano', importar:'plano', conferir:'plano', ajustes:'plano', registros:'saude'};
-  var RES = ['permitido','bloqueado','pendente','semok','semlinha'], IMP = ['escolher','mapear','lendo','erro'], REG = ['riscos','questoes','partes','comunicacao','licoes'];
+    plano:'s-plano', progresso:'s-progresso', importar:'s-importar', conferir:'s-conferir', ajustes:'s-ajustes', execucao:'s-execucao', saude:'s-saude', registros:'s-registros',
+    extrato:'s-extrato', conciliacao:'s-conciliacao', excecoes:'s-excecoes', rendimentos:'s-rendimentos', cadastro:'s-cadastro', assinatura:'s-assinatura'};
+  var navMap = {progresso:'plano', importar:'plano', conferir:'plano', ajustes:'plano', registros:'saude', extrato:'financeiro', conciliacao:'financeiro', excecoes:'financeiro', rendimentos:'financeiro'};
+  var RES = ['permitido','bloqueado','pendente','semok','bloqsemok','semlinha'], IMP = ['escolher','mapear','lendo','comparar','erro'], EXT = ['escolher','mapear','lendo','pronto','erro'],
+      ASS = ['teste','ativa','atraso'], REG = ['riscos','questoes','partes','comunicacao','licoes'];
+  /* [rota, rótulo, só o líder]: o membro não vê os itens marcados com 1 */
   var SUB = {
-    plan: [['plano','Plano e linha de base'],['progresso','Progresso'],['importar','Importar plano'],['conferir','Conferir minuta'],['ajustes','Ajustes e versões']],
-    gest: [['saude','Saúde do projeto'],['registros/riscos','Riscos'],['registros/questoes','Questões'],['registros/partes','Partes interessadas'],['registros/comunicacao','Comunicação'],['registros/licoes','Lições aprendidas']]
+    plan: [['plano','Plano e linha de base'],['progresso','Progresso'],['importar','Importar plano',1],['conferir','Conferir minuta',1],['ajustes','Ajustes e versões',1]],
+    gest: [['saude','Saúde do projeto'],['registros/riscos','Riscos'],['registros/questoes','Questões'],['registros/partes','Partes interessadas'],['registros/comunicacao','Comunicação'],['registros/licoes','Lições aprendidas']],
+    fin: [['financeiro','Painel financeiro'],['extrato','Importar extrato',1],['conciliacao','Conciliar',1],['excecoes','Exceções',1],['rendimentos','Rendimentos e créditos']]
   };
-  var root = document.documentElement;
+  var root = document.documentElement, curSub = '';
   function $(s) { return document.querySelector(s); }
   function $$(s) { return Array.prototype.slice.call(document.querySelectorAll(s)); }
+  function atrasoOn() { return document.body.classList.contains('sub-atraso'); }
   var sidebar = document.getElementById('sidebar'), scrim = document.getElementById('scrim'), menuBtn = document.getElementById('menuBtn');
 
   function closeMenu() { sidebar.classList.remove('open'); scrim.classList.remove('on'); menuBtn.setAttribute('aria-expanded','false'); }
@@ -2884,6 +3756,22 @@ body.sub-atraso .btn[data-write] { background: var(--c-surface-2); color: var(--
   });
   scrim.addEventListener('click', closeMenu);
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closeMenu(); menuBtn.focus(); } });
+
+  function buildSub() {
+    var membro = document.body.classList.contains('role-membro');
+    $$('nav.subnav').forEach(function (n) {
+      var set = (SUB[n.getAttribute('data-sub')] || []).filter(function (it) { return !(membro && it[2]); });
+      n.innerHTML = set.map(function (it) {
+        return '<a href="#/' + it[0] + '" aria-current="' + (it[0] === curSub ? 'page' : 'false') + '">' + it[1] + '</a>';
+      }).join('');
+    });
+  }
+  function pickSub(sub, list, cls, pre, seg, attr) {
+    if (list.indexOf(sub) < 0) sub = list[0];
+    $$(cls).forEach(function (r) { r.hidden = r.id !== pre + sub; });
+    $$(seg + ' a').forEach(function (a) { a.setAttribute('aria-current', a.getAttribute(attr) === sub ? 'true' : 'false'); });
+    return sub;
+  }
 
   function route() {
     var h = (location.hash || '#/painel').replace(/^#\/?/, '').split('/');
@@ -2897,22 +3785,15 @@ body.sub-atraso .btn[data-write] { background: var(--c-surface-2); color: var(--
       document.querySelectorAll('.res').forEach(function (r) { r.hidden = r.id !== 'r-' + sub; });
       document.querySelectorAll('#seg a').forEach(function (a) { a.setAttribute('aria-current', a.getAttribute('data-r') === sub ? 'true' : 'false'); });
     }
-    if (name === 'importar') {
-      if (IMP.indexOf(sub) < 0) sub = 'escolher';
-      $$('.imp').forEach(function (r) { r.hidden = r.id !== 'i-' + sub; });
-      $$('#segImp a').forEach(function (a) { a.setAttribute('aria-current', a.getAttribute('data-i') === sub ? 'true' : 'false'); });
-    }
+    if (name === 'importar') sub = pickSub(sub, IMP, '.imp', 'i-', '#segImp', 'data-i');
+    if (name === 'extrato') sub = pickSub(sub, EXT, '.ext', 'x-', '#segExt', 'data-i');
+    if (name === 'assinatura') { sub = pickSub(sub || 'ativa', ASS, '.asub', 'a-', '#segAss', 'data-a'); }
     if (name === 'registros') {
       if (REG.indexOf(sub) < 0) sub = 'riscos';
       $$('.reg').forEach(function (r) { r.hidden = r.id !== 'g-' + sub; });
       subKey = 'registros/' + sub;
     }
-    $$('nav.subnav').forEach(function (n) {
-      var set = SUB[n.getAttribute('data-sub')] || [];
-      n.innerHTML = set.map(function (it) {
-        return '<a href="#/' + it[0] + '" aria-current="' + (it[0] === subKey ? 'page' : 'false') + '">' + it[1] + '</a>';
-      }).join('');
-    });
+    curSub = subKey; buildSub();
     document.querySelectorAll('.nav a[data-route]').forEach(function (a) {
       if (a.getAttribute('data-route') === navKey) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current');
     });
@@ -3048,7 +3929,7 @@ body.sub-atraso .btn[data-write] { background: var(--c-surface-2); color: var(--
   }
   function pickResult() {
     var r = 'permitido', cat = cCat.value;
-    if (document.body.classList.contains('plan-semok')) r = 'semok';
+    if (document.body.classList.contains('plan-semok')) r = cat === 'vedado' ? 'bloqsemok' : (cat === 'nao' ? 'pendente' : 'semok');
     else if (cLi.value === 'none') r = 'semlinha';
     else if (cat === 'nao') r = 'pendente';
     else if (cat === 'vedado') r = 'bloqueado';
@@ -3073,15 +3954,20 @@ body.sub-atraso .btn[data-write] { background: var(--c-surface-2); color: var(--
     var needs = $$('.need'), nDone = needs.filter(function (c) { return c.checked; }).length;
     $('#cnt-need').textContent = nDone + ' de ' + needs.length; $('#st-need').innerHTML = stBadge(nDone === needs.length);
     var ci = $$('[data-ciente]'), cOk = ci.filter(function (li) { return li.querySelector('.ck').checked && li.querySelector('.why-in').value.trim().length >= 3; }).length;
-    var lido = $('#lidoTudo').checked, falta = [];
+    var conf = $('#confResumo').checked, falta = [];
     var imp = (okC ? 0 : 1) + (okV ? 0 : 1);
     if (imp) falta.push(imp + (imp === 1 ? ' impedimento' : ' impedimentos'));
     if (cOk < ci.length) falta.push((ci.length - cOk) + ' &quot;ciente&quot; com justificativa');
     if (nDone < needs.length) falta.push((needs.length - nDone) + (needs.length - nDone === 1 ? ' linha para conferir' : ' linhas para conferir'));
-    if (!lido) falta.push('a confirmação de que você leu a minuta inteira');
+    var M = 10, R = 10, A = 0, Z = M - R - A, resumo = 'Conferi ' + nDone + ' de ' + M + ' linhas: ' + R + ' de risco e ' + A + ' de amostra; ' + (Z === 0 ? 'nenhuma linha ficou sem conferência uma a uma' : 'as outras ' + Z + ' não foram conferidas uma a uma') + '.';
+    var rbox = $('#resumoConf');
+    rbox.className = 'sumbox' + (nDone === needs.length ? ' ok' : '');
+    rbox.innerHTML = ico(nDone === needs.length ? 'check' : 'info') + '<span>' + (nDone === needs.length ? '<b>Resumo da conferência.</b> ' + resumo : '<b>Até agora:</b> você conferiu ' + nDone + ' de ' + M + ' linhas. Faltam ' + (M - nDone) + ' para o resumo ficar completo.') + '</span>';
+    $('#confResumoTxt').textContent = 'Confirmo este resumo: ' + resumo.charAt(0).toLowerCase() + resumo.slice(1);
+    if (!conf) falta.push('a confirmação do resumo da conferência');
     var pronto = falta.length === 0;
     gTxt.innerHTML = pronto ? ico('check') + ' Tudo pronto: você pode dar o OK.' : ico('lock') + ' Ainda não dá para dar o OK. Falta: ' + falta.join('; ') + '.';
-    btnOk.setAttribute('aria-disabled', String(!pronto));
+    btnOk.setAttribute('aria-disabled', String(!pronto || atrasoOn()));
     btnOk.classList.toggle('accent', pronto);
     $('#okIco').setAttribute('href', pronto ? '#i-check' : '#i-lock');
   }
@@ -3101,6 +3987,112 @@ body.sub-atraso .btn[data-write] { background: var(--c-surface-2); color: var(--
     m.hidden = true; j.setAttribute('aria-invalid', 'false');
     say($('#a-ext').checked ? 'Exemplo: o ajuste ficaria pendente de aprovação externa. Nada foi salvo.' : 'Exemplo: nasceria a versão 3. Nada foi salvo.');
   });
+
+  /* ---------- v0.3: papel (líder ou membro) e assinatura em atraso (somente leitura) ---------- */
+  var roleBtn = $('#roleBtn'), roleLbl = $('#roleLbl'), roleChip = $('#roleChip');
+  roleBtn.addEventListener('click', function () {
+    var m = !document.body.classList.contains('role-membro');
+    document.body.classList.toggle('role-membro', m);
+    roleBtn.setAttribute('aria-pressed', String(m));
+    roleLbl.textContent = m ? 'Voltar a líder' : 'Simular membro (registra)';
+    roleChip.textContent = m ? 'Você: membro, nível registra (exemplo)' : 'Você: líder (exemplo)';
+    buildSub();
+    say(m ? 'Simulação: você é membro com nível "registra". Importar, conciliar, dar OK e ajustar o plano não aparecem para você.' : 'Simulação desligada: você é o líder.');
+  });
+  var subBtn = $('#subBtn'), subLbl = $('#subLbl');
+  function refreshWrite() {
+    var on = atrasoOn();
+    $$('[data-write]').forEach(function (el) {
+      if (el.id === 'btnOk' || el.id === 'sg3ok' || el.id === 'sg4ok' || el.id === 'cmpGo') return;
+      if (on) el.setAttribute('aria-disabled', 'true'); else el.removeAttribute('aria-disabled');
+    });
+    gate(); sg3(); sg4(); cmp();
+  }
+  subBtn.addEventListener('click', function () {
+    var on = !atrasoOn();
+    document.body.classList.toggle('sub-atraso', on);
+    subBtn.setAttribute('aria-pressed', String(on));
+    subLbl.textContent = on ? 'Voltar a assinatura em dia' : 'Simular assinatura em atraso';
+    refreshWrite();
+    say(on ? 'Simulação: assinatura em atraso. O projeto está em somente leitura; nada foi apagado.' : 'Simulação desligada: assinatura em dia.');
+  });
+  /* em atraso, o que grava fica pausado: o clique é barrado antes de qualquer outra ação */
+  document.addEventListener('click', function (e) {
+    var w = e.target.closest('[data-write]');
+    if (w && atrasoOn()) {
+      e.preventDefault(); e.stopImmediatePropagation();
+      say('Somente leitura: a assinatura está em atraso. Regularize em Assinatura para voltar a lançar e editar.');
+    }
+  }, true);
+
+  /* ---------- conciliação: confirmar, recusar, desfazer com motivo ---------- */
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-conc]'); if (!b) return;
+    if (b.getAttribute('aria-disabled') === 'true') {
+      var d = document.getElementById(b.getAttribute('aria-describedby') || ''); if (d) { d.setAttribute('tabindex', '-1'); d.focus(); }
+      return;
+    }
+    var art = b.closest('.sugg'), act = b.getAttribute('data-conc'), body = art.querySelector('.sg-body'), done = art.querySelector('.sg-done'), ref = art.querySelector('.sg-ref');
+    if (act === 'confirm') { body.hidden = true; done.hidden = false; art.classList.add('done'); done.setAttribute('tabindex', '-1'); done.focus(); }
+    else if (act === 'refuse') { body.hidden = true; ref.hidden = false; ref.setAttribute('tabindex', '-1'); ref.focus(); }
+    else if (act === 'back') { ref.hidden = true; body.hidden = false; }
+    else if (act === 'undo') {
+      var w = art.querySelector('.undo-why'), m = art.querySelector('.undo-m');
+      if (!w.value.trim()) { m.hidden = false; w.setAttribute('aria-invalid', 'true'); w.focus(); return; }
+      m.hidden = true; w.value = ''; w.setAttribute('aria-invalid', 'false');
+      done.hidden = true; body.hidden = false; art.classList.remove('done');
+      say('Exemplo: a conciliação foi desfeita. O motivo e a confirmação anterior ficam na auditoria.');
+    }
+  });
+  function sg3() {
+    var a = $('#sg3a').checked, b = $('#sg3b').checked, ok = a || b, btn = $('#sg3ok'), tx = $('#sg3h');
+    btn.setAttribute('aria-disabled', String(!ok || atrasoOn()));
+    btn.innerHTML = ico(ok ? 'check' : 'lock') + 'Confirmar o débito escolhido';
+    tx.textContent = ok ? 'Pronto: o débito de ' + (a ? '10/11/2026' : '12/11/2026') + ' será ligado à despesa. O outro continua sem despesa.' : 'Escolha um dos dois débitos para poder confirmar.';
+  }
+  $$('input[name="sg3"]').forEach(function (r) { r.addEventListener('change', sg3); });
+  function sg4() {
+    var sum = 0, tgt = 210000;
+    $$('.sg4c').forEach(function (c) { if (c.checked) sum += parseInt(c.getAttribute('data-c'), 10); });
+    var diff = tgt - sum, okk = diff === 0, box = $('#sg4sum'), btn = $('#sg4ok');
+    box.className = 'sumbox ' + (okk ? 'ok' : 'err');
+    box.innerHTML = ico(okk ? 'check' : 'alert') + '<span><b>' + (okk ? 'A soma fecha.' : 'A soma não fecha.') + '</b> Despesas marcadas: ' + brl(sum) + ' · débito do banco: ' + brl(tgt) + ' · diferença: ' + brl(Math.abs(diff)) +
+      (okk ? '' : (diff > 0 ? ' (faltam ' + brl(diff) + ')' : ' (passam ' + brl(-diff) + ')')) + '.</span>';
+    btn.setAttribute('aria-disabled', String(!okk || atrasoOn()));
+    btn.innerHTML = ico(okk ? 'check' : 'lock') + 'Confirmar as despesas marcadas';
+  }
+  $$('.sg4c').forEach(function (c) { c.addEventListener('change', sg4); });
+
+  /* ---------- comparação de nova importação depois do OK ---------- */
+  var cmpCk = $$('.cmpck'), cmpGo = $('#cmpGo'), cmpTxt = $('#cmpTxt');
+  function cmp() {
+    var n = 0, tot = 0;
+    cmpCk.forEach(function (c) { if (c.checked) { n++; tot += parseInt(c.getAttribute('data-c'), 10); } });
+    cmpGo.setAttribute('aria-disabled', String(n === 0 || atrasoOn()));
+    cmpGo.innerHTML = ico(n ? 'check' : 'lock') + 'Criar rascunho de ajuste com as diferenças marcadas';
+    cmpTxt.innerHTML = n ? ico('check') + ' ' + n + (n === 1 ? ' diferença marcada' : ' diferenças marcadas') + ', somando ' + brl(tot) + ' a mais no total do projeto. O rascunho ainda não vale.' :
+      ico('lock') + ' Nenhuma diferença marcada. Marque as que você quer aproveitar.';
+  }
+  cmpCk.forEach(function (c) { c.addEventListener('change', cmp); });
+  cmpGo.addEventListener('click', function () {
+    if (cmpGo.getAttribute('aria-disabled') === 'true') { cmpTxt.setAttribute('tabindex', '-1'); cmpTxt.focus(); return; }
+    say('Exemplo: nasceria um rascunho de ajuste com as diferenças marcadas. Ele ainda não vale e a linha de base v2 não mudou.');
+  });
+
+  /* ---------- remoção de linha recusada quando há despesas ---------- */
+  $('#rem-l').addEventListener('change', function () { var c = this.value === 'com'; $('#rem-com').hidden = !c; $('#rem-sem').hidden = c; });
+
+  /* ---------- conferência do mês (fechamento do período, não trava) ---------- */
+  $('#mesNovBtn').addEventListener('click', function () {
+    $('#mesNovBadge').className = 'badge b-ok'; $('#mesNovBadge').innerHTML = ico('check') + 'Conferido (exemplo)';
+    $('#mesNovTxt').textContent = 'Novembro de 2026 foi marcado como conferido. A marca não trava nada: se você lançar ou conciliar algo em novembro depois disso, ela vira "reaberto, com pendência" e mostra o que mudou.';
+    $('#mesNovLi').className = ''; this.hidden = true;
+  });
+
+  /* ---------- dados do projeto: quem aprova mudanças ---------- */
+  $$('input[name="aprova"]').forEach(function (r) { r.addEventListener('change', function () { $('#ap-campos').hidden = !$('#ap-outra').checked; }); });
+
+  sg3(); sg4(); cmp();
 
   // Tema: segue o sistema; o botão alterna e guarda a escolha (se o navegador permitir)
   var btn = document.getElementById('themeBtn'), lbl = document.getElementById('themeLbl');
