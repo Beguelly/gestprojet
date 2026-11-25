@@ -123,6 +123,13 @@ P = [
     ('bar-over', 'surface', 3, 'Barra de estouro sobre cartão (UI)'),
     ('border-strong', 'bar-track', 3, 'Contorno da barra sobre a trilha (UI)'),
     ('surface', 'bar-fill', 4.5, 'Número sobre nível alcançado (escala TRL/MRL)'),
+    # v0.3 (extrato, conciliação, comparação)
+    ('border-strong', 'ok-bg', 3, 'Contorno de campos e do bloco "desfazer" dentro do aviso de conciliado (UI)'),
+    ('border-strong', 'info-bg', 3, 'Contorno de campos dentro de aviso de informação (UI)'),
+    ('border-strong', 'warn-bg', 3, 'Contorno de caixas de seleção em linha de comparação alterada (UI)'),
+    ('text-muted', 'ok-bg', 4.5, 'Texto secundário em aviso verde'),
+    ('text-muted', 'warn-bg', 4.5, 'Texto secundário em aviso âmbar e linha de comparação alterada'),
+    ('text-muted', 'info-bg', 4.5, 'Texto secundário em aviso azul e linha de comparação nova'),
 ]
 
 rows, bad = [], 0
