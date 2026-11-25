@@ -495,7 +495,7 @@ RN-004 (regra só vale confirmada), RN-005 (versões), RN-006 `[ALTERADO v0.2]` 
 | `checagem.registrada` (versão das regras, **versão da linha de base, linha escolhida, declaração de correspondência**, resultado, motivos) `[ALTERADO v0.2]` | Cada checagem | RF-112 |
 | `checagem.bloqueio_superado` (resultado original, justificativa, anexo, líder, data) | Superação | RF-112, RF-065 |
 | `sugestao_ia.aceita` e `sugestao_ia.descartada` (sugestão original, quem, quando) | Aceite ou descarte | RF-112 e RF-090; o descarte é proposto |
-| `despesa.lancada` (vínculo, marca de conformidade) | Lançamento | RF-112 |
+| `despesa.lancada` (vínculo com a checagem e com a linha, marcas da despesa) | Lançamento | RF-112 |
 | `despesa.marcada_sem_checagem` e `despesa.marcada_bloqueada` | Marca de RN-012 | RF-062, RN-012 |
 | `despesa.marcada_sem_linha` e `despesa.vinculada_linha` (linha, etapa, meta, mês de competência) `[NOVO v0.2]` | Despesa sem linha (RN-029) e vínculo posterior pelo líder | proposto; ligado a "lançamentos financeiros" (RF-112) |
 | `despesa.saldo_negativo_detectado` (linha, valor) `[NOVO v0.2]` | Execução acima do aprovado (RN-038) | proposto; pode ser só derivado |
@@ -1520,7 +1520,7 @@ RF-021, RF-022, RF-133, RF-134, RF-135, RF-136, RF-137 · RN-020, RN-022, RN-034
 
 ## 12. Checklist de saúde do projeto e fases `[NOVO v0.2]`
 
-Substitui o antigo "checklist de conformidade ISO 21500" (RF-023, removido). O checklist **sinaliza pendências por fase**; quem aprova é o líder, o financiador ou a instituição. Completá-lo não muda o estado de nada nem vale como "nota de conformidade" (RN-034). Nenhuma tela usa "conformidade" nem "certificado" (RN-021).
+Substitui o checklist da v0.1 (RF-023, removido: a lista vinha de norma cancelada e o nome sugeria certificação). O checklist **sinaliza pendências por fase**; quem aprova é o líder, o financiador ou a instituição. Completá-lo não muda o estado de nada nem vale como nota ou atestado (RN-034). Nenhuma tela o chama de conformidade nem de certificado (RN-021). As fases são **baseadas** no Anexo A da NBR ISO 21502:2021.
 
 ### 12.1 Gatilho e atores
 
@@ -1657,7 +1657,7 @@ Cálculo de item [A] não gera evento; é dado derivado.
 - **Checklist completo:** nada muda de estado por isso (RN-034): nenhuma checagem, despesa, ajuste ou fase.
 - **Projeto encerrado:** o checklist fica somente leitura (RF-004).
 - **Item [A] que depende de dado que o líder ainda não tem (por exemplo, plano sem OK):** aparece não atendido, com o link para a conferência.
-- **Texto do checklist com "conformidade" ou "certificado":** proibido (RN-021).
+- **Texto do checklist que sugira certificação ou atestado de norma:** proibido (RN-021).
 
 ### 12.10 Rastreio
 
@@ -1679,6 +1679,13 @@ A skill pede responsável e prazo em toda aprovação. O PRD não impõe prazo p
 | Aceitar convite | Convidado | 7 dias `[SUPOSIÇÃO]` | Convite expira; líder reenvia |
 | Encerrar projeto (RF-004) | Líder | Nenhum; alerta de vigência em 90, 60 e 30 dias | Projeto fica em "vigência encerrada" |
 | Pagar cobrança (RF-101) | Pagador | Vencimento da cobrança | Assinatura "em atraso"; efeito de T-802 |
+| Confirmar o envio de PDF ou imagem ao provedor de IA (RF-124) `[SUPOSIÇÃO]` | Líder | Nenhum | O arquivo fica guardado sem leitura; planilha e cadastro manual seguem disponíveis |
+| Conferir a minuta, registrar "ciente" e dar o OK da linha de base (RF-126 a RF-128, RN-031) | Líder (quem mais pode depende de Q-26) | Nenhum | A minuta não vale; checagem fica "pendente: plano sem aprovação"; despesas ficam "sem linha"; pendência no painel; nada é aprovado por decurso de prazo |
+| Pedir e tornar vigente um ajuste da linha de base (RF-129) | Líder (decisor registrado) | Nenhum | O ajuste continua rascunho; a versão vigente não muda |
+| Registrar a aprovação externa do ajuste (RN-028) | Líder registra; quem aprova é o financiador, fora da plataforma | Definido pelo financiador, não pela plataforma | Ajuste continua "pendente de aprovação externa"; a versão vigente não muda; pendência no painel |
+| Fechar o mês (fluxo 10) `[SUPOSIÇÃO]` | Líder | Nenhum | Mês fica "atrasado" se não tem lançamento nem marca; nada é bloqueado |
+| Responder itens [L] do checklist e registrar aceite de entrega (RF-138, RF-135) | Líder | Nenhum | Item fica pendente; nada muda de estado (RN-034) |
+| Revisar a justificativa ao mudar de fase (RF-136) | Líder | Nenhum | Pendência no painel |
 
 Nenhuma transição que movimente dinheiro, envie documento externo ou aprove algo é feita só por agente (princípio da skill; RN-014).
 
@@ -1688,7 +1695,7 @@ Nenhuma transição que movimente dinheiro, envie documento externo ou aprove al
 
 | Q | Decisão pendente | Fluxos afetados | Como o fluxo funciona com qualquer opção |
 |---|---|---|---|
-| Q-01 (T-011) | Entrada das regras do edital | 3 | Nas duas formas a regra nasce "rascunho" e só vale após o líder confirmar. A etapa "proposta da IA" só aparece se a decisão a incluir. |
+| Q-01 `[ALTERADO v0.2]` | **T-011 decidida para o plano** (fluxo 8). Resta: as regras do edital só cadastradas ou também propostas por IA a partir do edital | 3 | Nas duas formas a regra nasce "rascunho" e só vale após o líder confirmar. A etapa "proposta da IA" só aparece se a decisão a incluir. |
 | Q-02 (T-012) | Entrada dos dados da conta | 3, 4 | Todos os lançamentos usam o mesmo registro com origem anotada. Estados "importado", "a classificar" e "ignorado (repetido)" só existem se houver importação ou banco. |
 | Q-03 (T-019) | Escala TRL/MRL | 5 | Escala é configuração. Sem escala, o fluxo para em "sem escala". |
 | Q-04 (T-801) | Provedor, meios, nota fiscal | 7 | Confirmação por aviso autenticado e idempotente; meios e nota fiscal só mudam o texto do comprovante e o conteúdo da cobrança. |
@@ -1696,21 +1703,59 @@ Nenhuma transição que movimente dinheiro, envie documento externo ou aprove al
 | Q-09 | Níveis de membro e lançamento de crédito por membro | 4, 6 | A matriz de permissões é dado; mudar o nível de quem pode lançar crédito não altera o fluxo. |
 | Q-10 | Superação de bloqueio | 3 | Se não existir, some a transição "bloqueio superado"; o resto não muda. |
 | Q-11 | Cotações do mesmo fornecedor e validade | 3 | A verificação de cotações lê a regra; a contagem é parâmetro. |
-| Q-12 | Retenção de dados após encerramento | 1 | Estado "encerrado" mantém os dados; o prazo é parâmetro. |
+| Q-12 | Retenção de dados após encerramento | 1, 8, 12 | Estado "encerrado" mantém os dados; o prazo é parâmetro. Retenção do arquivo original, da minuta e das cópias no provedor de IA também depende dela; o item "documentos arquivados conforme retenção" do checklist fica "não verificável: depende de Q-12". |
 | Q-15 | Bloqueio fora da vigência | 1, 3 | A verificação 6 pode ser removida sem mudar o restante. |
 | Q-16 | Assinatura paga com recurso do projeto | 3, 7 | Se permitida, a despesa da assinatura passa pelo fluxo 3. |
 | Q-17 | Cobrança após fim da vigência | 1, 7 | Só muda se "encerrada" cobra ou não. |
 | Q-18 | O que o pagador vê | 7 | Só muda o conteúdo da tela do pagador. |
 | Q-19 | Reserva de saldo por checagem | 3 | A verificação de saldo ganha ou perde um termo. |
 | Q-20 | Prazos de alerta | 1, 2 | Prazos são parâmetros. |
-
+| Q-22 `[NOVO v0.2]` | Período mensal e trimestre (de calendário ou contado da vigência; outro período por financiador) | 10 | O mês é a unidade de lançamento; o trimestre é só agrupamento da visão (RN-032). Mudar a regra do trimestre muda a soma exibida, não o fluxo. |
+| Q-23 `[NOVO v0.2]` | Formatos e limites de arquivo; leitura de PDF e imagem já na 1ª versão ou depois do piloto | 8 | Limites são parâmetros (RNF-15). Se a leitura por IA ficar para depois, o ramo "Lendo por IA" some; planilha e cadastro manual cobrem o fluxo inteiro. |
+| Q-24 `[NOVO v0.2]` | Provedor de IA, contrato, campos que podem sair da plataforma | 8 | O fluxo só exige confirmação do líder antes do envio e minimização; qual provedor e contrato é do `seguranca` e do dono. |
+| Q-25 `[NOVO v0.2]` | Classificações de despesa de partida (modelos) ou todas vazias | 2, 8, 9 | A lista vem do plano importado ou do cadastro do líder; modelos pré-cadastrados só adiantam o passo. |
+| Q-26 `[NOVO v0.2]` | Quem dá o OK da linha de base | 8, 9 | O OK é uma permissão: hoje só o líder. Incluir alguém da instituição muda quem vê o botão, não o fluxo. |
+| Q-27 `[NOVO v0.2]` | Aprovação do financiador na linha de base (não só em ajustes) | 8, 9 | Se existir, a plataforma só registra a aprovação (RN-031); pode ganhar um estado de espera antes do OK, sem mudar o resto. |
+| Q-28 `[NOVO v0.2]` | "Executado do mês" resumido ou só despesas; comprovante obrigatório | 10 | Se não houver resumo, só despesas alimentam a execução; o resto do fluxo não muda. Ver D21. |
+| Q-29 `[NOVO v0.2]` | Peso do progresso da meta e do projeto | 2 | Muda só a fórmula da média. |
+| Q-30 `[NOVO v0.2]` | Limite de desvio entre previsto e executado | 10, 12 | Sem limite definido, o item do checklist aparece "não verificável: depende de Q-30". |
+| Q-31 `[NOVO v0.2]` | Item sem linha: pendente ou bloqueado; declaração da pessoa basta | 3 | A verificação "linha e objeto" lê a regra; hoje "pendente". |
+| Q-32 `[NOVO v0.2]` | Selo e texto sobre as normas | 1, 12 | Só muda o texto das telas (RN-021). |
+| Q-34 `[NOVO v0.2]` | Gravidade das validações do plano | 8, 9 | Gravidade é parâmetro das validações; hoje: classificação inválida e valor ausente impedem o OK; as demais exigem "ciente". |
+| T-012 (Q-02) | Conciliação com extrato | 4, 10, 12 | O item "conciliação em todas as despesas" do checklist de encerramento fica "não verificável: depende de T-012". |
 Também são parâmetros por edital (RN-007): rubricas, itens permitidos e vedados, faixas e quantidade de cotações, limites e validade da cotação.
 
 ---
 
 ## 15. Pontos de divergência e ambiguidade encontrados no PRD
 
-Nenhum deles foi decidido neste documento. Cada um tem o tratamento provisório indicado.
+Nenhum deles foi decidido neste documento. Cada um tem o tratamento provisório indicado. Nos textos antigos, "rubrica" lê-se "classificação da despesa" (RN-026) e "fase ISO" lê-se "fase baseada no Anexo A da NBR ISO 21502:2021" (RF-020).
+
+### 15.1 Situação de D1 a D17 frente ao PRD v0.2
+
+| ID | Situação | Motivo |
+|---|---|---|
+| D1 | Continua em aberto | O PRD v0.2 não trata reabertura de projeto encerrado. |
+| D2 | Continua em aberto | RN-012 não mudou: só "sem checagem" e "comprada com checagem bloqueada". A marca "comprada com checagem pendente" segue como suposição deste documento. A v0.2 acrescentou a marca "sem linha" (RN-029), que é outra dimensão (fluxo 3, 3.5b). |
+| D3 | Continua em aberto | RF-053 ainda fala em "saldo da conta" sem fórmula. |
+| D4 | **Parcialmente resolvida** | RF-010 `[ALTERADO v0.2]` diz que o membro (registra) edita só dados operacionais e que linhas, valores e classificações mudam só por importação, cadastro do líder ou ajuste. Segue em aberto se o anexo da entrega é obrigatório para concluir. |
+| D5 | Continua em aberto | RF-041 e RN-004 não dizem se regra "sem fonte" pode ser confirmada. |
+| D6 | Continua em aberto | O PRD v0.2 não cria lembretes de rendimento nem de reavaliação TRL/MRL. O calendário (RF-134) e o checklist (RF-138) geram pendências, mas não esses lembretes. |
+| D7 | Continua em aberto | RN-032 define o mês de competência pela data da despesa, mas nada diz sobre data fora da vigência. |
+| D8 | Continua em aberto | Sem mudança. |
+| D9 | Continua em aberto | Sem mudança. |
+| D10 | Continua em aberto | Sem mudança. |
+| D11 | Continua em aberto | RF-114 segue Could. |
+| D12 | Continua em aberto | RF-103 não ganhou "encerrada". |
+| D13 | **Parcialmente resolvida** | RF-112 `[ALTERADO v0.2]` passou a listar importações (arquivo e hash), conferências e correções da minuta, OK da linha de base, ajustes, aprovações externas, respostas do checklist e aceites de entrega. Seguem sem estar na lista: ciclo do projeto, alteração operacional do plano, comprovantes, riscos, questões, calendário, lições e fase. |
+| D14 | **Resolvida** | RF-020 `[ALTERADO v0.2]` diz que a fase é marcada pelo líder e que a plataforma só sugere avançar quando o checklist da fase está respondido; RN-034 e RF-138 dizem que o checklist sinaliza e nada muda de estado por ele. A marca pelo líder continua `[SUPOSIÇÃO]` do próprio PRD. |
+| D15 | **Parcialmente resolvida** | Mover valor entre linhas, depois do OK, passou a ser um ajuste versionado, com aprovação externa só registrada (RF-129, fluxo 9). Seguem fora do escopo da 1ª versão a prestação de contas e o fluxo próprio de remanejamento entre rubricas ("a confirmar com o dono", PRD 4.2). |
+| D16 | Continua em aberto | RF-064 não esclareceu. |
+| D17 | Continua em aberto | RF-030 a RF-032 não mudaram. |
+
+Resumo: **1 resolvida (D14), 3 parciais (D4, D13, D15), 13 em aberto.** Novas divergências deste documento: D18 a D25 (a seguir).
+
+### 15.2 Divergências originais (D1 a D17) e tratamento provisório
 
 | ID | Onde | Problema | Tratamento provisório |
 |---|---|---|---|
@@ -1732,23 +1777,45 @@ Nenhum deles foi decidido neste documento. Cada um tem o tratamento provisório 
 | D16 | RF-064 | Uma checagem feita depois da compra vale como "prévia" para a meta O3? | Só vale se a checagem for anterior à data da compra `[SUPOSIÇÃO]`. |
 | D17 | RF-030, RF-032 | Convite recusado e convite cancelado pelo líder não existem no PRD; notificação ao membro sobre a mudança de nível ou revogação também não. | Incluídos como suposição. |
 
+### 15.3 Novas divergências e lacunas do PRD v0.2 `[NOVO v0.2]`
+
+| ID | Onde | Problema | Tratamento provisório |
+|---|---|---|---|
+| D18 | RF-125, RF-128, RN-027 | RF-125 diz que cada importação cria nova minuta. RF-128 e RN-027 dizem que a linha de base não é reescrita. Não diz o que acontece com uma **nova importação depois do OK**. | A minuta nova é guardada e comparada com a versão vigente; diferenças só entram por ajuste (fluxo 9). Perguntar ao dono se a comparação com a vigente deve existir. |
+| D19 | RF-127, Q-34 | A validação (c) agrupa "ausente, zero, negativo ou texto no lugar de número", mas a gravidade só cita "valor ausente" como impeditivo. Zero, negativo e texto ficam sem gravidade. | Sem decisão; depende de Q-34. A tela mostra como alerta até o dono responder. |
+| D20 | RF-130, RF-131, RF-138 | O PRD usa "executado do mês", "sem execução no mês" e período, mas **não define "fechamento do período"**: se existe, quem fecha, se trava lançamentos, o que acontece com lançamento posterior. | Fechamento é marca de conferência do líder que não trava nada; lançamento posterior reabre o mês com pendência `[SUPOSIÇÃO]`. Perguntar ao dono se o fechamento deve existir e se deve travar. |
+| D21 | RF-130, Q-28 | Se há "executado do mês" resumido e despesas detalhadas na mesma linha e mês, o PRD não diz se somam ou se um substitui o outro. | Somam, com aviso `[SUPOSIÇÃO]`; depende de Q-28. |
+| D22 | RF-129, RN-027 | Ajuste que remove linha, ou reduz o valor abaixo do executado: o PRD exige "ciente" quando o valor fica abaixo do executado, mas não diz o destino das despesas de uma **linha removida**. | Exige "ciente"; despesas ficam ligadas à versão da época e passam a "sem linha" na versão nova até o líder vincular. |
+| D23 | RF-138, RF-030, RF-021 | O item de iniciação "equipe e papéis, **incluindo quem aprova mudanças**" é [A], mas nenhum RF cadastra "quem aprova mudanças" (RF-030 só tem nível; RF-021 tem papel de parte interessada). | Sem campo, o item não é verificável. Provisório: aparece "não verificável: falta onde cadastrar quem aprova mudanças" até o PRD definir. Pergunta ao dono (relaciona-se a Q-26). |
+| D24 | RF-138, RF-063, RF-064 | Itens [A] "compra sem cotações mínimas" e "item fora do objeto ou da classificação aprovada" só têm origem quando há checagem vinculada. Despesa sem checagem não tem dado de cotação, e a equivalência entre item e objeto é declaração da pessoa. | O item se baseia nas checagens vinculadas e nas despesas "sem checagem" e "sem linha"; o que não tem dado fica sinalizado como "não verificável sem checagem". |
+| D25 | RN-029, RN-006, RF-063, RF-062 | RN-029 diz que, sem OK, a checagem "retorna pendente: plano sem aprovação". RN-006 diz que bloqueio tem precedência sobre pendência e RF-062 exige "bloqueado" para item vedado. Os dois não se conciliam se o plano está sem OK e o item é vedado. | Bloqueio tem precedência (RN-006, RF-062): sem OK, item vedado ou sem cotações mínimas continua "bloqueado"; só o item que seria permitido vira "pendente: plano sem aprovação". Confirmar com o dono. |
+
 ---
 
 ## 16. Catálogo consolidado de eventos de auditoria (para alinhamento com docs/06-seguranca.md)
 
 | Domínio | Eventos | Fluxo |
 |---|---|---|
-| projeto | criado, vigencia_alterada, suspenso, retomado, encerrado | 1 |
+| projeto | criado, vigencia_alterada, suspenso, retomado, encerrado, fase_alterada `[NOVO v0.2]`, justificativa_revisada `[NOVO v0.2]` | 1, 11, 12 |
 | documento | anexado | 1, 3 |
-| plano e tarefa | item_criado, item_alterado, tarefa.concluida, tarefa.atrasada, marco.criado, marco.alterado | 2 |
+| plano e tarefa | item_criado, item_alterado (só dado operacional, depois do OK), tarefa.concluida, tarefa.atrasada, marco.criado, marco.alterado, marco.concluido `[NOVO v0.2]` | 2 |
+| etapa e entrega `[NOVO v0.2]` | etapa.medida_definida, etapa.medida_alterada, etapa.percentual_estimado_registrado, entrega.aceite_registrado, entrega.pendencia_resolvida | 2 |
+| importação `[NOVO v0.2]` | arquivo_recebido, recusada, repetida_detectada, leitura_planilha_concluida | 8 |
+| leitura por IA `[NOVO v0.2]` | envio_confirmado, concluida, falhou | 8 |
+| minuta `[NOVO v0.2]` | criada, campo_corrigido, ciente_registrado, conferida, descartada, substituida | 8 |
+| linha de base `[NOVO v0.2]` | ok_recusado, ok_dado, versao_vigente | 8, 9 |
+| ajuste `[NOVO v0.2]` | criado, marcado_aprovacao_externa, aprovacao_externa_registrada, recusado, cancelado, ciente_abaixo_do_executado, desatualizado | 9 |
+| execução e período `[NOVO v0.2]` | execucao.resumo_lancado, resumo_corrigido, sem_execucao_marcada, sem_execucao_desmarcada, saldo_negativo_detectado, desvio_detectado; periodo.fechado, periodo.reaberto | 10 |
+| risco, questão, parte interessada, comunicação, lição `[NOVO v0.2]` | risco.criado, alterado, revisado, situacao_alterada; questao.criada, alterada, resolvida, reaberta; parte_interessada.criada, alterada, desativada; comunicacao.prevista_criada, feita, reprogramada; licao.registrada, revisada | 11 |
+| checklist `[NOVO v0.2]` | resposta_registrada, sugestao_avancar_fase | 12 |
 | regra | criada, nova_versao, confirmada, desativada | 3 |
-| checagem | registrada, bloqueio_superado | 3 |
-| sugestão de IA | aceita, descartada | 3, 5 |
-| despesa | lancada, marcada_sem_checagem, marcada_bloqueada, estornada, corrigida | 3 |
+| checagem | registrada (agora com linha, versão da linha de base e declaração de correspondência), bloqueio_superado | 3 |
+| sugestão de IA | aceita, descartada (inclui o aceite da minuta lida por IA, no OK) | 3, 5, 8 |
+| despesa | lancada, marcada_sem_checagem, marcada_bloqueada, estornada, corrigida, marcada_sem_linha `[NOVO v0.2]`, vinculada_linha `[NOVO v0.2]`, saldo_negativo_detectado `[NOVO v0.2]` | 3, 10 |
 | comprovante | anexado | 3 |
 | lançamento | criado, estornado, corrigido, classificado | 4 |
 | extrato | importado | 4 |
-| orçamento | alterado | 4 |
+| orçamento | alterado `[REMOVIDO v0.2]`: o orçamento é derivado das linhas; ver linha de base e ajuste | 4 |
 | trl_mrl | nivel_oficial_registrado, proposta_gerada, meta_alterada | 5 |
 | evidência | ligada, desligada | 5 |
 | convite e membro | convite.enviado, aceito, expirado, cancelado; membro.nivel_alterado, revogado | 6 |
@@ -1758,15 +1825,17 @@ Nenhum deles foi decidido neste documento. Cada um tem o tratamento provisório 
 
 ## 17. Lista de verificação da skill workflow-builder (modo processo)
 
-- [x] Todo fluxo tem estados finais e caminho de exceção (recusa, prazo vencido, cancelamento): seções 1.8, 2.8, 3.13, 4.8, 5.8, 6.9, 7.9; estados finais nos diagramas.
-- [x] Toda aprovação tem responsável e prazo: seção 8. O PRD não impõe prazo para decisões do líder; isto está declarado.
-- [x] Fluxos financeiros geram auditoria e exigem comprovante: seções 3.10, 3.11, 4.5, 4.6 e 7.6, 7.7.
-- [ ] Backlog cobre todos os RF Must: item do modo backlog, fora do escopo da T-015.
-- [ ] Próximo passo indicado: `agent-skill-builder`. O PRD já cita T-018 (skills de domínio) como etapa seguinte; os fluxos 3, 5 e 7 alimentam as skills `checagem-pre-compra`, `trl-mrl` e `assinatura-por-projeto`.
+- [x] Todo fluxo tem estados finais e caminho de exceção (recusa, prazo vencido, cancelamento): seções 1.8, 2.8, 3.13, 4.8, 5.8, 6.9, 7.9, 8.11, 9.9, 10.9, 11.9, 12.9; estados finais nos diagramas.
+- [x] Toda aprovação tem responsável e prazo: seção 13. O PRD não impõe prazo para decisões do líder nem para a aprovação externa do financiador; isto está declarado.
+- [x] Fluxos financeiros geram auditoria e exigem comprovante: seções 3.10, 3.11, 4.5, 4.6, 7.6, 7.7, 8.8, 8.9, 9.6, 9.7, 10.6 e 10.7.
+- [x] Ator externo (financiador) só aparece como registro feito pelo líder; a plataforma não envia nem solicita nada (fluxos 9 e 11).
+- [x] Redação sobre normas: "alinhado às práticas" ou "baseado em"; nenhuma ocorrência de "conformidade" como atributo do produto nem de selo (RN-021).
+- [ ] Backlog cobre todos os RF Must: item do modo backlog, fora do escopo desta tarefa (T-020, parte fluxos). Os fluxos 8 a 10 e 12 dão a base dos épicos E02 a E05.
+- [ ] Próximo passo indicado: `agent-skill-builder`. O PRD já cita T-018 (skills de domínio) como etapa seguinte; os fluxos 3, 5, 7, 8, 9 e 10 alimentam as skills `checagem-pre-compra`, `trl-mrl`, `assinatura-por-projeto`, `execucao-financeira-pdi` e a candidata nova de leitura e conferência de plano de trabalho.
 
 ## Próximo passo
 
-1. Dono revisa este documento junto com as perguntas da seção 10 e as dependências da seção 9.
-2. `seguranca` valida o catálogo de eventos da seção 11 em `docs/06-seguranca.md`.
-3. `designer` usa os estados e as mensagens destes fluxos no mapa de telas (`docs/03-ux.md`).
-4. T-018: criar as skills de domínio a partir dos fluxos 3, 5 e 7 (`agent-skill-builder`).
+1. Dono revisa este documento junto com as perguntas da seção 15 (em especial D18, D20, D22, D23 e D25) e as dependências da seção 14; responde Q-22 a Q-27, Q-31 e Q-34 do PRD.
+2. `seguranca` valida o catálogo de eventos da seção 16 em `docs/06-seguranca.md`, incluindo a confirmação de envio de documento a provedor de IA (fluxo 8) e os eventos de importação, minuta e leitura por IA.
+3. `designer` usa os estados e as mensagens destes fluxos no mapa de telas (`docs/03-ux.md`): importar, mapear colunas, conferir com a origem ao lado, OK, ajustes, execução mensal, saúde por fase.
+4. T-018: criar as skills de domínio a partir dos fluxos 3, 5, 7, 8, 9 e 10 (`agent-skill-builder`).
