@@ -547,6 +547,7 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
   table.stack-m td::before { content: attr(data-label); font-size: var(--fs-sm); color: var(--c-text-muted); font-weight: 700; text-align: left; flex: none; max-width: 45%; }
   table.stack-m td:first-child { font-weight: 700; text-align: left; justify-content: flex-start; padding-bottom: var(--s-2); }
   table.stack-m td:first-child::before { display: none; }
+  table.stack-m td:empty { display: none; }
   table.stack-m tfoot tr { background: var(--c-surface-2); }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -1599,6 +1600,159 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
         </table>
       </div>
     </section>
+  </div>
+</section>
+
+<!-- =====================================================
+     5a. PLANEJAMENTO: PLANO E LINHA DE BASE (Meta > Etapa > Linha)
+     ===================================================== -->
+<section class="screen" id="s-plano" data-title="Plano de trabalho" aria-labelledby="h-plano-t">
+  <header>
+    <div>
+      <p class="crumb">Projeto Exemplo · Planejamento · <span class="tag-example">EXEMPLO</span></p>
+      <h1 id="h-plano-t" tabindex="-1">Plano de trabalho e linha de base</h1>
+      <p>O plano aprovado, organizado em metas, etapas e linhas de despesa. Os totais são sempre a soma das linhas.</p>
+    </div>
+    <div class="row">
+      <span class="badge b-ok if-ok"><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg>Linha de base v2 vigente</span>
+      <span class="badge b-warn dashed if-semok"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Minuta: não vale</span>
+    </div>
+  </header>
+  <nav class="seg subnav" data-sub="plan" aria-label="Planejamento"></nav>
+
+  <div class="stack">
+    <div class="banner warn if-semok" role="status"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg><div><b>Este plano ainda é uma minuta.</b> Confira cada linha com o documento de origem ao lado e dê o OK para travar a linha de base v1.<br><a class="btn" href="#/conferir">Conferir a minuta</a></div></div>
+
+    <div class="grid g-2">
+      <section class="card" aria-labelledby="h-lb">
+        <div class="card-head"><h2 id="h-lb">Linha de base</h2><a href="#/ajustes">Ajustes e versões</a></div>
+        <dl class="facts">
+          <dt>Versão vigente</dt><dd>v2, desde 12/11/2026</dd>
+          <dt>Decisor</dt><dd>Líder (exemplo)</dd>
+          <dt>Versão anterior</dt><dd>v1, de 03/03/2026, consultável</dd>
+          <dt>Arquivo de origem</dt><dd>plano-exemplo.pdf · hash 3f9a…c1d2 · lido por IA, conferido pelo líder</dd>
+          <dt>Ajuste pendente</dt><dd><span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>1 aguardando o financiador</span></dd>
+        </dl>
+        <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Depois do OK, a linha de base não é editada: toda mudança é um ajuste com pedido, justificativa, decisor e versão nova.</p>
+      </section>
+      <section class="card" aria-labelledby="h-soma">
+        <div class="card-head"><h2 id="h-soma">A soma fecha</h2></div>
+        <p class="kpi"><span class="value">R$ 100.000,00</span></p>
+        <p class="muted">Soma das 8 linhas = valor total aprovado do projeto (R$ 100.000,00). Diferença: R$ 0,00.</p>
+        <p class="badge b-ok" style="margin-top:var(--s-3)"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Sem diferença</p>
+        <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Fonte: linhas da linha de base v2. Os totais de etapa, meta e projeto são calculados, nunca digitados.</p>
+      </section>
+    </div>
+
+    <section class="card" aria-labelledby="h-arv">
+      <div class="card-head"><h2 id="h-arv">Meta → Etapa → Linha</h2><span class="badge b-info"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Classificação da despesa: natureza de despesa</span></div>
+      <div class="table-wrap">
+        <table class="stack-m">
+          <caption class="sr-only">Plano de trabalho: metas, etapas e linhas, com classificação da despesa, objeto previsto e valor aprovado, em reais</caption>
+          <thead><tr><th scope="col">Meta, etapa ou linha</th><th scope="col">Classificação</th><th scope="col">Objeto previsto</th><th scope="col" class="num">Valor aprovado</th><th scope="col">Referência externa</th></tr></thead>
+          <tbody>
+            <tr class="lv-meta"><td data-label="Meta">Meta 1 · Formulação do biofertilizante</td><td data-label="Classificação"></td><td data-label="Objeto"></td><td class="num" data-label="Valor aprovado">R$ 68.000,00</td><td data-label="Referência"></td></tr>
+            <tr class="lv-etapa"><td data-label="Etapa">Etapa 1.1 · Formulação em laboratório</td><td></td><td></td><td class="num" data-label="Valor aprovado">R$ 28.000,00</td><td></td></tr>
+            <tr class="lv-linha"><td data-label="Linha">Linha 1.1.1</td><td data-label="Classificação"><span class="cls">339030</span> Material de consumo</td><td data-label="Objeto"><span class="obj" style="color:inherit;font-size:inherit">Reagentes e insumos para ensaios de formulação</span></td><td class="num" data-label="Valor aprovado">R$ 18.000,00</td><td data-label="Referência">não informada</td></tr>
+            <tr class="lv-linha"><td data-label="Linha">Linha 1.1.2</td><td data-label="Classificação"><span class="cls">339039</span> Serviços de terceiros</td><td data-label="Objeto"><span class="obj" style="color:inherit;font-size:inherit">Análises químicas por laboratório externo</span></td><td class="num" data-label="Valor aprovado">R$ 10.000,00</td><td data-label="Referência">não informada</td></tr>
+            <tr class="lv-etapa"><td data-label="Etapa">Etapa 1.2 · Produção do lote piloto</td><td></td><td></td><td class="num" data-label="Valor aprovado">R$ 40.000,00</td><td></td></tr>
+            <tr class="lv-linha"><td data-label="Linha">Linha 1.2.1</td><td data-label="Classificação"><span class="cls">449052</span> Equipamentos</td><td data-label="Objeto"><span class="obj" style="color:inherit;font-size:inherit">Biorreator de bancada de 5 L, com controle de temperatura e pH</span></td><td class="num" data-label="Valor aprovado">R$ 40.000,00</td><td data-label="Referência">Processo de exemplo 0000/2026</td></tr>
+            <tr class="lv-meta"><td data-label="Meta">Meta 2 · Validação em campo</td><td></td><td></td><td class="num" data-label="Valor aprovado">R$ 28.000,00</td><td></td></tr>
+            <tr class="lv-etapa"><td data-label="Etapa">Etapa 2.1 · Ensaios de campo</td><td></td><td></td><td class="num" data-label="Valor aprovado">R$ 26.000,00</td><td></td></tr>
+            <tr class="lv-linha"><td data-label="Linha">Linha 2.1.1</td><td data-label="Classificação"><span class="cls">339030</span> Material de consumo</td><td data-label="Objeto"><span class="obj" style="color:inherit;font-size:inherit">Insumos para ensaio de campo, lote 2</span></td><td class="num" data-label="Valor aprovado">R$ 12.000,00</td><td data-label="Referência">não informada</td></tr>
+            <tr class="lv-linha"><td data-label="Linha">Linha 2.1.2</td><td data-label="Classificação"><span class="cls">339039</span> Serviços de terceiros</td><td data-label="Objeto"><span class="obj" style="color:inherit;font-size:inherit">Serviço de análise de solo e tecido vegetal</span></td><td class="num" data-label="Valor aprovado">R$ 12.000,00</td><td data-label="Referência">não informada</td></tr>
+            <tr class="lv-linha"><td data-label="Linha">Linha 2.1.3</td><td data-label="Classificação"><span class="cls">339014</span> Diárias de viagem</td><td data-label="Objeto"><span class="obj" style="color:inherit;font-size:inherit">Diárias de viagem para ensaios de campo</span></td><td class="num" data-label="Valor aprovado">R$ 2.000,00</td><td data-label="Referência">não informada</td></tr>
+            <tr class="lv-etapa"><td data-label="Etapa">Etapa 2.2 · Análise de resultados</td><td></td><td></td><td class="num" data-label="Valor aprovado">R$ 2.000,00</td><td></td></tr>
+            <tr class="lv-linha"><td data-label="Linha">Linha 2.2.1</td><td data-label="Classificação"><span class="cls">339014</span> Diárias de viagem</td><td data-label="Objeto"><span class="obj" style="color:inherit;font-size:inherit">Diárias de viagem para visita técnica</span></td><td class="num" data-label="Valor aprovado">R$ 2.000,00</td><td data-label="Referência">não informada</td></tr>
+            <tr class="lv-meta"><td data-label="Meta">Meta 3 · Gestão administrativa e financeira</td><td></td><td></td><td class="num" data-label="Valor aprovado">R$ 4.000,00</td><td></td></tr>
+            <tr class="lv-etapa"><td data-label="Etapa">Etapa 3.1 · Gestão (linha única)</td><td></td><td></td><td class="num" data-label="Valor aprovado">R$ 4.000,00</td><td></td></tr>
+            <tr class="lv-linha"><td data-label="Linha">Linha 3.1.1</td><td data-label="Classificação"><span class="cls">339039</span> Serviços de terceiros</td><td data-label="Objeto"><span class="obj" style="color:inherit;font-size:inherit">Serviços de contabilidade e apoio administrativo</span></td><td class="num" data-label="Valor aprovado">R$ 4.000,00</td><td data-label="Referência">não informada</td></tr>
+          </tbody>
+          <tfoot><tr><th scope="row">Total do projeto</th><td></td><td></td><td class="num" data-label="Valor aprovado">R$ 100.000,00</td><td></td></tr></tfoot>
+        </table>
+      </div>
+      <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Fonte: linha de base v2 (importada de plano-exemplo.pdf e ajustada em 12/11/2026). Visível a líder e membros; só o líder altera, por ajuste versionado. Todos os nomes, códigos e valores são fictícios.</p>
+    </section>
+    <details class="norm-note">
+      <summary><svg class="i" aria-hidden="true"><use href="#i-book"/></svg>Baseado nas práticas ISO 21500, 21502 e 21512</summary>
+      <p>A decomposição do plano em metas, etapas e linhas que somam o nível de cima, sem lacuna nem sobreposição, segue uma prática de planejamento das normas ABNT NBR ISO 21500:2021, 21502:2021 e 21512:2026. As normas orientam; quem decide e aprova é você, o financiador ou a instituição.</p>
+    </details>
+  </div>
+</section>
+
+<!-- =====================================================
+     5b. PROGRESSO POR MARCOS E 0/100
+     ===================================================== -->
+<section class="screen" id="s-progresso" data-title="Progresso do plano" aria-labelledby="h-prog">
+  <header>
+    <div>
+      <p class="crumb">Projeto Exemplo · Planejamento · <span class="tag-example">EXEMPLO</span></p>
+      <h1 id="h-prog" tabindex="-1">Progresso por marcos e 0/100</h1>
+      <p>Cada etapa tem uma medida de progresso definida antes de começar. O progresso da meta e do projeto é a média simples das partes.</p>
+    </div>
+  </header>
+  <nav class="seg subnav" data-sub="plan" aria-label="Planejamento"></nav>
+
+  <div class="stack">
+    <div class="grid g-3">
+      <div class="card kpi"><span class="label">Projeto</span><span class="value">40,8%</span><span class="hint">média simples das 3 metas</span></div>
+      <div class="card kpi"><span class="label">Etapas com medida</span><span class="value">4 de 5</span><span class="hint">1 etapa sem medida fica fora da média</span></div>
+      <div class="card kpi"><span class="label">Marcos</span><span class="value">5 de 12</span><span class="hint">concluídos nas etapas que usam marcos</span></div>
+    </div>
+
+    <section class="card" aria-labelledby="h-pt">
+      <div class="card-head"><h2 id="h-pt">Progresso por meta e etapa</h2><span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>1 etapa sem medida</span></div>
+      <div class="table-wrap">
+        <table class="stack-m">
+          <caption class="sr-only">Medida de progresso e progresso de cada meta e etapa</caption>
+          <thead><tr><th scope="col">Meta ou etapa</th><th scope="col">Medida</th><th scope="col">Como foi calculado</th><th scope="col">Progresso</th></tr></thead>
+          <tbody>
+            <tr class="lv-meta"><td data-label="Meta">Meta 1 · Formulação do biofertilizante</td><td data-label="Medida">Média das etapas</td><td data-label="Cálculo">(75% + 0%) ÷ 2</td><td data-label="Progresso"><div class="pbar"><div class="bar" role="img" aria-label="Meta 1: 37,5%"><i style="width:37.5%"></i></div><span class="num">37,5%</span></div></td></tr>
+            <tr class="lv-etapa"><td data-label="Etapa">Etapa 1.1 · Formulação em laboratório</td><td data-label="Medida"><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-flask"/></svg>Marcos</span></td><td data-label="Cálculo">3 de 4 marcos concluídos</td><td data-label="Progresso"><div class="pbar"><div class="bar" role="img" aria-label="Etapa 1.1: 75%"><i style="width:75%"></i></div><span class="num">75%</span></div></td></tr>
+            <tr class="lv-etapa"><td data-label="Etapa">Etapa 1.2 · Produção do lote piloto</td><td data-label="Medida"><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg>0/100</span></td><td data-label="Cálculo">0% até ser concluída; 100% ao concluir</td><td data-label="Progresso"><div class="pbar"><div class="bar" role="img" aria-label="Etapa 1.2: 0%"><i style="width:0%"></i></div><span class="num">0%</span></div></td></tr>
+            <tr class="lv-meta"><td data-label="Meta">Meta 2 · Validação em campo</td><td data-label="Medida">Média das etapas com medida</td><td data-label="Cálculo">só a etapa 2.1 entra</td><td data-label="Progresso"><div class="pbar"><div class="bar" role="img" aria-label="Meta 2: 60%"><i style="width:60%"></i></div><span class="num">60,0%</span></div></td></tr>
+            <tr class="lv-etapa"><td data-label="Etapa">Etapa 2.1 · Ensaios de campo</td><td data-label="Medida"><span class="badge b-info dashed"><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg>Percentual estimado</span></td><td data-label="Cálculo">Estimado pelo líder em 10/11/2026</td><td data-label="Progresso"><div class="pbar"><div class="bar" role="img" aria-label="Etapa 2.1: 60%, estimado pelo líder"><i style="width:60%"></i></div><span class="num">60% (estimado)</span></div></td></tr>
+            <tr class="lv-etapa"><td data-label="Etapa">Etapa 2.2 · Análise de resultados</td><td data-label="Medida"><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-question"/></svg>Sem medida definida</span></td><td data-label="Cálculo">Fica fora da média e aparece nas pendências</td><td data-label="Progresso"><span class="num">Sem cálculo</span></td></tr>
+            <tr class="lv-meta"><td data-label="Meta">Meta 3 · Gestão administrativa e financeira</td><td data-label="Medida">Média das etapas</td><td data-label="Cálculo">só a etapa 3.1</td><td data-label="Progresso"><div class="pbar"><div class="bar" role="img" aria-label="Meta 3: 25%"><i style="width:25%"></i></div><span class="num">25,0%</span></div></td></tr>
+            <tr class="lv-etapa"><td data-label="Etapa">Etapa 3.1 · Gestão (linha única)</td><td data-label="Medida"><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-flask"/></svg>Marcos</span></td><td data-label="Cálculo">2 de 8 marcos concluídos</td><td data-label="Progresso"><div class="pbar"><div class="bar" role="img" aria-label="Etapa 3.1: 25%"><i style="width:25%"></i></div><span class="num">25%</span></div></td></tr>
+          </tbody>
+          <tfoot><tr><th scope="row">Projeto: (37,5% + 60,0% + 25,0%) ÷ 3</th><td></td><td></td><td class="num" data-label="Progresso">40,8%</td></tr></tfoot>
+        </table>
+      </div>
+      <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Fonte: medida de cada etapa e marcos concluídos. Média simples entre etapas e entre metas (suposição do PRD, Q-29: pode virar média ponderada). A IA não calcula nem altera progresso. Percentual estimado vem sempre rotulado como estimado, com data.</p>
+    </section>
+
+    <div class="grid g-2">
+      <section class="card" aria-labelledby="h-mar">
+        <div class="card-head"><h2 id="h-mar">Marcos da etapa 1.1</h2></div>
+        <ul class="todo">
+          <li><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Concluído</span><div class="txt"><b>20/04/2026</b> · Protocolo de formulação aprovado</div></li>
+          <li><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Concluído</span><div class="txt"><b>30/06/2026</b> · Formulação 1 validada</div></li>
+          <li><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Concluído</span><div class="txt"><b>30/09/2026</b> · Formulação 2 validada</div></li>
+          <li><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Prevista</span><div class="txt"><b>15/12/2026</b> · Relatório de formulação ao financiador</div></li>
+        </ul>
+        <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Membro com nível &quot;registra&quot; marca marcos concluídos; só o líder escolhe a medida.</p>
+      </section>
+      <section class="card" aria-labelledby="h-med">
+        <div class="card-head"><h2 id="h-med">Definir a medida da etapa 2.2</h2></div>
+        <form class="stack" novalidate>
+          <fieldset>
+            <legend>Como medir o progresso desta etapa?</legend>
+            <div class="radios">
+              <label class="chk"><input type="radio" name="medida" checked><span><b>Marcos</b><br><small class="muted">concluídos ÷ total</small></span></label>
+              <label class="chk"><input type="radio" name="medida"><span><b>0/100</b><br><small class="muted">100% só ao concluir</small></span></label>
+              <label class="chk"><input type="radio" name="medida"><span><b>Percentual estimado</b><br><small class="muted">você informa, com data</small></span></label>
+            </div>
+          </fieldset>
+          <div class="field">
+            <label for="f-motivo">Motivo (obrigatório se a etapa já começou)</label>
+            <input id="f-motivo" autocomplete="off" aria-describedby="f-motivo-h">
+            <span class="help" id="f-motivo-h">Mudar a medida depois que a etapa começou fica registrado, com o motivo.</span>
+          </div>
+          <div class="row"><button class="btn" type="button" data-demo="Exemplo: a medida não foi salva.">Salvar medida</button></div>
+        </form>
+      </section>
+    </div>
   </div>
 </section>
 
