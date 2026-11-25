@@ -1,19 +1,20 @@
 # Gestprojet: fluxos de trabalho da 1ª versão
 
-Versão: 0.2 · Data: 2026-11-25 · Status: rascunho (aguarda revisão; tarefa T-020, parte fluxos). A v0.1 era da tarefa T-015.
+Versão: 0.2.1 · Data: 2026-11-25 · Status: rascunho alinhado ao PRD v0.2.1 **aprovado** em 25/11/2026 (tarefa T-022c, parte fluxos; aguarda revisão). A v0.2 era da T-020 e a v0.1 da T-015.
 
-Fonte: `docs/01-prd.md` v0.2 (aprovado pelo dono, segundo o pedido da T-020; o cabeçalho do arquivo ainda diz "aguarda nova aprovação", T-008b) e `docs/00-briefing.md`. Este documento descreve **como o trabalho acontece dentro da plataforma** (modo processo da skill `workflow-builder`). Não repete os critérios de aceite do PRD; aponta para eles.
+Fonte: `docs/01-prd.md` v0.2.1 (**aprovado pelo dono em 25/11/2026**, T-022b; seções "Impactos da v0.2.1" e 10) e `docs/00-briefing.md`. Este documento descreve **como o trabalho acontece dentro da plataforma** (modo processo da skill `workflow-builder`). Não repete os critérios de aceite do PRD; aponta para eles.
 
 ## Como ler
 
 - **Papéis:** Líder, Membro (registra), Membro (visualiza), Pagador, Sistema (regra automática da plataforma), IA (só sugere, RN-014). Os papéis vêm do PRD, seção 3.
-- **Depende de Q-xx:** o fluxo foi desenhado para funcionar com qualquer resposta à questão em aberto (PRD, seção 10). Este documento não escolhe nenhuma opção. A seção 14 resume, por questão, o que muda em cada fluxo.
-- **`[SUPOSIÇÃO]`:** ponto que o PRD não define e que este documento precisou preencher para o fluxo fechar. Vale até o dono corrigir. A seção 15 lista os que viram pergunta ao PRD.
+- **Depende de Q-xx:** o fluxo foi desenhado para funcionar com qualquer resposta à questão **ainda em aberto** (PRD, seção 10). Este documento não escolhe nenhuma opção. As questões resolvidas em 25/11/2026 (PRD, seção 10.3) aparecem como decididas. A seção 14 resume, por questão, o que muda em cada fluxo.
+- **`[SUPOSIÇÃO]`:** ponto que o PRD não define e que este documento precisou preencher para o fluxo fechar. Vale até o dono corrigir. A seção 15 lista os que viram pergunta ao PRD. `[DECIDIDO 25/11/2026]` marca o que o dono já respondeu.
+- **Mudanças da v0.2.1 deste documento `[NOVO v0.2.1]`:** fluxo 4 reescrito (extrato OFX ou CSV, mapeamento, importação, duplicidade, conciliação sugerida com confirmação da pessoa, exceções, rendimentos pelo extrato, lançamento manual); fluxo 3 (precedência do bloqueio, D25 resolvida; item sem linha decidido); fluxo 7 (teste de 30 dias, atraso em somente leitura); fluxo 8 (varredura antes de guardar, leitura por IA desligada, conferência por risco e amostra, comparação de nova importação, gravidade decidida); fluxo 9 (linha com despesas só é zerada; formatos do anexo); fluxo 10 (resumo substituído, mês conferido como marca que não trava); fluxo 12 (itens de conciliação e de mês conferido, "não verificável sem checagem"); seções 13 a 16 atualizadas, com nomes de eventos alinhados à seção 8.3 de `docs/06-seguranca.md`.
 - **Mudanças da v0.2 deste documento:** fluxos novos 8 a 12 (importação do plano e linha de base, ajuste versionado, execução mensal e fechamento do período, gestão enxuta, checklist de saúde e fases); fluxos 1, 2, 3 e 4 revisados para o plano Meta → Etapa → Linha. As seções de apoio passaram de 8-12 para 13-17 (decisões humanas, dependências, divergências, catálogo de auditoria, lista de verificação). Os números dos fluxos 1 a 7 não mudaram.
 - **Termos:** "rubrica" nas partes não alteradas lê-se "classificação da despesa" (RN-026). Quem financia é o "financiador"; "pagador" só existe na assinatura (RN-036).
 - **Redação sobre normas:** "alinhado às práticas das ABNT NBR ISO 21500:2021, 21502:2021 e 21512:2026" ou "baseado em". Nunca "conformidade", "certificado" nem selo "ISO 21500" (RN-021). As normas não tratam de classificação da despesa, cotação, TRL/MRL nem regra de financiador.
-- **Identificadores:** RF, RN, RNF e Q são os do PRD v0.2 e não foram renumerados. D1 a D25 são divergências deste documento (seção 15). `[NOVO v0.2]` e `[v0.2]` marcam o que este documento mudou.
-- **Eventos de auditoria:** nomes no formato `dominio.acao`, **propostos** para alinhamento com `docs/06-seguranca.md` (T-009). Os eventos marcados "RF-112" estão na lista obrigatória do PRD. Os marcados "proposto" não estão nela e dependem do `seguranca` aceitar. Todo registro de auditoria guarda autor, data e hora, detalhe e, quando couber, valor anterior e novo (RF-112), e é imutável.
+- **Identificadores:** RF, RN, RNF e Q são os do PRD v0.2.1 e não foram renumerados. D1 a D25 são divergências deste documento (seção 15). `[NOVO v0.2]`, `[v0.2]` e `[v0.2.1]` marcam o que este documento mudou.
+- **Eventos de auditoria:** nomes no formato `dominio.acao`, **alinhados** à proposta da seção 8.3 de `docs/06-seguranca.md` quando ela existe (por exemplo `leitura.ia_autorizada`, `ajuste.vigente`, `fase.alterada`) e **propostos** nos demais casos, para o `seguranca` aceitar. Os eventos marcados "RF-112" estão na lista obrigatória do PRD (ampliada na v0.2.1, DP-03). Os marcados "proposto" dependem do `seguranca` aceitar. Todo registro de auditoria guarda autor, data e hora, detalhe e, quando couber, valor anterior e novo (RF-112), e é imutável.
 - **Notificações:** o PRD prevê aviso dentro da plataforma (RF-013, RF-103, RF-104) e e-mail em convite e cobrança (RF-030, RF-101, RF-102). Qualquer outro canal ou antecedência abaixo é `[SUPOSIÇÃO]`.
 - **Valores monetários** em centavos inteiros (RN-009); nenhuma etapa usa ponto flutuante.
 - **IA:** em todos os fluxos a IA só sugere, com rótulo e fonte (RF-090). A plataforma funciona sem IA (RF-091).
@@ -22,18 +23,18 @@ Fonte: `docs/01-prd.md` v0.2 (aprovado pelo dono, segundo o pedido da T-020; o c
 
 | # | Fluxo | RF principais | RN principais | Depende de |
 |---|---|---|---|---|
-| 1 `[v0.2]` | Ciclo de vida do projeto | RF-001, RF-004, RF-013, RF-020, RF-040, RF-104, RF-136, RF-137 | RN-001, RN-018, RN-020, RN-021, RN-024, RN-034 | Q-05, Q-12, Q-17 |
+| 1 `[v0.2]` `[v0.2.1]` | Ciclo de vida do projeto | RF-001, RF-004, RF-013, RF-020, RF-040, RF-104, RF-136, RF-137 | RN-001, RN-018, RN-020, RN-021, RN-024, RN-034 | Q-12, Q-17 |
 | 2 `[v0.2]` | Plano de trabalho: metas, etapas e linhas | RF-010 a RF-013, RF-024, RF-120 a RF-122, RF-132, RF-135 | RN-025, RN-026, RN-027, RN-033 | Q-20, Q-25, Q-29 |
-| 3 `[v0.2]` | Despesa com checagem antes da compra, contra a linha do plano | RF-041 a RF-043, RF-050 a RF-055, RF-060 a RF-067, RF-130 | RN-004 a RN-008, RN-010, RN-012 a RN-015, RN-020, RN-024, RN-029, RN-032, RN-038 | Q-01, Q-02, Q-10, Q-11, Q-15, Q-19, Q-31 |
-| 4 `[v0.2]` | Conta do projeto e rendimentos | RF-050 a RF-055 | RN-009 a RN-011, RN-020, RN-025 | Q-02, Q-09 |
+| 3 `[v0.2]` `[v0.2.1]` | Despesa com checagem antes da compra, contra a linha do plano | RF-041 a RF-043, RF-050 a RF-055, RF-060 a RF-067, RF-130 | RN-004 a RN-008, RN-010, RN-012 a RN-015, RN-020, RN-024, RN-029, RN-032, RN-038, RN-043 | Q-01, Q-10, Q-11, Q-15, Q-19 |
+| 4 `[v0.2]` `[REESCRITO v0.2.1]` | Conta do projeto: extrato (OFX ou CSV), conciliação e rendimentos | RF-050 a RF-055, RF-146 a RF-149 | RN-009 a RN-011, RN-014, RN-020, RN-025, RN-039 a RN-042 | Q-09, Q-35, Q-36, Q-48 |
 | 5 | Avaliação TRL/MRL | RF-070 a RF-074, RF-012, RF-090 | RN-014, RN-016 | Q-03 |
 | 6 | Entrada e saída de membros | RF-030 a RF-034, RF-110, RF-111 | RN-001 a RN-003, RN-022 | Q-09 |
-| 7 | Assinatura por projeto | RF-100 a RF-105 | RN-017 a RN-019 | Q-04, Q-05, Q-16, Q-17, Q-18 |
-| 8 `[NOVO v0.2]` | Importação do plano, conferência, OK e linha de base v1 | RF-120 a RF-128, RF-090, RF-091 | RN-014, RN-015, RN-025 a RN-031, RN-035, RN-037 | Q-23, Q-24, Q-25, Q-26, Q-27, Q-34, T-304 |
-| 9 `[NOVO v0.2]` | Ajuste versionado da linha de base | RF-129, RF-121, RF-127 | RN-025, RN-027, RN-028, RN-031 | Q-26, Q-27 |
-| 10 `[NOVO v0.2]` | Execução mensal e fechamento do período | RF-130, RF-131, RF-051, RF-053 | RN-010, RN-032, RN-038 | Q-22, Q-28, Q-30, T-012 |
+| 7 `[v0.2.1]` | Assinatura por projeto | RF-100 a RF-105 | RN-017 a RN-019 | Q-04 (empresa processadora), Q-12, Q-16, Q-17, Q-18 |
+| 8 `[NOVO v0.2]` `[v0.2.1]` | Importação do plano, conferência, OK e linha de base v1 | RF-120 a RF-128, RF-150, RF-153, RF-090, RF-091 | RN-014, RN-015, RN-025 a RN-031, RN-035, RN-037, RN-045, RN-051 | Q-23, Q-24, Q-25, Q-39, Q-46, T-304 |
+| 9 `[NOVO v0.2]` `[v0.2.1]` | Ajuste versionado da linha de base | RF-129, RF-121, RF-127 | RN-025, RN-027, RN-028, RN-031, RN-047 | Q-42 |
+| 10 `[NOVO v0.2]` `[v0.2.1]` | Execução mensal e mês conferido | RF-130, RF-131, RF-152, RF-051, RF-053 | RN-010, RN-032, RN-038, RN-044, RN-046 | Q-22, Q-28, Q-30, Q-41, Q-45 |
 | 11 `[NOVO v0.2]` | Riscos, questões, partes interessadas, comunicação e lições aprendidas | RF-021, RF-022, RF-133, RF-134, RF-136, RF-137 | RN-020, RN-022 | Q-12 |
-| 12 `[NOVO v0.2]` | Checklist de saúde do projeto e fases | RF-020, RF-138, RF-136 | RN-021, RN-034 | Q-12, Q-30, T-012 |
+| 12 `[NOVO v0.2]` `[v0.2.1]` | Checklist de saúde do projeto e fases | RF-020, RF-138, RF-136, RF-151 | RN-021, RN-034, RN-048, RN-049 | Q-12, Q-30, Q-43, Q-44 |
 
 Fora desta versão (não modelados): prestação de contas parcial e final, distribuição dos rendimentos, relato fotográfico e técnico, relatórios por etapa, gestão de bolsistas (PRD, seção 4.2) e a camada seguinte da gestão de projetos (RF-139 a RF-145: índices de custo e prazo, percentual por IA, fornecedores, caminho crítico, plano de qualidade completo, mudança organizacional e social, pós-projeto). Remanejamento entre rubricas como fluxo próprio continua "a confirmar com o dono" (PRD 4.2); mover valor entre linhas depois do OK é um ajuste (fluxo 9).
 
@@ -56,7 +57,7 @@ stateDiagram-v2
     [*] --> AguardandoInicio: líder cadastra e a data de início é futura
     [*] --> EmExecucao: líder cadastra e a data de início já chegou
     AguardandoInicio --> EmExecucao: chega a data de início
-    EmExecucao --> Suspenso: efeito da assinatura configurado em T-802
+    EmExecucao --> Suspenso: assinatura em atraso e o projeto fica somente leitura
     Suspenso --> EmExecucao: pagamento confirmado ou assinatura regularizada
     EmExecucao --> VigenciaEncerrada: passa a data de fim da vigência
     VigenciaEncerrada --> EmExecucao: líder prorroga a vigência com aditivo anexado
@@ -68,8 +69,8 @@ stateDiagram-v2
     Encerrado --> [*]: somente leitura, dados mantidos
 
     note right of Suspenso
-        Efeito exato depende de Q-05 e T-802.
-        Atraso não apaga dados.
+        Atraso é somente leitura, decidido em 25/11/2026.
+        Atraso nunca apaga dados.
     end note
     note right of Encerrado
         Saída da 1ª versão. Prestação de contas
@@ -83,7 +84,7 @@ stateDiagram-v2
 |---|---|---|---|
 | Aguardando início | Cadastro com início futuro `[SUPOSIÇÃO]` | Permite importar ou cadastrar o plano, conferir a minuta, dar o OK, registrar regras e equipe (fluxo 8). A checagem funciona, mas bloqueia compra com data prevista antes do início (RN-024). | Sistema, na data de início. |
 | Em execução | Data de início chegou | Todas as funcionalidades da 1ª versão, conforme o papel de cada pessoa. A execução por linha e o previsto × executado só valem depois do OK da linha de base (RN-029, fluxos 8 e 10); sem o OK, a checagem fica "pendente: plano sem aprovação". | Sistema (vigência, assinatura) ou líder (encerrar, prorrogar). |
-| Suspenso | Situação da assinatura com efeito de suspensão em T-802 | Aplica **exatamente o efeito configurado** (RF-104, RN-018). Pode ser somente leitura, aviso ou nada. Todos os membros veem o aviso. Nenhum dado é apagado. | Sistema, quando a assinatura volta ao normal. O líder também pode encerrar. |
+| Suspenso | Assinatura em atraso (`[DECIDIDO 25/11/2026]`, Q-05) | Aplica o efeito configurado, que para o atraso é **somente leitura** (RF-104, RN-018): a pessoa vê e exporta os dados, mas não cria nem altera registros. Todos os membros veem o aviso. **Nenhum dado é apagado.** O efeito de cancelamento e de encerramento segue em aberto (Q-12). | Sistema, quando a assinatura volta ao normal. O líder também pode encerrar. |
 | Vigência encerrada | Passou a data de fim | Projeto continua editável `[SUPOSIÇÃO]` (o líder ainda precisa fechar comprovantes e avaliar TRL/MRL). A checagem bloqueia compra com data prevista fora da vigência (RN-024). O painel pede o encerramento ou a prorrogação. | Líder prorroga ou encerra. |
 | Encerrado | Líder marca (RF-004), vendo antes os itens de encerramento não atendidos (RF-137), sem que isso impeça a confirmação | Somente leitura; sai da lista principal; dados legíveis (RF-004). Exportação disponível (RF-106), agora com todas as versões da linha de base, ajustes, minutas e execução. Estado de saída da 1ª versão: aqui começaria a prestação de contas (2ª versão). | Fim. O PRD não prevê reabrir `[ver seção 15, item D1]`. |
 
@@ -106,8 +107,8 @@ RN-001 (um líder), RN-018 (efeito da assinatura é configuração), RN-020 (nad
 | `projeto.suspenso` e `projeto.retomado` | Efeito da assinatura aplicado e retirado | proposto; ligado a "eventos de assinatura" (RF-112) |
 | `projeto.encerrado` | Líder encerra | proposto |
 | `documento.anexado` | Edital, termo, aditivo | proposto |
-| `projeto.fase_alterada` (fase anterior e nova, líder) `[NOVO v0.2]` | Líder marca a fase | proposto |
-| `projeto.justificativa_revisada` (mantida ou alterada, nota, versão anterior) `[NOVO v0.2]` | Revisão a cada mudança de fase (RF-136) | proposto |
+| `fase.alterada` (fase anterior e nova, líder) `[NOVO v0.2]` `[RENOMEADO v0.2.1]` | Líder marca a fase | RF-112 (mudança de fase, DP-03); nome da seção 8.3 do 06 (antes `projeto.fase_alterada`) |
+| `justificativa.revisada` (mantida ou alterada, nota, versão anterior) `[NOVO v0.2]` `[RENOMEADO v0.2.1]` | Revisão a cada mudança de fase (RF-136) | RF-112 (DP-03); nome da seção 8.3 do 06 (antes `projeto.justificativa_revisada`) |
 
 ### 1.7 Notificações
 
@@ -128,12 +129,12 @@ RN-001 (um líder), RN-018 (efeito da assinatura é configuração), RN-020 (nad
 - **Encerrar com ajuste pendente de aprovação externa:** o ajuste fica como está, somente leitura, e não altera a versão vigente (RN-028) `[SUPOSIÇÃO]`.
 - **Tarefas abertas ao encerrar:** continuam como estão, somente leitura.
 - **Cobrança depois do fim da vigência:** depende de Q-17. O fluxo não muda; só a assinatura (fluxo 7) decide se continua cobrando.
-- **Prazo de guarda dos dados depois de encerrado:** depende de Q-12 e de T-802.
+- **Prazo de guarda dos dados depois de encerrado:** depende de Q-12 (que absorveu a parte de T-802 não respondida: cancelamento, encerramento e prazo de exportação).
 - **Excluir projeto:** não existe (RN-020). Quem não quer mais o projeto o encerra.
 
 ### 1.9 Rastreio
 
-RF-001, RF-002, RF-003, RF-004, RF-013, RF-020, RF-040, RF-104, RF-106, RF-136, RF-137, RF-138 (RF-023 foi removido no PRD v0.2) · RN-001, RN-018, RN-020, RN-021, RN-022, RN-024, RN-034 · Q-05, Q-12, Q-15, Q-17.
+RF-001, RF-002, RF-003, RF-004, RF-013, RF-020, RF-040, RF-104, RF-106, RF-136, RF-137, RF-138 (RF-023 foi removido no PRD v0.2) · RN-001, RN-018, RN-020, RN-021, RN-022, RN-024, RN-034 · Q-12, Q-15, Q-17 (Q-05 resolvida em 25/11/2026).
 
 ---
 
@@ -244,7 +245,7 @@ RN-022 (acesso só ao projeto), RN-025 (a soma fecha), RN-026 (classificação c
 - **Prazo fora da vigência do projeto:** a plataforma avisa e pede confirmação (RF-010).
 - **Membro "visualiza" tenta alterar:** recusado (RF-012). **Membro (registra) tenta alterar linha, valor ou classificação:** ação indisponível; o caminho é pedir ao líder (RF-010, RF-129).
 - **Responsável perde o acesso** (fluxo 6): as etapas e tarefas dele continuam no plano com o nome dele e viram pendência "sem responsável ativo" para o líder reatribuir `[SUPOSIÇÃO]`.
-- **Projeto encerrado ou suspenso:** edição recusada ou conforme efeito de T-802 (fluxos 1 e 7).
+- **Projeto encerrado ou suspenso (assinatura em atraso):** edição recusada; somente leitura, sem apagar dados (fluxos 1 e 7).
 - **Prazo vencido e etapa reprogramada para o futuro:** volta de "atrasada" para "em andamento" `[SUPOSIÇÃO]`.
 - **Dois membros editam a mesma etapa ao mesmo tempo:** vale a última gravação, com os dois registros na auditoria `[SUPOSIÇÃO]`; deve ser tratado na SPEC.
 - **Pessoa sem acesso busca item do plano:** não encontra (RN-022, RF-033).
@@ -269,13 +270,13 @@ Este é o fluxo central da 1ª versão e o que evita o erro que originou o produ
 
 - **Gatilho:** alguém do projeto vai comprar algo e abre "Vou comprar" (RF-060).
 - **Atores:** Líder e Membro (registra) pedem a checagem e lançam a despesa. Só o **Líder** enquadra item pendente (RF-066), supera bloqueio (RF-065) e confirma regras (RN-004). **Sistema** calcula o resultado pelas regras confirmadas. **IA** pode sugerir categoria, classificação e linha do plano (RF-067, Could) e propor regras a partir do PDF (RF-043, Could), sempre sem efeito próprio. A escolha da linha e a **declaração de que o item corresponde ao objeto previsto** são da pessoa que pede a checagem; a plataforma não faz leitura automática de equivalência (RF-063).
-- **O que a plataforma não faz** (PRD, seção 4.3): comprar, pagar fornecedor ou enviar documento ao financiador. Ela confere e registra; a compra acontece fora dela. Por isso este fluxo **não tem** as etapas de aprovação, pagamento e conciliação da skill: a "aprovação" aqui é o resultado da checagem, e a decisão de comprar é da pessoa (RN-012). A conciliação com extrato só existe se T-012 incluir importação (fluxo 4).
+- **O que a plataforma não faz** (PRD, seção 4.3): comprar, pagar fornecedor ou enviar documento ao financiador. Ela confere e registra; a compra acontece fora dela. Por isso este fluxo **não tem** as etapas de aprovação, pagamento e conciliação da skill: a "aprovação" aqui é o resultado da checagem, e a decisão de comprar é da pessoa (RN-012). A conciliação com o extrato (T-012 = b, decidida em 25/11/2026) acontece **depois** da compra e é o fluxo 4: ela liga a despesa lançada ao lançamento do banco, sem alterar a checagem nem a despesa.
 
 ### 3.2 Pré-condição: regras confirmadas
 
 A checagem só usa regras **confirmadas pelo líder** (RN-004), na **versão vigente** no momento do pedido (RN-005). Como as regras chegam (cadastro manual ou proposta da IA a partir do PDF) depende do que resta de Q-01: a T-011 foi decidida só para o **plano de trabalho** (fluxo 8); ler o edital por IA para propor regras segue em aberto. Nas duas formas, nada vale antes da confirmação.
 
-Há uma segunda pré-condição, nova na v0.2: o **plano precisa ter linha de base com OK** (fluxo 8). Sem ela, a checagem registra "pendente: plano sem aprovação" (RN-029), com link para a conferência do plano. Nenhuma regra do edital substitui essa condição.
+Há uma segunda pré-condição, nova na v0.2: o **plano precisa ter linha de base com OK** (fluxo 8). Sem ela, a checagem **de um item que seria permitido** registra "pendente: plano sem aprovação" (RN-029), com link para a conferência do plano. `[ALTERADO v0.2.1]` **O bloqueio tem precedência (RN-006, RN-043, `[DECIDIDO 25/11/2026]`, Q-38):** sem o OK, o item vedado, sem as cotações mínimas, acima do limite ou fora da vigência continua **"bloqueado"** (as verificações que não dependem do plano seguem valendo) e "plano sem aprovação" aparece como aviso junto. Nenhuma regra do edital substitui a condição do plano para as verificações que dependem dele (linha, classificação e saldo da linha), que ficam "não verificadas: plano sem aprovação".
 
 ```mermaid
 stateDiagram-v2
@@ -322,13 +323,16 @@ stateDiagram-v2
     Cancelada --> [*]
 
     note right of Bloqueado
-        O resultado original nunca muda (RN-013).
+        O resultado original nunca muda, RN-013.
         BloqueioSuperado é uma marca ao lado
         do resultado. Depende de Q-10.
+        Item vedado sem OK do plano fica aqui,
+        e não em Pendente, RN-043.
     end note
     note right of Pendente
-        Motivos de pendência da v0.2 são plano sem
-        aprovação, RN-029, e item sem linha, Q-31.
+        Motivos de pendência são plano sem aprovação
+        para item que seria permitido, RN-029, e item
+        sem linha, decidido em 25 11 2026 como pendente.
         A checagem guarda a versão da linha de base.
     end note
 ```
@@ -339,17 +343,17 @@ A checagem aplica as verificações na ordem abaixo, sempre com a versão vigent
 
 | # | Verificação | Passa | Bloqueia | Fica pendente |
 |---|---|---|---|---|
-| 1 | Plano | O projeto tem linha de base com OK | Nunca bloqueia | Sem OK: **"pendente: plano sem aprovação"** (RN-029). As verificações 3, 4 e 5 não são decididas; 2, 6, 7 e 8 continuam sendo feitas e mostradas |
+| 1 | Plano | O projeto tem linha de base com OK | Nunca bloqueia | Sem OK: **"pendente: plano sem aprovação"** (RN-029) **só se nenhuma outra verificação bloquear**. As verificações 3, 4 e 5 não são decididas ("não verificada: plano sem aprovação"); 2, 6, 7 e 8 continuam sendo feitas e mostradas, e se qualquer uma bloqueia o resultado é "bloqueado", com "plano sem aprovação" como aviso (RN-043) |
 | 2 | Item | Permitido nas regras | Vedado | Fora das regras ("não encontrei") |
-| 3 | Linha e objeto | A pessoa escolheu uma linha da etapa informada e declarou que o item corresponde ao objeto previsto dela (a tela mostra o objeto ao lado; fica registrada a declaração) | Nunca bloqueia (Q-31) | "Não encontrei linha para este item": pendente, com a saída de pedir ajuste (fluxo 9) ou desistir da compra. A linha precisa pertencer à etapa informada |
+| 3 | Linha e objeto | A pessoa escolheu uma linha da etapa informada e declarou que o item corresponde ao objeto previsto dela (a tela mostra o objeto ao lado; fica registrada a declaração) | Nunca bloqueia por si só `[DECIDIDO 25/11/2026]` (Q-31) | "Não encontrei linha para este item": pendente, com a saída de pedir ajuste (fluxo 9) ou desistir da compra. A linha precisa pertencer à etapa informada |
 | 4 | Classificação | A classificação da linha é a admitida para o item pelas regras | Outra classificação; indica a correta quando a regra a define e sugere as linhas da etapa com ela | Item sem classificação definida na regra `[SUPOSIÇÃO]` |
 | 5 | Saldo da linha | Valor estimado ≤ saldo da linha, aprovado menos executado na versão vigente (RN-010) | Valor maior; mostra o saldo da linha | Linha sem valor aprovado `[SUPOSIÇÃO]` |
 | 6 | Cotações | Cotações válidas (RN-008) ≥ mínimo da faixa de valor | Menos que o mínimo | Sem regra de cotação cadastrada |
 | 7 | Limites | Dentro do limite cadastrado | Acima do limite | Sem limite cadastrado: passa (não há o que conferir) |
 | 8 | Vigência | Data prevista dentro da vigência | Fora (RN-024, Q-15) | Sem pendência |
 
-- **Resultado final (RN-006):** "bloqueado" se qualquer verificação bloqueia; senão "pendente" se alguma não pôde ser decidida (inclui regras não confirmadas que afetariam o caso, plano sem OK e item sem linha); senão "permitido". Bloqueio tem precedência sobre pendência. Consequência: com o plano sem OK, um item vedado ou sem as cotações mínimas continua "bloqueado" (as verificações 2, 6, 7 e 8 não dependem do plano); só o item permitido e sem outro bloqueio vira "pendente: plano sem aprovação" `[ver seção 15, item D25]`.
-- **A declaração de correspondência não é leitura automática.** Se a pessoa declara que o item corresponde ao objeto da linha, a verificação 3 passa; o PRD não define outra forma de checar (RF-063). Se isso basta ou se "item sem linha" deve bloquear: depende de Q-31.
+- **Resultado final (RN-006):** "bloqueado" se qualquer verificação bloqueia; senão "pendente" se alguma não pôde ser decidida (inclui regras não confirmadas que afetariam o caso, plano sem OK e item sem linha); senão "permitido". Bloqueio tem precedência sobre pendência. Consequência: com o plano sem OK, um item vedado ou sem as cotações mínimas continua "bloqueado" (as verificações 2, 6, 7 e 8 não dependem do plano); só o item permitido e sem outro bloqueio vira "pendente: plano sem aprovação". **D25 resolvida** `[DECIDIDO 25/11/2026]` (Q-38): é regra firme, e a marca "proposta adotada" saiu do PRD.
+- **A declaração de correspondência não é leitura automática.** Se a pessoa declara que o item corresponde ao objeto da linha, a verificação 3 passa; o PRD não define outra forma de checar (RF-063). `[DECIDIDO 25/11/2026]` (Q-31): "item sem linha" fica **"pendente"**, com a saída de pedir ajuste (fluxo 9) ou desistir da compra, e a declaração da pessoa fica registrada.
 - **O resultado é sempre calculado pelas regras**, nunca pela IA (RF-067, RN-014).
 - **Saldo e reserva (Q-19):** com a regra atual (RN-010), checagem "permitido" ainda não lançada **não** reserva saldo da linha. Se o dono responder que deve reservar, a verificação 5 passa a subtrair as checagens "permitido" em aberto; o resto do fluxo não muda.
 - **Saldo da linha usa a versão vigente da linha de base.** Ajuste pendente de aprovação externa não altera a versão vigente (RN-028); a checagem usa a vigente e pode avisar, na tela, que há ajuste pendente envolvendo aquela linha `[SUPOSIÇÃO]`.
@@ -441,9 +445,9 @@ O PRD só exige nota fiscal para tirar a despesa das pendências (RF-055). O com
    - **Permitido:** a pessoa compra fora da plataforma e lança a despesa vinculando a checagem.
    - **Bloqueado:** a tela mostra cada motivo e o que fazer ("anexe mais 2 cotações"). Caminhos: (a) corrigir e refazer a checagem, que cria **novo** registro; (b) desistir; (c) o líder superar o bloqueio com justificativa e anexo (RF-065, Should, depende de Q-10); (d) comprar assim mesmo e lançar a despesa, que fica marcada (RN-012). Anexar cotações **não libera item vedado** (RF-062).
    - **Pendente por item fora das regras:** o líder enquadra o item (RF-066): cria ou ajusta uma regra com fonte e confirma, ou registra que o item não deve ser comprado. A checagem é refeita com a nova versão das regras e a pendente fica no histórico.
-   - **Pendente por plano sem aprovação (RN-029):** o líder confere a minuta e dá o OK (fluxo 8); depois, a pessoa refaz a checagem, que cria novo registro. Se a compra não pode esperar, a pessoa pode comprar e lançar a despesa, que fica "sem linha" e "comprada com checagem pendente" (RN-012).
-   - **Pendente por item sem linha (Q-31):** o líder pede ajuste (fluxo 9) para criar ou alterar a linha, ou a pessoa desiste da compra. Depois que o ajuste vira vigente, a checagem é refeita com a nova versão da linha de base.
-6. **Lançar a despesa (RF-051, RF-064, RF-130).** Pessoa vincula a checagem e a linha. A plataforma marca a despesa conforme as tabelas das seções 3.5 e 3.5b e atualiza o executado e o saldo da **linha**, da etapa, da meta e do projeto ao centavo, no mês de competência da data da despesa (RN-032). Despesa vinda de extrato (T-012) entra "a classificar" até ter classificação e linha (RF-052).
+   - **Pendente por plano sem aprovação (RN-029):** só para o item que seria permitido. O líder confere a minuta e dá o OK (fluxo 8); depois, a pessoa refaz a checagem, que cria novo registro. Se a compra não pode esperar, a pessoa pode comprar e lançar a despesa, que fica "sem linha" e "comprada com checagem pendente" (RN-012). Item vedado ou sem cotações mínimas **não** cai aqui: segue o ramo "Bloqueado", com o aviso de plano sem aprovação (RN-043).
+   - **Pendente por item sem linha (Q-31, decidido):** o líder pede ajuste (fluxo 9) para criar ou alterar a linha, ou a pessoa desiste da compra. Depois que o ajuste vira vigente, a checagem é refeita com a nova versão da linha de base.
+6. **Lançar a despesa (RF-051, RF-064, RF-130).** Pessoa vincula a checagem e a linha. A plataforma marca a despesa conforme as tabelas das seções 3.5 e 3.5b e atualiza o executado e o saldo da **linha**, da etapa, da meta e do projeto ao centavo, no mês de competência da data da despesa (RN-032). Despesa criada a partir de um lançamento do extrato (fluxo 4, RF-148) nasce já conciliada, "sem checagem" e "sem linha", até o líder completar a linha e a classificação (RN-012, RN-029).
 7. **Comprovar (RF-055).** Anexa nota fiscal, cotações restantes e comprovante de pagamento.
 8. **Painel (RF-003, RF-064, RF-131).** Despesas sem checagem, sem linha e compradas com bloqueio entram nas pendências do líder; linha com saldo negativo aparece destacada (RN-038); o percentual de despesas com checagem prévia alimenta a meta O3. A execução por mês e o fechamento do período são o fluxo 10.
 
@@ -463,6 +467,8 @@ Cenários novos da v0.2 (RF-063):
 | Cenário | Verificações | Resultado | Motivo exibido |
 |---|---|---|---|
 | Item permitido, 3 cotações, **plano sem OK** | plano: pendente; item e cotações: passam | **Pendente** | "plano sem aprovação" e link para a conferência |
+| `[NOVO v0.2.1]` Material X **vedado**, 1 cotação, **plano sem OK** (D25, Q-38) | item: bloqueia; cotações: bloqueia; linha, classificação e saldo: não verificadas | **Bloqueado** (nunca "pendente") | "item vedado pelo edital (cláusula N, página P)", "cotações anexadas: 1 de 3 exigidas" e o aviso "plano sem aprovação: linha, classificação e saldo da linha não foram verificados" |
+| `[NOVO v0.2.1]` Item permitido, 1 de 3 cotações, **plano sem OK** | item: passa; cotações: bloqueia | **Bloqueado** | só "cotações: 1 de 3 exigidas", com o aviso "plano sem aprovação" |
 | Item permitido em custeio, linha classificada como capital | classificação: bloqueia | **Bloqueado** | "classificação incorreta: este item entra em custeio" e as linhas de custeio da etapa sugeridas |
 | Valor estimado R$ 500,01, saldo da linha R$ 500,00 | saldo da linha: bloqueia | **Bloqueado** | "saldo da linha insuficiente" com o saldo |
 | Valor estimado R$ 500,00, saldo da linha R$ 500,00 | saldo da linha: passa | segue pelas demais verificações | saldo atendido |
@@ -473,7 +479,7 @@ O fluxo fecha o problema do briefing: o erro aparece **antes** da compra, com o 
 
 ### 3.9 Regras de negócio aplicadas
 
-RN-004 (regra só vale confirmada), RN-005 (versões), RN-006 `[ALTERADO v0.2]` (resultado, com linha e plano sem OK), RN-007 (tudo configurável por edital), RN-008 (cotação válida), RN-009 (centavos), RN-010 `[ALTERADO v0.2]` (saldo da linha), RN-012 (despesa nunca é impedida, sempre marcada), RN-013 (superar bloqueio), RN-014 e RN-015 (IA sugere; PDF é dado), RN-020 (estorno em vez de apagar), RN-024 (vigência), RN-026 (classificação configurável), RN-029 (plano sem OK é checagem pendente), RN-032 (mês de competência), RN-038 (execução acima do aprovado não é impedida).
+RN-004 (regra só vale confirmada), RN-005 (versões), RN-006 `[ALTERADO v0.2]` `[ALTERADO v0.2.1]` (resultado, com linha e plano sem OK; bloqueio com precedência), RN-043 (bloqueio acima de "plano sem aprovação"), RN-007 (tudo configurável por edital), RN-008 (cotação válida), RN-009 (centavos), RN-010 `[ALTERADO v0.2]` (saldo da linha), RN-012 (despesa nunca é impedida, sempre marcada), RN-013 (superar bloqueio), RN-014 e RN-015 (IA sugere; PDF é dado), RN-020 (estorno em vez de apagar), RN-024 (vigência), RN-026 (classificação configurável), RN-029 (plano sem OK é checagem pendente), RN-032 (mês de competência), RN-038 (execução acima do aprovado não é impedida).
 
 ### 3.10 Evidências exigidas
 
@@ -492,12 +498,12 @@ RN-004 (regra só vale confirmada), RN-005 (versões), RN-006 `[ALTERADO v0.2]` 
 | Evento | Quando | Origem |
 |---|---|---|
 | `regra.criada`, `regra.nova_versao`, `regra.confirmada`, `regra.desativada` | Ciclo da regra | RF-112 (regras e versões) |
-| `checagem.registrada` (versão das regras, **versão da linha de base, linha escolhida, declaração de correspondência**, resultado, motivos) `[ALTERADO v0.2]` | Cada checagem | RF-112 |
+| `checagem.registrada` (versão das regras, **versão da linha de base, linha escolhida, declaração de correspondência**, resultado, motivos, **avisos como "plano sem aprovação"**) `[ALTERADO v0.2]` `[ALTERADO v0.2.1]` | Cada checagem | RF-112 |
 | `checagem.bloqueio_superado` (resultado original, justificativa, anexo, líder, data) | Superação | RF-112, RF-065 |
 | `sugestao_ia.aceita` e `sugestao_ia.descartada` (sugestão original, quem, quando) | Aceite ou descarte | RF-112 e RF-090; o descarte é proposto |
 | `despesa.lancada` (vínculo com a checagem e com a linha, marcas da despesa) | Lançamento | RF-112 |
 | `despesa.marcada_sem_checagem` e `despesa.marcada_bloqueada` | Marca de RN-012 | RF-062, RN-012 |
-| `despesa.marcada_sem_linha` e `despesa.vinculada_linha` (linha, etapa, meta, mês de competência) `[NOVO v0.2]` | Despesa sem linha (RN-029) e vínculo posterior pelo líder | proposto; ligado a "lançamentos financeiros" (RF-112) |
+| `despesa.marcada_sem_linha` e `execucao.vinculada_linha` (linha, etapa, meta, mês de competência, versão da linha de base) `[NOVO v0.2]` `[RENOMEADO v0.2.1]` | Despesa sem linha (RN-029) e vínculo posterior pelo líder | RF-112 (lançamentos financeiros); o segundo nome é o da seção 8.3 do 06 (antes `despesa.vinculada_linha`) |
 | `despesa.saldo_negativo_detectado` (linha, valor) `[NOVO v0.2]` | Execução acima do aprovado (RN-038) | proposto; pode ser só derivado |
 | `despesa.estornada` ou `despesa.corrigida` (motivo, valor anterior e novo) | Correção | RF-112, RN-020 |
 | `comprovante.anexado` | Nota fiscal, cotação, comprovante | proposto |
@@ -521,12 +527,12 @@ RN-004 (regra só vale confirmada), RN-005 (versões), RN-006 `[ALTERADO v0.2]` 
 - **Membro tenta superar bloqueio:** ação indisponível (RF-065). Líder sem justificativa ou sem anexo: recusado.
 - **Bloqueio é definitivo (se Q-10 disser que não existe superação):** o passo "superar" desaparece; o bloqueio só sai corrigindo o pedido ou ajustando a regra com fonte, no fluxo de regras. O resto do fluxo não muda.
 - **Valor lançado maior que o checado:** aviso da diferença e pedido de nova checagem `[SUPOSIÇÃO]` (RF-064).
-- **Plano sem OK (RN-029):** resultado "pendente: plano sem aprovação" para o item permitido; item vedado ou sem as cotações mínimas continua "bloqueado" (RN-006); a checagem fica registrada; despesas lançadas ficam "sem linha" `[ver seção 15, item D25]`.
-- **Item sem linha correspondente:** pendente (Q-31 pode mudar para bloqueado); saída: pedir ajuste (fluxo 9) ou desistir.
+- **Plano sem OK (RN-029):** resultado "pendente: plano sem aprovação" para o item permitido; item vedado ou sem as cotações mínimas continua "bloqueado" (RN-006, RN-043) com o aviso de plano sem aprovação; a checagem fica registrada; despesas lançadas ficam "sem linha". D25 resolvida em 25/11/2026 (Q-38).
+- **Item sem linha correspondente:** pendente `[DECIDIDO 25/11/2026]` (Q-31); saída: pedir ajuste (fluxo 9) ou desistir.
 - **Linha de outra etapa:** a linha precisa pertencer à etapa informada; a plataforma não aceita a combinação (RF-063).
 - **Linha ajustada depois da checagem:** a checagem antiga mantém a versão da linha de base e o resultado (RF-064, RN-027); só uma nova checagem usa a versão nova.
 - **Ajuste pendente de aprovação externa:** não muda a versão vigente (RN-028); a checagem usa a vigente.
-- **Linha removida ou valor reduzido por ajuste, com despesas já vinculadas:** exige "ciente" do líder no ajuste; despesas continuam ligadas à versão da época `[ver seção 15, item D22]`.
+- **Linha com despesas já vinculadas:** não pode ser removida por ajuste, só **zerada** (D22, RN-047, proposta do PRD v0.2.1, Q-42 aberta); valor reduzido abaixo do executado exige "ciente" do líder; despesas continuam ligadas à linha e à versão da época (fluxo 9).
 - **Saldo da linha negativo:** destaque e pendência, sem impedir o lançamento (RN-038); corrigir o plano exige ajuste.
 - **Despesa lançada antes do OK:** fica "sem linha"; depois do OK, o líder a vincula e a execução é recalculada (RF-130).
 - **Classificação da linha fora da lista do projeto:** não existe; o cadastro recusa (RF-121).
