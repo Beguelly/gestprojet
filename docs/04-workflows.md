@@ -9,7 +9,8 @@ Fonte: `docs/01-prd.md` v0.2.1 (**aprovado pelo dono em 25/11/2026**, T-022b; se
 - **Papéis:** Líder, Membro (registra), Membro (visualiza), Pagador, Sistema (regra automática da plataforma), IA (só sugere, RN-014). Os papéis vêm do PRD, seção 3.
 - **Depende de Q-xx:** o fluxo foi desenhado para funcionar com qualquer resposta à questão **ainda em aberto** (PRD, seção 10). Este documento não escolhe nenhuma opção. As questões resolvidas em 25/11/2026 (PRD, seção 10.3) aparecem como decididas. A seção 14 resume, por questão, o que muda em cada fluxo.
 - **`[SUPOSIÇÃO]`:** ponto que o PRD não define e que este documento precisou preencher para o fluxo fechar. Vale até o dono corrigir. A seção 15 lista os que viram pergunta ao PRD. `[DECIDIDO 25/11/2026]` marca o que o dono já respondeu.
-- **Mudanças da v0.2.1 deste documento `[NOVO v0.2.1]`:** fluxo 4 reescrito (extrato OFX ou CSV, mapeamento, importação, duplicidade, conciliação sugerida com confirmação da pessoa, exceções, rendimentos pelo extrato, lançamento manual); fluxo 3 (precedência do bloqueio, D25 resolvida; item sem linha decidido); fluxo 7 (teste de 30 dias, atraso em somente leitura); fluxo 8 (varredura antes de guardar, leitura por IA desligada, conferência por risco e amostra, comparação de nova importação, gravidade decidida); fluxo 9 (linha com despesas só é zerada; formatos do anexo); fluxo 10 (resumo substituído, mês conferido como marca que não trava); fluxo 12 (itens de conciliação e de mês conferido, "não verificável sem checagem"); seções 13 a 16 atualizadas, com nomes de eventos alinhados à seção 8.3 de `docs/06-seguranca.md`.
+- **Mudanças da v0.2.1 deste documento `[NOVO v0.2.1]`:** fluxo 4 reescrito (extrato OFX ou CSV, mapeamento, importação, duplicidade, conciliação sugerida com confirmação da pessoa, exceções, rendimentos pelo extrato, lançamento manual); fluxo 3 (precedência do bloqueio, D25 resolvida; item sem linha decidido); fluxo 7 (teste de 30 dias, atraso em somente leitura); fluxo 8 (varredura antes de guardar, leitura por IA desligada, conferência por risco e amostra `[ALTERADO 25/11/2026]` agora só para planilha e cadastro manual, com 100% das linhas em minuta lida por IA, comparação de nova importação, gravidade decidida); fluxo 9 (linha com despesas só é zerada; formatos do anexo); fluxo 10 (resumo substituído, mês conferido como marca que não trava); fluxo 12 (itens de conciliação e de mês conferido, "não verificável sem checagem"); seções 13 a 16 atualizadas, com nomes de eventos alinhados à seção 8.3 de `docs/06-seguranca.md`.
+- **Mudanças da T-022d (25/11/2026) `[DECIDIDO 25/11/2026]`:** (1) provedor de IA = Claude (Anthropic); Q-24 com resposta parcial, a leitura de PDF e imagem segue desligada até contrato e RIPD (fluxo 8, seção 14.2); (2) sem exigência de região dos dados no Brasil (nenhum fluxo muda; Q-49 e RNF-25 na seção 14.2); (3) fluxo 8: conferência de **100% das linhas** quando a minuta é lida por IA e amostra só para planilha e cadastro manual (RF-126, RN-053, Q-46 resolvida); resumo "conferi M de M linhas" em IA; eventos `minuta.amostra_sorteada` e `minuta.conferida` ajustados.
 - **Mudanças da v0.2 deste documento:** fluxos novos 8 a 12 (importação do plano e linha de base, ajuste versionado, execução mensal e fechamento do período, gestão enxuta, checklist de saúde e fases); fluxos 1, 2, 3 e 4 revisados para o plano Meta → Etapa → Linha. As seções de apoio passaram de 8-12 para 13-17 (decisões humanas, dependências, divergências, catálogo de auditoria, lista de verificação). Os números dos fluxos 1 a 7 não mudaram.
 - **Termos:** "rubrica" nas partes não alteradas lê-se "classificação da despesa" (RN-026). Quem financia é o "financiador"; "pagador" só existe na assinatura (RN-036).
 - **Redação sobre normas:** "alinhado às práticas das ABNT NBR ISO 21500:2021, 21502:2021 e 21512:2026" ou "baseado em". Nunca "conformidade", "certificado" nem selo "ISO 21500" (RN-021). As normas não tratam de classificação da despesa, cotação, TRL/MRL nem regra de financiador.
@@ -30,7 +31,7 @@ Fonte: `docs/01-prd.md` v0.2.1 (**aprovado pelo dono em 25/11/2026**, T-022b; se
 | 5 `[v0.2.1]` | Avaliação TRL/MRL | RF-070 a RF-074, RF-012, RF-090 | RN-014, RN-016, RN-052 | Q-03, Q-37 |
 | 6 | Entrada e saída de membros | RF-030 a RF-034, RF-110, RF-111 | RN-001 a RN-003, RN-022 | Q-09 |
 | 7 `[v0.2.1]` | Assinatura por projeto | RF-100 a RF-105 | RN-017 a RN-019 | Q-04 (empresa processadora), Q-12, Q-16, Q-17, Q-18 |
-| 8 `[NOVO v0.2]` `[v0.2.1]` | Importação do plano, conferência, OK e linha de base v1 | RF-120 a RF-128, RF-150, RF-153, RF-090, RF-091 | RN-014, RN-015, RN-025 a RN-031, RN-035, RN-037, RN-045, RN-051 | Q-23, Q-24, Q-25, Q-39, Q-46, T-304 |
+| 8 `[NOVO v0.2]` `[v0.2.1]` | Importação do plano, conferência, OK e linha de base v1 | RF-120 a RF-128, RF-150, RF-153, RF-090, RF-091 | RN-014, RN-015, RN-025 a RN-031, RN-035, RN-037, RN-045, RN-051, RN-053 | Q-23, Q-24 (parcial), Q-25, Q-39, T-304 (Q-46 resolvida) |
 | 9 `[NOVO v0.2]` `[v0.2.1]` | Ajuste versionado da linha de base | RF-129, RF-121, RF-127 | RN-025, RN-027, RN-028, RN-031, RN-047 | Q-42 |
 | 10 `[NOVO v0.2]` `[v0.2.1]` | Execução mensal e mês conferido | RF-130, RF-131, RF-152, RF-051, RF-053 | RN-010, RN-032, RN-038, RN-044, RN-046 | Q-22, Q-28, Q-30, Q-41, Q-45 |
 | 11 `[NOVO v0.2]` | Riscos, questões, partes interessadas, comunicação e lições aprendidas | RF-021, RF-022, RF-133, RF-134, RF-136, RF-137 | RN-020, RN-022 | Q-12 |
@@ -1115,14 +1116,14 @@ RF-100 a RF-106, RF-112 · RN-017, RN-018, RN-019, RN-020 · RNF-10 · Q-04 (par
 
 ## 8. Importação do plano, conferência, OK e linha de base v1 `[NOVO v0.2]` `[ALTERADO v0.2.1]`
 
-Fluxo central da camada 1 do PRD v0.2 (RF-122 a RF-128), com as mudanças da v0.2.1: o original só é guardado **depois da varredura limpa** (DP-09); a **leitura de PDF e imagem por IA fica desligada** até haver contrato com o provedor e RIPD (RF-153, RN-051); a conferência é por **linhas de risco e amostra** (RF-126, DP-07); a **nova importação depois do OK abre como comparação** (RF-150, D18); a gravidade das validações foi **decidida** em 25/11/2026 (Q-34, Q-40). Responde: como o plano aprovado, que chega em planilha, PDF ou imagem, vira a **linha de base** que a checagem e a execução usam, sem que um erro de leitura vire dado "oficial".
+Fluxo central da camada 1 do PRD v0.2 (RF-122 a RF-128), com as mudanças da v0.2.1: o original só é guardado **depois da varredura limpa** (DP-09); a **leitura de PDF e imagem por IA fica desligada** até haver contrato com o provedor e RIPD (RF-153, RN-051); a conferência é de **100% das linhas quando a minuta é lida por IA** e por **linhas de risco e amostra** quando vem de planilha ou de cadastro manual (RF-126, RN-053, DP-07, `[DECIDIDO 25/11/2026]`: posição SEG-266 e QS-24 acolhida pelo dono); a **nova importação depois do OK abre como comparação** (RF-150, D18); a gravidade das validações foi **decidida** em 25/11/2026 (Q-34, Q-40). Responde: como o plano aprovado, que chega em planilha, PDF ou imagem, vira a **linha de base** que a checagem e a execução usam, sem que um erro de leitura vire dado "oficial".
 
 ### 8.1 Gatilho e atores
 
 - **Gatilho:** o líder envia o arquivo do plano aprovado (planilha XLSX ou CSV, PDF digital, PDF escaneado ou imagem) ou escolhe cadastrar o plano à mão (RF-122 a RF-124). O cadastro manual gera a mesma minuta e passa pelas mesmas validações e pelo mesmo OK.
-- **Atores:** Líder (importa, mapeia colunas, confere, corrige, registra "ciente", dá o OK; precisa de MFA, RF-111); Sistema (guarda o original com hash, lê planilha de forma direta, valida, soma, trava a v1); IA (só lê PDF e imagem e propõe a minuta, rotulada "sugestão da IA", RN-014, RF-090; **desligada** até haver contrato e RIPD, RN-051); Provedor externo de IA (receberia o conteúdo de PDF e imagem só depois do contrato e do RIPD, RN-035, Q-24 aberta). Membros (registra e visualiza) **não** importam, não conferem e não dão o OK (matriz do PRD, seção 3); veem a pendência "plano aguardando conferência e OK" e, depois, a linha de base vigente.
+- **Atores:** Líder (importa, mapeia colunas, confere, corrige, registra "ciente", dá o OK; precisa de MFA, RF-111); Sistema (guarda o original com hash, lê planilha de forma direta, valida, soma, trava a v1); IA (só lê PDF e imagem e propõe a minuta, rotulada "sugestão da IA", RN-014, RF-090; **desligada** até haver contrato e RIPD, RN-051); Provedor externo de IA (**Claude, da Anthropic**, `[DECIDIDO 25/11/2026]`; receberia o conteúdo de PDF e imagem só depois do contrato e do RIPD, RN-035, Q-24 com resposta parcial; acessado por adaptador substituível, RNF-26). Membros (registra e visualiza) **não** importam, não conferem e não dão o OK (matriz do PRD, seção 3); veem a pendência "plano aguardando conferência e OK" e, depois, a linha de base vigente.
 - **Princípios:** a minuta não vale (RN-030); **só o líder dá o OK** `[DECIDIDO 25/11/2026]` (RN-031, Q-26); a plataforma nunca "aprova o plano": o OK é decisão da pessoa; o financiador **só aprova ajustes** (fluxo 9) e a plataforma apenas registra, não há aprovação do financiador sobre a v1 (4.3 do PRD, Q-27 `[DECIDIDO 25/11/2026]`); a confiança que a leitura informa não é garantia (RN-030); sem IA, planilha e cadastro manual funcionam normalmente (RF-091).
-- **Caminho mínimo para o critério O1** (PRD 4.1): cadastro manual ou planilha (sem IA) + conferência + OK + execução + checagem por linha. **Hoje o ramo "Lendo por IA" está desligado** (RF-153): o fluxo funciona inteiro sem ele; ele só liga quando houver contrato com o provedor de IA e RIPD (Q-24, ainda aberta; a resposta "o provedor será cloud" não identifica provedor nem contrato).
+- **Caminho mínimo para o critério O1** (PRD 4.1): cadastro manual ou planilha (sem IA) + conferência + OK + execução + checagem por linha. **Hoje o ramo "Lendo por IA" está desligado** (RF-153): o fluxo funciona inteiro sem ele; ele só liga quando houver contrato com o provedor de IA e RIPD. `[DECIDIDO 25/11/2026]` O provedor está definido: **Claude (Anthropic)**. **Q-24 segue aberta, com resposta parcial:** faltam a forma de contratação (API direta ou via plataforma cloud; a resposta anterior "o provedor será cloud" pode referir-se a isso), os termos comerciais (retenção, não uso para treino, região) a ler no contrato vigente, o RIPD e a chave (T-304).
 
 ### 8.2 Diagrama (ciclo de uma minuta)
 
@@ -1146,7 +1147,7 @@ stateDiagram-v2
     Minuta --> EmConferencia: validações rodam e a conferência abre
     EmConferencia --> EmConferencia: líder corrige um campo e as validações rodam de novo
     EmConferencia --> EmConferencia: OK recusado com a lista de impeditivos
-    EmConferencia --> ProntaParaOK: sem impeditivo, linhas de risco e amostra conferidas e ciente registrado
+    EmConferencia --> ProntaParaOK: sem impeditivo, conferência concluída e ciente registrado
     ProntaParaOK --> EmConferencia: nova correção reabre as validações
     ProntaParaOK --> OKDado: líder dá o OK
     OKDado --> LinhaDeBaseV1: v1 travada com hash e totais
@@ -1166,9 +1167,14 @@ stateDiagram-v2
         Selo minuta não vale. Nada entra em checagem,
         painel de execução ou checklist antes do OK, RN-030.
     end note
+    note right of EmConferencia
+        Minuta lida por IA exige 100 por cento das linhas conferidas.
+        Planilha e cadastro manual exigem linhas de risco e amostra.
+    end note
     note right of OKDado
         Só o líder, RN-031. IA nunca dá o OK.
-        Resumo conferi N de M linhas vai para a auditoria.
+        Resumo conferi N de M linhas vai para a auditoria
+        e em minuta lida por IA N é igual a M.
     end note
     note right of Abandonada
         Rascunho conservado, sem prazo que o apague.
@@ -1211,8 +1217,8 @@ stateDiagram-v2
 | Ilegível | O arquivo abre, mas não tem conteúdo aproveitável (imagem sem texto, PDF protegido ou corrompido, planilha sem as colunas necessárias) | Guarda o arquivo, explica o motivo, não cria minuta | Fim; o líder envia outro arquivo ou cadastra à mão |
 | Minuta manual | Líder escolhe cadastrar à mão | Abre a estrutura Meta → Etapa → Linha vazia (RF-122) | Líder |
 | Minuta | Leitura concluída ou cadastro salvo | Mostra o plano com o selo "minuta: não vale", a origem e a confiança de cada campo (RF-125) | Sistema abre a conferência |
-| Em conferência | Minuta criada | Roda as validações a cada alteração (seção 8.5); mostra cada linha ao lado da origem (RF-126); lista as **linhas de risco** e sorteia a **amostra** `[ALTERADO v0.2.1]` | Líder |
-| Pronta para OK | Sem impeditivo, linhas de risco e de amostra conferidas, "ciente" registrado | Habilita o botão de OK só para o líder, com o resumo "conferi N de M linhas" para confirmar | Líder |
+| Em conferência | Minuta criada | Roda as validações a cada alteração (seção 8.5); mostra cada linha ao lado da origem (RF-126); define o **conjunto a conferir** conforme a origem da minuta `[ALTERADO v0.2.1]` `[ALTERADO 25/11/2026]`: **minuta lida por IA, todas as linhas (100%)**; planilha ou cadastro manual, as **linhas de risco**, as 5 de maior valor e a **amostra** sorteada | Líder |
+| Pronta para OK | Sem impeditivo, conjunto a conferir concluído (100% das linhas se lida por IA; risco e amostra se planilha ou manual), "ciente" registrado | Habilita o botão de OK só para o líder, com o resumo "conferi N de M linhas" para confirmar (em minuta lida por IA, "conferi M de M linhas") | Líder |
 | OK dado | Líder dá o OK | Trava a linha de base v1 e registra autor, data, hash e totais (RF-128) | Sistema |
 | Linha de base v1 | OK dado | Cópia imutável de metas, etapas, linhas, classificações e valores, ligada ao arquivo de origem (RN-027) | Mudanças só por ajuste (fluxo 9) |
 | Execução liberada | v1 criada | Libera a execução por linha (fluxo 10), a checagem por linha (fluxo 3) e o previsto × executado; despesas "sem linha" passam a poder ser vinculadas (RF-130) | Estado de saída |
@@ -1230,9 +1236,12 @@ stateDiagram-v2
    - **Cadastro manual (RF-122):** o líder cria metas, etapas e linhas direto na tela.
 4. **Minuta (RF-125).** O plano aparece com o selo "minuta: não vale". Valor da etapa, da meta e do projeto são calculados pela soma (RN-025). A lista de classificações vem do plano importado ou do cadastro do líder (RF-121, depende de Q-25).
 5. **Validar (RF-127).** A cada alteração, as validações da seção 8.5 rodam e a conferência mostra o resultado por linha e por etapa.
-6. **Conferir por risco e amostra (RF-126, DP-07) `[ALTERADO v0.2.1]`.** O líder percorre as linhas com a origem ao lado (página e região destacada, ou aba e célula; no celular de 360 px a origem fica logo abaixo da linha). Corrige o que estiver errado; a plataforma guarda valor lido e valor corrigido, quem corrigiu e quando. **Não existe confirmação única "li a minuta inteira".** Precisam ser conferidas uma a uma: as **linhas de risco** (baixa confiança, abaixo de 0,80, RNF-17 `[SUPOSIÇÃO]`; com alerta de validação; com valor ou classificação corrigidos; e as 5 de maior valor `[SUPOSIÇÃO]`, sem contar duas vezes a que já é de risco) e uma **amostra** sorteada de 20% das demais, com mínimo de 5 linhas (ou todas, se forem menos de 5) `[SUPOSIÇÃO]` (Q-46 aberta; o dono pode pedir 100%). Exemplo: minuta de 100 linhas com 6 de risco lista as 6, as 5 de maior valor e a amostra de 20% das restantes.
+6. **Conferir (RF-126, RN-053, DP-07) `[ALTERADO v0.2.1]` `[ALTERADO 25/11/2026]`.** O líder percorre as linhas com a origem ao lado (página e região destacada, ou aba e célula; no celular de 360 px a origem fica logo abaixo da linha). Corrige o que estiver errado; a plataforma guarda valor lido e valor corrigido, quem corrigiu e quando. **Não existe confirmação única "li a minuta inteira".** `[DECIDIDO 25/11/2026]` O que precisa ser conferido uma a uma depende de **como a minuta foi criada** (Q-46 resolvida):
+   - **Minuta lida por IA (PDF digital, PDF escaneado ou imagem): 100% das linhas.** Todas as M linhas entram na conferência; não há amostra nem "conferir todas de uma vez" `[SUPOSIÇÃO]`; o OK fica indisponível enquanto faltar uma linha (com 99 de 100 conferidas, o OK é recusado e a linha pendente é mostrada). As linhas de baixa confiança continuam destacadas, para o líder dar mais atenção a elas. Minuta mista (linhas lidas por IA e outras digitadas depois): vale a regra de IA para a minuta inteira `[SUPOSIÇÃO]`.
+   - **Minuta de planilha ou de cadastro manual: risco e amostra.** Precisam ser conferidas: as **linhas de risco** (baixa confiança, abaixo de 0,80, RNF-17 `[SUPOSIÇÃO]`; com alerta de validação; com valor ou classificação corrigidos), as 5 de maior valor (sem contar duas vezes a que já é de risco) e uma **amostra** sorteada de 20% das demais, com mínimo de 5 linhas (ou todas, se forem menos de 5). Exemplo: planilha de 100 linhas com 6 de risco lista as 6, as 5 de maior valor e a amostra de 20% das restantes.
+   - Motivo da regra para IA: com 85% de acerto na leitura de PDF escaneado e imagem (RNF-17), até cerca de 12% das linhas poderiam ficar erradas fora de uma amostra de 20% (posição do `seguranca`, SEG-266 e QS-24, acolhida pelo dono em 25/11/2026).
 7. **Registrar "ciente".** Para cada validação que exige ciente, o líder escreve a justificativa (por exemplo, por que a soma diverge do total impresso).
-8. **Dar o OK (RF-128).** Só o líder. Antes de confirmar, a plataforma mostra o resumo **"conferi N de M linhas: R de risco e A de amostra; as outras Z não foram conferidas uma a uma"**, que fica na auditoria. A plataforma recusa o OK enquanto houver impeditivo ou linha de risco ou de amostra não conferida e lista as pendências. Com tudo em ordem, trava a **linha de base v1**.
+8. **Dar o OK (RF-128).** Só o líder. Antes de confirmar, a plataforma mostra o resumo, que fica na auditoria: em **minuta lida por IA**, **"conferi M de M linhas"** (N = M, nenhuma "não conferida uma a uma"); em **planilha ou cadastro manual**, **"conferi N de M linhas: R de risco e A de amostra; as outras Z não foram conferidas uma a uma"**. A plataforma recusa o OK enquanto houver impeditivo ou linha do conjunto a conferir ainda não conferida (todas, em minuta lida por IA; de risco ou de amostra, nos demais casos) e lista as pendências. Com tudo em ordem, trava a **linha de base v1**.
 9. **Liberar a execução.** O OK libera a execução por linha, a checagem por linha e o painel previsto × executado. A auditoria registra líder, data, hash do arquivo e totais (RF-112).
 10. **Depois do OK:** qualquer mudança é ajuste (fluxo 9). Despesas lançadas antes do OK, marcadas "sem linha", aparecem como pendência para o líder vincular (RF-130).
 
@@ -1265,7 +1274,7 @@ Casos de teste fictícios do PRD (RF-127) que este fluxo precisa reproduzir:
 ### 8.6 O que o OK exige (resumo)
 
 - Nenhum impeditivo aberto (validações b1 e c: classificação inválida; valor ausente, zero, negativo ou texto).
-- Toda linha de risco (baixa confiança, alerta, corrigida, 5 de maior valor) e toda linha da amostra conferida uma a uma; resumo "conferi N de M linhas" confirmado pelo líder `[ALTERADO v0.2.1]`.
+- Minuta lida por IA: **todas as linhas** conferidas uma a uma (100%). Planilha ou cadastro manual: toda linha de risco (baixa confiança, alerta, corrigida, 5 de maior valor) e toda linha da amostra conferida uma a uma. Resumo "conferi N de M linhas" (em IA, N = M) confirmado pelo líder `[ALTERADO v0.2.1]` `[ALTERADO 25/11/2026]`.
 - Todo "ciente" exigido com justificativa registrada.
 - Quem dá: **só o líder**, com MFA (RN-031, RF-111; Q-26 decidida). O financiador só aprova ajustes, não a linha de base v1 (Q-27 decidida); a plataforma apenas registra a aprovação de ajuste e ela não substitui o OK do líder.
 
@@ -1280,7 +1289,7 @@ RN-014 e RN-015 (IA sugere; documento é dado), RN-020 (nada é apagado: arquivo
 - **Origem de cada campo:** aba e célula, ou página e região (RNF-21).
 - **Valor lido, valor corrigido, confiança, quem corrigiu e quando:** sempre (RF-126, RNF-21).
 - **"Ciente":** justificativa escrita do líder para cada validação que a exige.
-- **Contagens da conferência:** total de linhas (M), quantas conferidas uma a uma (N), quantas de risco (R), quantas de amostra (A), quais linhas foram sorteadas e quantas não foram conferidas uma a uma (RF-126, Q-46).
+- **Contagens da conferência:** origem da minuta (leitura por IA, planilha ou manual), total de linhas (M), quantas conferidas uma a uma (N), quantas corrigidas e, em planilha e cadastro manual, quantas de risco (R), quantas de amostra (A), quais linhas foram sorteadas e quantas não foram conferidas uma a uma (Z). Em minuta lida por IA, N = M e Z = 0 (RF-126, RN-053, Q-46 resolvida).
 - **Totais e hash no OK** (RF-128).
 - Retenção do original, da minuta e das cópias no provedor de IA: depende de Q-12 e Q-24; logs sem o conteúdo do documento (RNF-20).
 
@@ -1302,8 +1311,8 @@ Nomes alinhados à seção 8.3 de `docs/06-seguranca.md` `[RENOMEADO v0.2.1]` (o
 | `minuta.criada` (origem: planilha, PDF, imagem ou manual) | Minuta gerada | RF-112 (importações e conferências) |
 | `minuta.campo_corrigido` (valor lido, valor corrigido, autor) | Correção na conferência | RF-112 (correções da minuta) |
 | `minuta.ciente_registrado` (validação, justificativa) | "Ciente" | RF-112 ("ciente" de validação, DP-03) |
-| `minuta.amostra_sorteada` (linhas de risco, 5 de maior valor, linhas da amostra, percentual e mínimo) `[NOVO v0.2.1]` | Abertura da conferência | proposto; amostra de conferência (RF-126, DP-07) |
-| `minuta.conferida` (M linhas, N conferidas, R de risco, A de amostra, Z não conferidas uma a uma; **substitui "li a minuta inteira"**) `[ALTERADO v0.2.1]` | Fim da conferência, no OK | RF-112 (conferências) |
+| `minuta.amostra_sorteada` (linhas de risco, 5 de maior valor, linhas da amostra, percentual e mínimo) `[NOVO v0.2.1]` `[ALTERADO 25/11/2026]` | Abertura da conferência de **planilha ou cadastro manual**; **não existe em minuta lida por IA** (100% das linhas, sem sorteio) | proposto; amostra de conferência (RF-126, RN-053, DP-07) |
+| `minuta.conferida` (**origem da minuta: leitura por IA, planilha ou manual**; M linhas, N conferidas, linhas corrigidas, Z não conferidas uma a uma; em planilha e manual também R de risco e A de amostra; **em leitura por IA, N = M e Z = 0, com autor e hora de cada linha conferida**; **substitui "li a minuta inteira"**) `[ALTERADO v0.2.1]` `[ALTERADO 25/11/2026]` | Fim da conferência, no OK | RF-112 (conferências), RN-053 |
 | `minuta.descartada` e `minuta.substituida` | Descarte ou escolha de outra minuta | proposto |
 | `minuta.comparacao_aberta` e `minuta.comparacao_descartada` (diferenças, valor em reais) `[NOVO v0.2.1]` | Nova importação depois do OK (RF-150) | proposto (D18, Q-39) |
 | `linha_base.ok_recusado` (impeditivos listados) | Tentativa de OK com impeditivo | proposto |
@@ -1318,7 +1327,7 @@ Nomes alinhados à seção 8.3 de `docs/06-seguranca.md` `[RENOMEADO v0.2.1]` (o
 | Quem | O quê | Canal e antecedência |
 |---|---|---|
 | Líder | Leitura concluída, minuta pronta para conferência; leitura falhou, com as opções | Na plataforma, imediato (indicador de progresso durante a leitura, RNF-16) |
-| Líder | Pendência "plano aguardando conferência e OK" (RF-003); linhas de risco ou de amostra ainda não conferidas | Painel e pendências, enquanto durar |
+| Líder | Pendência "plano aguardando conferência e OK" (RF-003); linhas ainda não conferidas (todas, em minuta lida por IA, com a contagem "faltam X de M"; de risco ou de amostra, em planilha e cadastro manual) | Painel e pendências, enquanto durar |
 | Líder | PDF ou imagem indisponível: "leitura por IA desligada até haver contrato e RIPD", com a saída de planilha ou cadastro manual `[NOVO v0.2.1]` | Na tela de importação |
 | Líder | Comparação de nova importação aberta, com as diferenças a confirmar `[NOVO v0.2.1]` | Painel e pendências |
 | Líder e membros | Linha de base v1 vigente e execução liberada `[SUPOSIÇÃO]` | Na plataforma |
@@ -1329,11 +1338,11 @@ O PRD não define aviso por e-mail nem lembrete com prazo para a conferência; a
 ### 8.11 Caminhos de exceção
 
 - **Leitura falha (erro técnico, tempo esgotado):** o arquivo permanece guardado; o líder tenta de novo, envia planilha ou cadastra à mão. Nada é gravado pela metade `[SUPOSIÇÃO]`.
-- **Leitura por IA desligada (RF-153, RN-051) `[ALTERADO v0.2.1]`:** enquanto não houver contrato com o provedor de IA e RIPD (Q-24 aberta, SEG-222), as opções PDF e imagem aparecem desligadas e explicadas, nenhum conteúdo sai da plataforma, e planilha e cadastro manual cobrem o fluxo inteiro. O desenvolvedor não liga a chave (T-304) antes disso.
+- **Leitura por IA desligada (RF-153, RN-051) `[ALTERADO v0.2.1]`:** enquanto não houver contrato com o provedor de IA (Claude, da Anthropic; contratação e termos ainda abertos, Q-24 com resposta parcial) e RIPD (SEG-222), as opções PDF e imagem aparecem desligadas e explicadas, nenhum conteúdo sai da plataforma, e planilha e cadastro manual cobrem o fluxo inteiro. O desenvolvedor não liga a chave (T-304) antes disso.
 - **IA ligada, mas indisponível por falha temporária (RF-124, RF-091):** o arquivo de PDF ou imagem **já varrido** fica guardado, a plataforma avisa e oferece planilha ou cadastro manual. Planilha, conferência, OK e linha de base funcionam normalmente.
 - **Varredura com detecção:** o arquivo é recusado, não é guardado como original e a recusa fica na auditoria (DP-09, SEG-207).
-- **Baixa confiança:** os campos abaixo de 0,80 aparecem destacados e entram nas linhas de risco, que exigem conferência uma a uma; o OK é recusado enquanto houver linha de risco ou de amostra pendente (RF-126, RNF-17). A confiança alta não dispensa a conferência humana (RN-030).
-- **Líder tenta dar o OK sem conferir as linhas de risco ou de amostra:** recusado, com a lista das linhas pendentes; não há confirmação única que as dispense (RF-126).
+- **Baixa confiança:** os campos abaixo de 0,80 aparecem destacados e entram nas linhas de risco (planilha e cadastro manual) ou recebem destaque dentro das 100% de linhas a conferir (minuta lida por IA); o OK é recusado enquanto houver linha pendente do conjunto a conferir (RF-126, RN-053, RNF-17). A confiança alta não dispensa a conferência humana (RN-030).
+- **Líder tenta dar o OK sem conferir todas as linhas (minuta lida por IA) ou as de risco e de amostra (planilha e cadastro manual):** recusado, com a lista das linhas pendentes; não há confirmação única que as dispense nem "conferir todas de uma vez" (RF-126).
 - **Arquivo ilegível:** estado "Ilegível"; o arquivo fica guardado (RN-020), a minuta não é criada, a tela explica o motivo e oferece outro arquivo ou cadastro manual.
 - **Recusa do arquivo:** tipo, tamanho, número de páginas, de imagens ou de linhas acima do RNF-15 (planilha até 10 MB e 2.000 linhas; PDF até 25 MB e 50 páginas; imagem até 25 MB e 10 imagens `[SUPOSIÇÃO]`, Q-23): a plataforma recusa e informa o limite. Formatos como HEIC e ODS dependem de Q-23.
 - **Recusa do OK pela plataforma:** com impeditivo ou linha pendente, o OK é recusado e as pendências são listadas (RF-126, RF-127).
@@ -1355,7 +1364,7 @@ O PRD não define aviso por e-mail nem lembrete com prazo para a conferência; a
 
 ### 8.12 Rastreio
 
-RF-001, RF-003, RF-090, RF-091, RF-111, RF-112, RF-120 a RF-128, RF-130, RF-150, RF-153 · RN-009, RN-014, RN-015, RN-020, RN-025 a RN-031, RN-035, RN-037, RN-045, RN-051 · RNF-15 a RNF-17, RNF-20, RNF-21 · Q-12, Q-23, Q-24, Q-25, Q-39, Q-46 · T-304 (Q-26, Q-27, Q-34 e Q-40 resolvidas em 25/11/2026).
+RF-001, RF-003, RF-090, RF-091, RF-111, RF-112, RF-120 a RF-128, RF-130, RF-150, RF-153 · RN-009, RN-014, RN-015, RN-020, RN-025 a RN-031, RN-035, RN-037, RN-045, RN-051, RN-053 · RNF-15 a RNF-17, RNF-20, RNF-21, RNF-25, RNF-26 · Q-12, Q-23, Q-24 (parcial), Q-25, Q-39 · T-304 (Q-26, Q-27, Q-34, Q-40 e Q-46 resolvidas em 25/11/2026).
 
 ---
 
@@ -1908,7 +1917,7 @@ A skill pede responsável e prazo em toda aprovação. O PRD não impõe prazo p
 | Encerrar projeto (RF-004) | Líder | Nenhum; alerta de vigência em 90, 60 e 30 dias | Projeto fica em "vigência encerrada" |
 | Pagar cobrança (RF-101) | Pagador | Teste de 30 dias, depois o vencimento da cobrança `[DECIDIDO 25/11/2026]` quanto aos 30 dias | Assinatura "em atraso": projeto somente leitura, sem apagar dados (RF-104, RN-018) |
 | Confirmar o envio de PDF ou imagem ao provedor de IA (RF-124) `[SUPOSIÇÃO]` | Líder | Nenhum; **só existe com a leitura por IA ligada** (contrato e RIPD, RF-153) | O arquivo fica guardado sem leitura; planilha e cadastro manual seguem disponíveis |
-| Conferir a minuta (linhas de risco e amostra), registrar "ciente" e dar o OK da linha de base (RF-126 a RF-128, RN-031) `[ALTERADO v0.2.1]` | **Só o líder** `[DECIDIDO 25/11/2026]` (Q-26) | Nenhum | A minuta não vale; checagem de item permitido fica "pendente: plano sem aprovação" (item vedado continua "bloqueado"); despesas ficam "sem linha"; pendência no painel; nada é aprovado por decurso de prazo |
+| Conferir a minuta (100% das linhas se lida por IA; linhas de risco e amostra se planilha ou cadastro manual, RN-053 `[DECIDIDO 25/11/2026]`), registrar "ciente" e dar o OK da linha de base (RF-126 a RF-128, RN-031) `[ALTERADO v0.2.1]` | **Só o líder** `[DECIDIDO 25/11/2026]` (Q-26) | Nenhum | A minuta não vale; checagem de item permitido fica "pendente: plano sem aprovação" (item vedado continua "bloqueado"); despesas ficam "sem linha"; pendência no painel; nada é aprovado por decurso de prazo |
 | Confirmar uma diferença da comparação de nova importação (RF-150) `[NOVO v0.2.1]` | Líder | Nenhum | A comparação continua aberta; a linha de base não muda; nada vira ajuste sozinho |
 | Pedir e tornar vigente um ajuste da linha de base (RF-129) | Líder (decisor registrado) | Nenhum | O ajuste continua rascunho; a versão vigente não muda |
 | Registrar a aprovação externa do ajuste (RN-028) | Líder registra; quem aprova é o financiador, fora da plataforma, e **só aprova ajustes** `[DECIDIDO 25/11/2026]` (Q-27) | Definido pelo financiador, não pela plataforma | Ajuste continua "pendente de aprovação externa"; a versão vigente não muda; pendência no painel |
@@ -1929,7 +1938,7 @@ Nenhuma transição que movimente dinheiro, envie documento externo ou aprove al
 
 ## 14. Dependências de decisões em aberto (Q-xx) e como os fluxos se comportam `[ALTERADO v0.2.1]`
 
-Situação em 25/11/2026 (PRD v0.2.1 aprovado): **T-012 e T-019 resolvidas**; Q-02, Q-05, Q-26, Q-27, Q-31, Q-34, Q-38 e Q-40 **resolvidas** (PRD, seção 10.3), listadas abaixo na primeira tabela só para registro; **Q-04 e Q-35 com resposta parcial**; Q-24 aberta, sem interpretar a resposta ambígua do dono ("o provedor será cloud"). Questões do PRD: 48 no total, 9 resolvidas (as oito acima mais Q-21) e 39 abertas.
+Situação em 25/11/2026 (PRD v0.2.1 aprovado, com as decisões da T-022d): **T-012 e T-019 resolvidas**; Q-02, Q-05, Q-26, Q-27, Q-31, Q-34, Q-38, Q-40 e Q-46 **resolvidas** (PRD, seção 10.3), listadas abaixo na primeira tabela só para registro; **Q-04, Q-24 e Q-35 com resposta parcial** (Q-24: provedor definido, Claude da Anthropic; contratação, termos comerciais, RIPD e chave abertos). Questões do PRD: 49 no total, 10 resolvidas (as nove acima mais Q-21) e 39 abertas.
 
 ### 14.1 Resolvidas (registro)
 
@@ -1943,6 +1952,7 @@ Situação em 25/11/2026 (PRD v0.2.1 aprovado): **T-012 e T-019 resolvidas**; Q-
 | Q-31 `[RESOLVIDA 25/11/2026]` | Item sem linha = pendente, com a saída de pedir ajuste | 3 | Verificação 3 nunca bloqueia por si só |
 | Q-34 e Q-40 `[RESOLVIDAS 25/11/2026]` | Classificação inválida e valor ausente, zero, negativo ou texto impedem o OK; o resto exige "ciente" com justificativa | 8, 9 | Tabela 8.5 com a gravidade decidida |
 | Q-38 (D25) `[RESOLVIDA 25/11/2026]` | Item vedado é bloqueado mesmo sem plano aprovado | 3, 8 | Bloqueio com precedência; "pendente: plano sem aprovação" só para o que seria permitido |
+| Q-46 (DP-07, SEG-266, QS-24) `[RESOLVIDA 25/11/2026]` | **100% das linhas conferidas quando a minuta é lida por IA; linhas de risco + 5 de maior valor + amostra de 20% (mínimo 5) para planilha e cadastro manual.** Veio da posição do `seguranca` e do argumento de que, com 85% de acerto (RNF-17), até cerca de 12% das linhas poderiam ficar erradas fora da amostra | 8 | Passos 6 e 8, estados "Em conferência" e "Pronta para OK", resumo "conferi M de M linhas" em IA, eventos `minuta.amostra_sorteada` (só planilha e manual) e `minuta.conferida` (com a origem) |
 
 ### 14.2 Em aberto
 
@@ -1962,7 +1972,7 @@ Situação em 25/11/2026 (PRD v0.2.1 aprovado): **T-012 e T-019 resolvidas**; Q-
 | Q-20 | Prazos de alerta | 1, 2 | Prazos são parâmetros. |
 | Q-22 `[NOVO v0.2]` | Período mensal e trimestre (de calendário ou contado da vigência; outro período por financiador) | 10 | O mês é a unidade de lançamento; o trimestre é só agrupamento da visão (RN-032). Mudar a regra do trimestre muda a soma exibida, não o fluxo. |
 | Q-23 `[NOVO v0.2]` | Formatos e limites de arquivo; leitura de PDF e imagem já na 1ª versão ou depois do piloto | 8 | Limites são parâmetros (RNF-15). Se a leitura por IA ficar para depois, o ramo "Lendo por IA" some; planilha e cadastro manual cobrem o fluxo inteiro. |
-| Q-24 `[NOVO v0.2]` `[ALTERADO v0.2.1]` | Provedor de IA, contrato, RIPD, campos que podem sair da plataforma. Resposta do dono em 25/11/2026: "o provedor será cloud" (ambígua; não identifica provedor nem contrato; **não interpretada**) | 8 | **A leitura de PDF e imagem fica desligada até haver contrato e RIPD** (RF-153); planilha, cadastro manual e extrato funcionam sem IA. Quando ligada, o fluxo exige confirmação do líder antes do envio e minimização. |
+| Q-24 `[NOVO v0.2]` `[ALTERADO v0.2.1]` `[RESPOSTA PARCIAL 25/11/2026]` | `[DECIDIDO 25/11/2026]` **O provedor de IA é o Claude (Anthropic).** Seguem abertos: a **forma de contratação** (API direta ou via plataforma cloud; a resposta anterior "o provedor será cloud" pode referir-se a isso), os **termos comerciais** (retenção, não uso para treino, região) a ler no contrato vigente, o **RIPD**, a **chave de API (T-304)** e os campos que podem sair da plataforma | 8 | **A leitura de PDF e imagem fica desligada até haver contrato e RIPD** (RF-153); planilha, cadastro manual e extrato funcionam sem IA. Quando ligada, o fluxo exige confirmação do líder antes do envio e minimização, e a minuta lida por IA é conferida em 100% das linhas (RN-053). O provedor é acessado por adaptador substituível (RNF-26): trocar de provedor ou de forma de contratação não muda o fluxo. |
 | Q-25 `[NOVO v0.2]` | Classificações de despesa de partida (modelos) ou todas vazias | 2, 8, 9 | A lista vem do plano importado ou do cadastro do líder; modelos pré-cadastrados só adiantam o passo. |
 | Q-28 `[NOVO v0.2]` | "Executado do mês" resumido ou só despesas; comprovante obrigatório | 10 | Se não houver resumo, só despesas alimentam a execução; o resto do fluxo não muda. Ver D21 e Q-41. |
 | Q-29 `[NOVO v0.2]` | Peso do progresso da meta e do projeto | 2 | Muda só a fórmula da média. |
@@ -1977,9 +1987,10 @@ Situação em 25/11/2026 (PRD v0.2.1 aprovado): **T-012 e T-019 resolvidas**; Q-
 | Q-43 `[NOVO v0.2.1]` | D23: campo "quem aprova mudanças" no cadastro | 9, 12 | Campo informativo, padrão o líder; o item do checklist lê o campo. |
 | Q-44 `[NOVO v0.2.1]` | D24: item [A] sem dado de checagem = "não verificável sem checagem" | 12 | Proposta adotada no fluxo 12. |
 | Q-45 `[NOVO v0.2.1]` | D20: mês conferido não trava lançamentos (ou trava) | 4, 10, 12 | Marca adotada sem trava; se o dono quiser travar, vale SEG-234 e o passo 7 do fluxo 10 muda. |
-| Q-46 `[NOVO v0.2.1]` | DP-07: conferência por risco e amostra (ou 100% das linhas) | 8 | Percentual, mínimo e quantidade de linhas de maior valor são parâmetros. |
+| Q-46 `[NOVO v0.2.1]` `[RESOLVIDA 25/11/2026]` | DP-07: decidida; ver 14.1 (100% das linhas em minuta lida por IA; risco e amostra em planilha e cadastro manual) | 8 | Percentual, mínimo e quantidade de linhas de maior valor da amostra seguem como parâmetros. |
 | Q-47 `[NOVO v0.2.1]` | DP-06: membro não edita datas de etapa nem valores da linha de base | 2, 9 | Proposta adotada: datas e valores só por ajuste do líder. |
 | Q-48 `[NOVO v0.2.1]` | Critérios de conciliação: janela de data, tolerância de valor, um débito para várias despesas, prazo de "despesa sem extrato" | 4, 12 | Todos são parâmetros com valor proposto (5 dias, tolerância zero, 30 dias). |
+| Q-49 `[NOVO 25/11/2026]` | Residência dos dados: o dono não exige dados no Brasil (RNF-25); se um edital, convênio ou instituição pública impuser residência (inclusive para o processamento da IA), muda a região ou o projeto fica fora do piloto? | Nenhum fluxo muda (a região é configuração de implantação); afeta o fluxo 8 só quando a leitura por IA for ligada | Os fluxos não dependem da região; o `seguranca` registra os países de tratamento e a revisão jurídica (T-901) confirma a transferência internacional. |
 
 Também são parâmetros por edital (RN-007): rubricas, itens permitidos e vedados, faixas e quantidade de cotações, limites e validade da cotação.
 
@@ -2061,7 +2072,7 @@ Resumo de D1 a D17: **1 resolvida (D14), 3 parciais (D4, D13, D15), 13 em aberto
 | D24 | Proposta adotada (RF-138, RN-049): itens [A] sem dado de checagem ficam "não verificável sem checagem" | Q-44 | **Aberta** |
 | D25 | Decidida: item vedado (ou sem cotações mínimas, limite excedido, fora da vigência) é bloqueado mesmo sem plano aprovado; só o permitido fica "pendente: plano sem aprovação" (RN-006, RN-029, RN-043) | Q-38 | **Resolvida em 25/11/2026** |
 
-Resumo: **2 resolvidas (D19, D25), 6 propostas adotadas aguardando o dono (D18, D20, D21, D22, D23, D24).** Divergências do `seguranca` DP-01 a DP-09 foram tratadas no PRD (DP-01 resolvida; DP-07 é a conferência amostral, Q-46; DP-06 é Q-47).
+Resumo: **2 resolvidas (D19, D25), 6 propostas adotadas aguardando o dono (D18, D20, D21, D22, D23, D24).** Divergências do `seguranca` DP-01 a DP-09 foram tratadas no PRD (DP-01 resolvida; DP-07 é a conferência da minuta, Q-46 `[RESOLVIDA 25/11/2026]`: 100% em IA, amostra em planilha e cadastro manual; DP-06 é Q-47).
 
 ---
 
@@ -2079,7 +2090,7 @@ Alinhado à seção 8.3 de `docs/06-seguranca.md` na v0.2.1. **Renomeados** para
 | etapa e entrega `[NOVO v0.2]` | etapa.medida_definida, etapa.medida_alterada, etapa.percentual_estimado_registrado, entrega.aceite_registrado, entrega.pendencia_resolvida | 2 |
 | importação `[NOVO v0.2]` `[ALTERADO v0.2.1]` | arquivo_recebido, arquivo_rejeitado, varredura_concluida `[NOVO]`, conteudo_ignorado `[NOVO]`, cancelada `[NOVO]`, repetida_detectada | 8 |
 | leitura `[NOVO v0.2]` `[RENOMEADO v0.2.1]` | planilha_concluida, ia_autorizada, ia_concluida, ia_falhou (os três de IA só existem com a leitura ligada) | 8 |
-| minuta `[NOVO v0.2]` `[ALTERADO v0.2.1]` | criada, campo_corrigido, ciente_registrado, amostra_sorteada `[NOVO]`, conferida (com N de M, risco e amostra), descartada, substituida, comparacao_aberta `[NOVO]`, comparacao_descartada `[NOVO]` | 8 |
+| minuta `[NOVO v0.2]` `[ALTERADO v0.2.1]` | criada, campo_corrigido, ciente_registrado, amostra_sorteada `[NOVO]` (só planilha e manual), conferida (com a origem, N de M e, em planilha e manual, risco e amostra; em IA, N = M), descartada, substituida, comparacao_aberta `[NOVO]`, comparacao_descartada `[NOVO]` | 8 |
 | linha de base `[NOVO v0.2]` `[ALTERADO v0.2.1]` | ok_recusado, ok_dado, integridade_falhou `[NOVO]` | 8 |
 | ajuste `[NOVO v0.2]` `[ALTERADO v0.2.1]` | criado, marcado_aprovacao_externa, aprovacao_externa_registrada, vigente `[RENOMEADO]`, recusado, cancelado, ciente_abaixo_do_executado, desatualizado, remocao_recusada `[NOVO]` | 9 |
 | execução e período `[NOVO v0.2]` `[ALTERADO v0.2.1]` | execucao.resumo_lancado, resumo_estornado `[NOVO]`, resumo_corrigido, resumo_substituido `[NOVO]`, sem_execucao_marcada, sem_execucao_desmarcada, vinculada_linha `[RENOMEADO]`, saldo_negativo_detectado, desvio_detectado; periodo.fechado (mês conferido), periodo.reaberto | 3, 10 |
@@ -2116,7 +2127,7 @@ Alinhado à seção 8.3 de `docs/06-seguranca.md` na v0.2.1. **Renomeados** para
 
 ## Próximo passo
 
-1. Dono revisa as propostas ainda abertas da seção 15.4 (D18, D20, D21, D22, D23 e D24) e as dependências da seção 14.2; responde, em ordem, Q-24 (provedor de IA, contrato e RIPD), Q-04 (empresa processadora, T-801), Q-35 (extrato de exemplo anonimizado de cada banco), Q-12 e Q-37. Q-05, Q-26, Q-27, Q-31, Q-34, Q-38 e Q-40 já foram respondidas em 25/11/2026.
+1. Dono revisa as propostas ainda abertas da seção 15.4 (D18, D20, D21, D22, D23 e D24) e as dependências da seção 14.2; responde, em ordem, Q-24 (provedor definido: Claude, da Anthropic; resta a forma de contratação, os termos comerciais, o RIPD e a chave T-304), Q-04 (empresa processadora, T-801), Q-35 (extrato de exemplo anonimizado de cada banco), Q-12 e Q-37. Q-05, Q-26, Q-27, Q-31, Q-34, Q-38, Q-40 e Q-46 já foram respondidas em 25/11/2026.
 2. `seguranca` valida o catálogo de eventos da seção 16 em `docs/06-seguranca.md` (repetindo a conferência da seção 8.3 com este documento v0.2.1), incluindo os eventos de extrato e conciliação, a varredura antes de guardar e a leitura por IA desligada (fluxos 4 e 8).
-3. `designer` usa os estados e as mensagens destes fluxos no mapa de telas (`docs/03-ux.md`): importar extrato, mapear colunas do CSV, conciliar, justificar exceções, conferir a minuta por risco e amostra, comparação de nova importação, OK, ajustes, execução mensal, mês conferido, saúde por fase.
+3. `designer` usa os estados e as mensagens destes fluxos no mapa de telas (`docs/03-ux.md`): importar extrato, mapear colunas do CSV, conciliar, justificar exceções, conferir a minuta (100% das linhas se lida por IA; risco e amostra se planilha ou cadastro manual), comparação de nova importação, OK, ajustes, execução mensal, mês conferido, saúde por fase.
 4. T-018: criar as skills de domínio a partir dos fluxos 3, 4, 5, 7, 8, 9 e 10 (`agent-skill-builder`).
