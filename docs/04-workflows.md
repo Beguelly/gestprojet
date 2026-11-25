@@ -27,7 +27,7 @@ Fonte: `docs/01-prd.md` v0.2.1 (**aprovado pelo dono em 25/11/2026**, T-022b; se
 | 2 `[v0.2]` | Plano de trabalho: metas, etapas e linhas | RF-010 a RF-013, RF-024, RF-120 a RF-122, RF-132, RF-135 | RN-025, RN-026, RN-027, RN-033 | Q-20, Q-25, Q-29 |
 | 3 `[v0.2]` `[v0.2.1]` | Despesa com checagem antes da compra, contra a linha do plano | RF-041 a RF-043, RF-050 a RF-055, RF-060 a RF-067, RF-130 | RN-004 a RN-008, RN-010, RN-012 a RN-015, RN-020, RN-024, RN-029, RN-032, RN-038, RN-043 | Q-01, Q-10, Q-11, Q-15, Q-19 |
 | 4 `[v0.2]` `[REESCRITO v0.2.1]` | Conta do projeto: extrato (OFX ou CSV), conciliação e rendimentos | RF-050 a RF-055, RF-146 a RF-149 | RN-009 a RN-011, RN-014, RN-020, RN-025, RN-039 a RN-042 | Q-09, Q-35, Q-36, Q-48 |
-| 5 | Avaliação TRL/MRL | RF-070 a RF-074, RF-012, RF-090 | RN-014, RN-016 | Q-03 |
+| 5 `[v0.2.1]` | Avaliação TRL/MRL | RF-070 a RF-074, RF-012, RF-090 | RN-014, RN-016, RN-052 | Q-03, Q-37 |
 | 6 | Entrada e saída de membros | RF-030 a RF-034, RF-110, RF-111 | RN-001 a RN-003, RN-022 | Q-09 |
 | 7 `[v0.2.1]` | Assinatura por projeto | RF-100 a RF-105 | RN-017 a RN-019 | Q-04 (empresa processadora), Q-12, Q-16, Q-17, Q-18 |
 | 8 `[NOVO v0.2]` `[v0.2.1]` | Importação do plano, conferência, OK e linha de base v1 | RF-120 a RF-128, RF-150, RF-153, RF-090, RF-091 | RN-014, RN-015, RN-025 a RN-031, RN-035, RN-037, RN-045, RN-051 | Q-23, Q-24, Q-25, Q-39, Q-46, T-304 |
@@ -789,14 +789,14 @@ RF-050 a RF-055, RF-053, RF-054, RF-112, RF-146 a RF-149, RF-152 · RN-009, RN-0
 - **Atores:** Líder (define, pede a proposta, confirma o nível oficial); Membro (registra) (anexa evidências e as liga a critérios, RF-071); Sistema (calcula a proposta por regra); IA (opcionalmente cita as evidências de cada critério, sempre rotulada); Membro (visualiza) (lê).
 - **A IA propõe, a pessoa confirma:** a proposta **não é** nível oficial. Só o líder registra o oficial (RN-016, RF-073).
 - **Diferença em relação à skill:** a skill descreve "autoavaliação, revisão por avaliador, registro". No PRD não há persona avaliador; o "avaliador" do histórico (RF-074) é o líder que confirma. Ver seção 15, item D8.
-- **Escala depende de Q-03 (T-019):** níveis e critérios são configuração. Nada neste fluxo fixa a escala.
+- **Escala decidida em 25/11/2026 (T-019, RN-052):** TRL de 1 a 9 (referência ISO 16290) e MRL de 1 a 10 (escala de 10 níveis do DoD, EUA). Os textos dos critérios de cada nível são configuração e estão **"a validar"** (Q-37 aberta): a interface não os apresenta como texto oficial, e a proposta de nível mostra o aviso "baseada em critérios ainda a validar". A escala por financiador fica para a camada seguinte.
 
 ### 5.2 Diagrama (ciclo de uma avaliação, vale para TRL e para MRL)
 
 ```mermaid
 stateDiagram-v2
     [*] --> SemEscala: escala ainda não configurada
-    SemEscala --> Configurada: escala definida (Q-03)
+    SemEscala --> Configurada: escala definida, TRL 1 a 9 e MRL 1 a 10
     [*] --> Configurada: escala já disponível
     Configurada --> ComEvidencias: membro ou líder liga evidências a critérios
     ComEvidencias --> ComEvidencias: novas evidências ligadas
@@ -817,7 +817,7 @@ stateDiagram-v2
     end note
     note right of Historico
         Guarda nível, data, líder, proposta
-        e evidências (RN-016).
+        e evidências, RN-016.
     end note
 ```
 
@@ -862,7 +862,7 @@ RN-014 (IA sugere, pessoa decide), RN-015 (documentos são dados), RN-016 (só o
 
 ### 5.8 Caminhos de exceção
 
-- **Escala não configurada (Q-03 em aberto):** o fluxo para em "sem escala"; a tela explica e nenhuma proposta é gerada.
+- **Escala não configurada:** o fluxo para em "sem escala"; a tela explica e nenhuma proposta é gerada. Com TRL 1 a 9 e MRL 1 a 10 decididos, o estado só ocorre se o texto dos critérios ainda não estiver cadastrado (Q-37).
 - **Sem nenhuma evidência:** a proposta diz que nenhum critério tem evidência e lista os primeiros critérios faltantes; o líder pode ainda registrar um nível oficial com justificativa `[SUPOSIÇÃO]`.
 - **Provedor de IA indisponível:** a proposta por regra continua; só a explicação por IA some, com aviso (RF-072, RF-091).
 - **IA cita evidência que não existe:** proibido; toda citação aponta para uma evidência ligada (RF-072, RF-090).
@@ -876,7 +876,7 @@ RN-014 (IA sugere, pessoa decide), RN-015 (documentos são dados), RN-016 (só o
 
 ### 5.9 Rastreio
 
-RF-012, RF-024, RF-070 a RF-074, RF-090, RF-091 · RN-014, RN-015, RN-016, RN-022 · Q-03.
+RF-012, RF-024, RF-070 a RF-074, RF-090, RF-091 · RN-014, RN-015, RN-016, RN-022, RN-052 · Q-03, Q-37.
 
 ---
 

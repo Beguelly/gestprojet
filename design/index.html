@@ -280,7 +280,7 @@ main { padding: var(--s-5); max-width: 1180px; width: 100%; }
 .bar-row .meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s-1) var(--s-3); font-size: var(--fs-sm); }
 
 /* Escala de níveis (TRL/MRL): segmentos numerados, marcador de meta em texto */
-.scale { display: grid; grid-template-columns: repeat(9, 1fr); gap: 3px; margin: var(--s-3) 0 var(--s-2); }
+.scale { display: grid; grid-template-columns: repeat(var(--n, 9), 1fr); gap: 3px; margin: var(--s-3) 0 var(--s-2); }
 .scale li { height: 30px; border: 1.5px solid var(--c-border-strong); border-radius: 4px; display: grid; place-items: center; font-size: var(--fs-sm); font-weight: 700; background: var(--c-surface); color: var(--c-text); position: relative; }
 .scale li.done { background: var(--c-bar-fill); color: var(--c-surface); border-color: var(--c-bar-fill); }
 .scale li.cur { outline: 3px solid var(--c-text); outline-offset: 1px; }
@@ -499,6 +499,53 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
 .quote.map { grid-template-columns: minmax(0,1fr) minmax(0,1.2fr); }
 
 /* =========================================================
+   v0.3 (T-022c): extrato, conciliação, exceções, rendimentos,
+   comparação de importação, papéis (líder e membro), atraso.
+   Sem token novo de cor: usa só os tokens da v0.2.
+   ========================================================= */
+.choices.two { grid-template-columns: repeat(2, minmax(0,1fr)); }
+.choice.off { border-style: dashed; background: var(--c-surface-2); cursor: default; }
+.choice.off b { display: flex; flex-wrap: wrap; gap: var(--s-1) var(--s-2); align-items: center; }
+
+/* conciliação: lado do banco x lado da despesa */
+.pair { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: var(--s-3); }
+.side { border: 1px solid var(--c-border-strong); border-radius: var(--r-md); padding: var(--s-3) var(--s-4); background: var(--c-surface); min-width: 0; display: flex; flex-direction: column; gap: var(--s-1); overflow-wrap: anywhere; }
+.side .kind { font-size: var(--fs-sm); font-weight: 700; color: var(--c-text-muted); display: flex; gap: var(--s-2); align-items: center; }
+.side .kind svg { width: 16px; height: 16px; }
+.side .amt { font-size: var(--fs-lg); font-weight: 800; font-variant-numeric: tabular-nums; }
+.sugg { border: 2px dashed var(--c-info-bd); border-radius: var(--r-lg); padding: var(--s-4); background: var(--c-surface); display: flex; flex-direction: column; gap: var(--s-3); min-width: 0; }
+.sugg.warn { border-color: var(--c-warn-bd); }
+.sugg.done { border-style: solid; border-color: var(--c-ok-bd); }
+.sg-body { gap: var(--s-3); }
+.sugg h3 { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-3); align-items: center; }
+.sumbox { border: 2px solid var(--c-border-strong); border-radius: var(--r-md); padding: var(--s-3) var(--s-4); background: var(--c-surface-2); display: flex; gap: var(--s-2) var(--s-3); align-items: flex-start; }
+.sumbox svg { margin-top: 2px; }
+.sumbox.ok { background: var(--c-ok-bg); border-color: var(--c-ok-bd); color: var(--c-ok-fg); }
+.sumbox.err { background: var(--c-err-bg); border-color: var(--c-err-bd); color: var(--c-err-fg); }
+.banner .edit { margin-top: var(--s-3); border-color: currentColor; }
+.banner .edit input { color: var(--c-text); }
+
+/* comparação de nova importação depois do OK */
+.cmp-sum { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: var(--s-3); }
+tr.d-alt td { background: var(--c-warn-bg); }
+tr.d-new td { background: var(--c-info-bg); }
+
+/* conferência do mês (fechamento do período) */
+.mes { display: flex; flex-direction: column; gap: var(--s-2); }
+
+/* papéis e assinatura (só no protótipo, para mostrar as variações) */
+.membro-only { display: none; }
+body.role-membro .membro-only { display: block; }
+body.role-membro .banner.membro-only { display: flex; }
+body.role-membro span.membro-only { display: inline; }
+body.role-membro .lider-only { display: none !important; }
+body.role-membro .screen.lider > :not(header):not(.membro-only) { display: none !important; }
+.if-atraso { display: none; }
+body.sub-atraso .banner.if-atraso { display: flex; }
+body.sub-atraso .btn[data-write] { background: var(--c-surface-2); color: var(--c-text-muted); border: 2px dashed var(--c-border-strong); cursor: not-allowed; }
+.nav .cta[aria-disabled="true"] { background: transparent; color: var(--c-nav-text); border: 2px dashed var(--c-nav-muted); cursor: not-allowed; }
+
+/* =========================================================
    RESPONSIVO (mobile first desde 360 px, sem rolagem horizontal)
    ========================================================= */
 @media (max-width: 1100px) {
@@ -518,7 +565,7 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
   main { padding: var(--s-4); }
 }
 @media (max-width: 719px) {
-  .g-2, .g-3, .g-4, .form-grid, .choices, .mrow, .phases { grid-template-columns: minmax(0,1fr); }
+  .g-2, .g-3, .g-4, .form-grid, .choices, .choices.two, .mrow, .phases, .pair, .cmp-sum { grid-template-columns: minmax(0,1fr); }
   .mrow { padding: var(--s-3); }
   .origin { align-self: stretch; }
   tr.lv-etapa > :first-child, tr.lv-linha > :first-child { padding-left: 0; }
@@ -594,6 +641,9 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
     <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5M5 20h14"/></symbol>
     <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></symbol>
     <symbol id="i-heart" viewBox="0 0 24 24"><path d="M3 12h4l2.500-6 4 12 2.500-6h5"/></symbol>
+    <symbol id="i-bank" viewBox="0 0 24 24"><path d="M3 9.500l9-5.500 9 5.500"/><path d="M5.500 10.500v7M10 10.500v7M14 10.500v7M18.500 10.500v7M3.500 20h17"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3.500" y="5" width="17" height="15.500" rx="2"/><path d="M3.500 10h17M8 3v4M16 3v4"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.500-6.500 10-6.500S22 12 22 12s-3.500 6.500-10 6.500S2 12 2 12z"/><circle cx="12" cy="12" r="2.800"/></symbol>
     <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3.500" y="4.500" width="17" height="15" rx="2"/><path d="M3.500 10h17M3.500 15h17M9.500 4.500v15"/></symbol>
   </defs>
 </svg>
@@ -614,8 +664,9 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
     </a>
 
     <nav class="nav nav-group" aria-label="Seções do projeto">
-      <a class="cta" href="#/comprar" data-route="comprar"><svg class="i" aria-hidden="true"><use href="#i-bag"/></svg>Vou comprar</a>
+      <a class="cta" href="#/comprar" data-route="comprar" data-write><svg class="i" aria-hidden="true"><use href="#i-bag"/></svg>Vou comprar</a>
       <a href="#/painel" data-route="painel"><svg class="i" aria-hidden="true"><use href="#i-home"/></svg>Painel do projeto</a>
+      <a href="#/cadastro" data-route="cadastro"><svg class="i" aria-hidden="true"><use href="#i-doc"/></svg>Dados do projeto</a>
       <a href="#/plano" data-route="plano"><svg class="i" aria-hidden="true"><use href="#i-plan"/></svg>Planejamento</a>
       <a href="#/execucao" data-route="execucao"><svg class="i" aria-hidden="true"><use href="#i-grid"/></svg>Execução mensal</a>
       <a href="#/saude" data-route="saude"><svg class="i" aria-hidden="true"><use href="#i-heart"/></svg>Saúde e gestão</a>
@@ -631,6 +682,8 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
     <nav class="nav nav-group" aria-label="Apoio ao protótipo">
       <p class="nav-title">Só no protótipo</p>
       <button class="navbtn" id="planBtn" type="button" aria-pressed="false"><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg><span id="planLbl">Simular plano sem OK</span></button>
+      <button class="navbtn" id="roleBtn" type="button" aria-pressed="false"><svg class="i" aria-hidden="true"><use href="#i-person"/></svg><span id="roleLbl">Simular membro (registra)</span></button>
+      <button class="navbtn" id="subBtn" type="button" aria-pressed="false"><svg class="i" aria-hidden="true"><use href="#i-eye"/></svg><span id="subLbl">Simular assinatura em atraso</span></button>
       <a href="#/estados" data-route="estados"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Estados: vazio, carregando, erro</a>
     </nav>
 
@@ -648,7 +701,7 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
         <span>Financiador de exemplo · Edital de exemplo 00/2026 · vigência 01/03/2026 a 28/02/2028 · <span class="if-ok">linha de base v2</span><span class="if-semok">plano sem OK</span></span>
       </div>
       <div class="topbar-actions">
-        <span class="role-chip">Você: líder (exemplo)</span>
+        <span class="role-chip" id="roleChip">Você: líder (exemplo)</span>
         <button class="btn ghost icon-btn theme-btn" id="themeBtn" type="button" aria-pressed="false">
           <svg class="i" aria-hidden="true"><use href="#i-moon"/></svg><span id="themeLbl">Tema escuro</span>
         </button>
@@ -656,6 +709,10 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
     </header>
 
     <main id="conteudo">
+
+<div class="banner warn if-atraso" role="status" style="margin-bottom:var(--s-4)">
+  <svg class="i" aria-hidden="true"><use href="#i-lock"/></svg><div><b>Assinatura em atraso: o projeto está em somente leitura.</b> Você continua vendo tudo e pode exportar os dados. Lançar, importar, conciliar, dar OK, pedir ajuste e fazer nova checagem ficam pausados até o pagamento. Nada foi apagado. <a href="#/assinatura/atraso">Ver a assinatura</a></div>
+</div>
 
 <!-- =====================================================
      1. PAINEL DO PROJETO
@@ -667,13 +724,13 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
       <h1 id="h-painel" tabindex="-1">Painel do projeto</h1>
       <p>Situação em 25/11/2026: vigência, execução, progresso do plano e o que precisa da sua atenção.</p>
     </div>
-    <a class="btn accent lg" href="#/comprar"><svg class="i" aria-hidden="true"><use href="#i-bag"/></svg>Vou comprar</a>
+    <a class="btn accent lg" href="#/comprar" data-write><svg class="i" aria-hidden="true"><use href="#i-bag"/></svg>Vou comprar</a>
   </header>
 
   <div class="stack">
     <div class="banner warn if-semok" role="status">
       <svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>
-      <div><b>Plano aguardando conferência e OK.</b> Enquanto o plano não tiver o seu OK, nada dele vale: a checagem antes da compra fica &quot;pendente: plano sem aprovação&quot;, as despesas ficam &quot;sem linha&quot; e o previsto × executado não é exibido como válido.<br><a class="btn" href="#/conferir">Conferir o plano e dar o OK</a></div>
+      <div><b>Plano aguardando conferência e OK.</b> Enquanto o plano não tiver o seu OK, nada dele vale: a checagem antes da compra continua bloqueando o que as regras do edital já bloqueiam e deixa &quot;pendente: plano sem aprovação&quot; só o que seria permitido; as despesas ficam &quot;sem linha&quot; e o previsto × executado não é exibido como válido.<br><a class="btn" href="#/conferir">Conferir o plano e dar o OK</a></div>
     </div>
     <div class="grid g-4">
       <div class="card kpi">
@@ -703,7 +760,7 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
     <div class="grid g-2">
       <section class="card" aria-labelledby="h-pend">
         <div class="card-head">
-          <h2 id="h-pend">Pendências <span class="badge b-warn if-ok">7 itens</span><span class="badge b-warn if-semok">8 itens</span></h2>
+          <h2 id="h-pend">Pendências <span class="badge b-warn if-ok">10 itens</span><span class="badge b-warn if-semok">11 itens</span></h2>
         </div>
         <ul class="todo">
           <li class="if-semok">
@@ -729,6 +786,18 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
           <li>
             <span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Pendente</span>
             <div class="txt"><a href="#/comprar/pendente">Checagem pendente: item fora das regras</a><small>Você precisa enquadrar o item antes de decidir.</small></div>
+          </li>
+          <li>
+            <span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-bank"/></svg>Conciliação</span>
+            <div class="txt"><a href="#/conciliacao">7 lançamentos do banco aguardam conciliação</a><small>5 com sugestão pronta e 2 sem despesa. A plataforma sugere; você confirma.</small></div>
+          </li>
+          <li>
+            <span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>Sem extrato</span>
+            <div class="txt"><a href="#/excecoes">Despesa de R$ 180,00 sem lançamento no extrato há 58 dias</a><small>Registre o motivo ou corrija a data da despesa.</small></div>
+          </li>
+          <li>
+            <span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>A classificar</span>
+            <div class="txt"><a href="#/rendimentos">3 créditos do extrato aguardam o tipo</a><small>Rendimento, parcela recebida ou outro. Sem confirmação, não entram em rendimentos.</small></div>
           </li>
           <li>
             <span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-doc"/></svg>Sem fonte</span>
@@ -798,21 +867,28 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
             <p class="muted" style="font-size:var(--fs-sm);font-weight:700">TRL (tecnologia)</p>
             <p class="kpi"><span class="value">4 <small class="muted" style="font-size:var(--fs-md)">→ meta 6</small></span></p>
             <div class="bar" role="img" aria-label="TRL 4 de meta 6"><i style="width:66%"></i></div>
-            <p class="hint muted" style="font-size:var(--fs-sm);margin-top:4px">Oficial em 10/09/2026</p>
+            <p class="hint muted" style="font-size:var(--fs-sm);margin-top:4px">Confirmado pelo líder em 10/09/2026</p>
           </div>
           <div>
             <p class="muted" style="font-size:var(--fs-sm);font-weight:700">MRL (manufatura)</p>
             <p class="kpi"><span class="value">3 <small class="muted" style="font-size:var(--fs-md)">→ meta 5</small></span></p>
             <div class="bar" role="img" aria-label="MRL 3 de meta 5"><i style="width:60%"></i></div>
-            <p class="hint muted" style="font-size:var(--fs-sm);margin-top:4px">Oficial em 10/09/2026</p>
+            <p class="hint muted" style="font-size:var(--fs-sm);margin-top:4px">Confirmado pelo líder em 10/09/2026</p>
           </div>
         </div>
         <p style="margin-top:var(--s-4)"><span class="badge b-info dashed"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Proposta de TRL 5 aguardando sua confirmação</span></p>
+        <p style="margin-top:var(--s-2)"><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-question"/></svg>Critérios a validar</span></p>
         <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Fonte: evidências ligadas aos critérios de cada nível.</p>
       </section>
     </div>
 
-    <div class="grid g-2">
+    <div class="grid g-3">
+      <section class="card" aria-labelledby="h-conta">
+        <div class="card-head"><h2 id="h-conta">Conta e extrato</h2><a href="#/conciliacao">Conciliar</a></div>
+        <p class="kpi"><span class="value">31 de 38</span><span class="hint">débitos do extrato conciliados</span></p>
+        <p style="margin-top:var(--s-2)">Saldo do extrato <b class="num">R$ 41.399,30</b> × calculado <b class="num">R$ 41.025,10</b>: diferença de <b class="num">+R$ 374,20</b>, <b>explicada</b>.</p>
+        <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Fonte: último extrato importado em 25/11/2026, período de 01/10/2026 a 24/11/2026. <a href="#/extrato/escolher">Importar outro extrato</a></p>
+      </section>
       <section class="card" aria-labelledby="h-pub">
         <div class="card-head"><h2 id="h-pub">Publicações do tema</h2></div>
         <p><b>3 novas publicações</b> desde a última semana. <a href="#/publicacoes">Abrir lista</a></p>
@@ -841,7 +917,7 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
   </header>
   <div class="banner warn if-semok" role="status" style="margin-bottom:var(--s-4)">
     <svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>
-    <div><b>O plano ainda não tem o seu OK.</b> A checagem vai dizer &quot;pendente: plano sem aprovação&quot; e não decide linha, classificação nem saldo da linha. <a href="#/conferir">Conferir o plano</a></div>
+    <div><b>O plano ainda não tem o seu OK.</b> Item vedado, cotações faltando, limite e vigência continuam <b>bloqueando</b> a compra. Só o que seria permitido fica &quot;pendente: plano sem aprovação&quot;, porque a plataforma não decide linha, classificação nem saldo da linha. <a href="#/conferir">Conferir o plano</a></div>
   </div>
 
   <form class="card" id="formCompra" aria-labelledby="h-comprar" novalidate>
@@ -911,12 +987,12 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
     </div>
 
     <div class="row" style="margin-top:var(--s-5)">
-      <a class="btn accent lg" href="#/comprar/bloqueado" id="btnConferir"><svg class="i" aria-hidden="true"><use href="#i-shield"/></svg>Conferir antes de comprar</a>
+      <a class="btn accent lg" href="#/comprar/bloqueado" id="btnConferir" data-write><svg class="i" aria-hidden="true"><use href="#i-shield"/></svg>Conferir antes de comprar</a>
       <span class="muted">Resposta em poucos segundos. O pedido fica registrado e não pode ser alterado.</span>
     </div>
   </form>
   <p class="muted" style="margin-top:var(--s-4)">O botão leva ao resultado que corresponde ao que você escolheu acima. Ou veja direto um dos resultados:
-    <a href="#/comprar/permitido">permitido</a> · <a href="#/comprar/bloqueado">bloqueado</a> · <a href="#/comprar/pendente">pendente: item fora das regras</a> · <a href="#/comprar/semok">pendente: plano sem aprovação</a> · <a href="#/comprar/semlinha">pendente: item sem linha</a>.</p>
+    <a href="#/comprar/permitido">permitido</a> · <a href="#/comprar/bloqueado">bloqueado</a> · <a href="#/comprar/pendente">pendente: item fora das regras</a> · <a href="#/comprar/semok">pendente: plano sem aprovação</a> · <a href="#/comprar/bloqsemok">bloqueado, com aviso de plano sem aprovação</a> · <a href="#/comprar/semlinha">pendente: item sem linha</a>.</p>
 </section>
 
 <!-- =====================================================
@@ -933,6 +1009,7 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
       <a href="#/comprar/bloqueado" data-r="bloqueado">Exemplo: bloqueado</a>
       <a href="#/comprar/pendente" data-r="pendente">Exemplo: pendente, item fora das regras</a>
       <a href="#/comprar/semok" data-r="semok">Exemplo: pendente, plano sem aprovação</a>
+      <a href="#/comprar/bloqsemok" data-r="bloqsemok">Exemplo: bloqueado, com aviso de plano sem aprovação</a>
       <a href="#/comprar/semlinha" data-r="semlinha">Exemplo: pendente, item sem linha</a>
     </nav>
   </header>
@@ -1225,13 +1302,113 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
     </div>
   </div>
 
+  <!-- ---------- BLOQUEADO, COM AVISO DE PLANO SEM APROVAÇÃO (D25: bloqueio tem precedência) ---------- -->
+  <div class="stack res" id="r-bloqsemok" hidden>
+    <section class="result err" role="region" aria-labelledby="w-bsemok">
+      <div class="glyph"><svg class="i" aria-hidden="true"><use href="#i-stop"/></svg></div>
+      <div>
+        <div class="word" id="w-bsemok">BLOQUEADO</div>
+        <p class="sub">Não compre ainda: 2 motivos impedem esta compra.</p>
+      </div>
+    </section>
+    <div class="banner warn" role="status"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg><div><b>Aviso: plano sem aprovação.</b> A linha, a classificação e o saldo da linha não foram verificados, porque o plano ainda não tem o seu OK. <b>Isso não muda o resultado:</b> o que as regras do edital bloqueiam continua bloqueado, com ou sem plano aprovado.<br><a class="btn" href="#/conferir">Conferir o plano (líder)</a></div></div>
+
+    <section class="next" aria-labelledby="n-bsemok">
+      <h2 id="n-bsemok">O que fazer</h2>
+      <ol>
+        <li><b>Item vedado:</b> escolha outro item ou obtenha autorização do financiador antes de comprar. Anexar cotações <b>não libera</b> item vedado.</li>
+        <li><b>Cotações:</b> anexe mais 2 cotações para completar as 3 exigidas.</li>
+        <li><b>Plano:</b> peça ao líder para conferir o plano e dar o OK. Isso não libera a compra, mas é preciso para a plataforma checar linha, classificação e saldo.</li>
+      </ol>
+      <div class="row" style="margin-top:var(--s-4)">
+        <a class="btn" href="#/comprar">Anexar cotações e conferir de novo</a>
+        <a class="btn ghost" href="#/financeiro">Já comprei: lançar despesa</a>
+      </div>
+      <p class="muted" style="font-size:var(--fs-sm);margin-top:var(--s-2)">Se você lançar a despesa mesmo assim, ela fica marcada &quot;comprada com checagem bloqueada&quot; e &quot;sem linha&quot;, e aparece nas pendências do líder e na auditoria.</p>
+    </section>
+
+    <section aria-labelledby="v-bsemok">
+      <h2 id="v-bsemok" style="margin-bottom:var(--s-3)">Verificações</h2>
+      <ul class="checks">
+        <li class="check err">
+          <span class="ico"><svg class="i" aria-hidden="true"><use href="#i-stop"/></svg></span>
+          <div>
+            <div class="top"><h3>Item</h3><span class="badge b-err"><svg class="i" aria-hidden="true"><use href="#i-stop"/></svg>Bloqueia</span></div>
+            <p class="why">Item vedado pelo edital: &quot;Material X (exemplo)&quot; não pode ser comprado com os recursos deste projeto. As regras do edital não dependem do plano.</p>
+            <p class="rule"><svg class="i" aria-hidden="true"><use href="#i-doc"/></svg><span>Fonte: Termo de outorga de exemplo, cláusula 7.3, página 12 · regras v3 · <a href="#/regras">abrir o documento na página 12</a></span></p>
+          </div>
+        </li>
+        <li class="check err">
+          <span class="ico"><svg class="i" aria-hidden="true"><use href="#i-stop"/></svg></span>
+          <div>
+            <div class="top"><h3>Cotações</h3><span class="badge b-err"><svg class="i" aria-hidden="true"><use href="#i-stop"/></svg>Bloqueia</span></div>
+            <p class="why">Cotações anexadas: <b>1 de 3 exigidas</b>. Faltam 2.</p>
+            <p class="rule"><svg class="i" aria-hidden="true"><use href="#i-doc"/></svg><span>Fonte: Edital de exemplo 00/2026, item 9.2, página 8 · regras v3</span></p>
+          </div>
+        </li>
+        <li class="check warn">
+          <span class="ico"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg></span>
+          <div>
+            <div class="top"><h3>Plano</h3><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Sem decisão</span></div>
+            <p class="why">Existe a minuta 1, mas ela ainda não recebeu o OK do líder. Nada da minuta vale.</p>
+            <p class="rule"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg><span><a href="#/conferir">Abrir a conferência da minuta</a></span></p>
+          </div>
+        </li>
+        <li class="check warn">
+          <span class="ico"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg></span>
+          <div>
+            <div class="top"><h3>Linha e objeto</h3><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Não verificada</span></div>
+            <p class="why">Não verificada: plano sem aprovação. Sem linha de base, não há linha para comparar com a compra.</p>
+          </div>
+        </li>
+        <li class="check warn">
+          <span class="ico"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg></span>
+          <div>
+            <div class="top"><h3>Classificação da despesa</h3><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Não verificada</span></div>
+            <p class="why">Não verificada: plano sem aprovação. A classificação da linha só vale depois do OK.</p>
+          </div>
+        </li>
+        <li class="check warn">
+          <span class="ico"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg></span>
+          <div>
+            <div class="top"><h3>Saldo da linha</h3><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Não verificada</span></div>
+            <p class="why">Não verificada: plano sem aprovação. O valor aprovado da linha só vale depois do OK.</p>
+          </div>
+        </li>
+        <li class="check na">
+          <span class="ico"><svg class="i" aria-hidden="true"><use href="#i-minus"/></svg></span>
+          <div>
+            <div class="top"><h3>Limites</h3><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-minus"/></svg>Não se aplica</span></div>
+            <p class="why">Nenhum limite de valor cadastrado para este item.</p>
+          </div>
+        </li>
+        <li class="check ok">
+          <span class="ico"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span>
+          <div>
+            <div class="top"><h3>Vigência</h3><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Atende</span></div>
+            <p class="why">Data prevista, 26/11/2026, está dentro da vigência (01/03/2026 a 28/02/2028).</p>
+          </div>
+        </li>
+      </ul>
+    </section>
+    <div class="grid g-2">
+      <section class="card"><h2>O que você informou</h2>
+        <dl class="facts"><dt>Item</dt><dd>Material X (exemplo) · 2 unidades</dd><dt>Valor estimado</dt><dd>R$ 3.200,00</dd><dt>Linha do plano</dt><dd>não decidida (plano sem OK)</dd><dt>Fornecedor</dt><dd>Fornecedor A (exemplo)</dd><dt>Cotações</dt><dd>1 anexada</dd></dl>
+      </section>
+      <section class="card"><h2>Registro</h2>
+        <p class="record"><svg class="i" aria-hidden="true"><use href="#i-shield"/></svg><span>Checagem nº 0047 (exemplo), pedida por Ana (exemplo) em 25/11/2026 às 09:40, com as regras v3 e sem linha de base. Não pode ser alterada; uma nova checagem cria um novo registro.</span></p>
+      </section>
+    </div>
+  </div>
+
+
   <!-- ---------- PENDENTE: PLANO SEM APROVAÇÃO (RN-029) ---------- -->
   <div class="stack res" id="r-semok" hidden>
     <section class="result warn" role="region" aria-labelledby="w-semok">
       <div class="glyph"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg></div>
       <div>
         <div class="word" id="w-semok">PENDENTE</div>
-        <p class="sub">Plano sem aprovação: o plano de trabalho ainda não tem o seu OK, então a plataforma não decide linha, classificação nem saldo.</p>
+        <p class="sub">Plano sem aprovação: nenhuma verificação bloqueia esta compra, mas o plano de trabalho ainda não tem o seu OK, então a plataforma não decide linha, classificação nem saldo.</p>
       </div>
     </section>
 
@@ -1247,6 +1424,7 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
         <a class="btn ghost" href="#/comprar">Refazer a checagem</a>
       </div>
       <p class="muted" style="font-size:var(--fs-sm);margin-top:var(--s-2)">Membro: peça ao líder para conferir o plano. Você não vê o botão de OK.</p>
+      <p class="muted" style="font-size:var(--fs-sm);margin-top:var(--s-2)">Só vira &quot;pendente&quot; o que seria permitido. Se o item fosse vedado ou faltassem cotações, o resultado seria BLOQUEADO, com este aviso de plano sem aprovação (<a href="#/comprar/bloqsemok">ver o exemplo</a>).</p>
     </section>
 
     <section aria-labelledby="v-semok">
@@ -1263,22 +1441,22 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
         <li class="check warn">
           <span class="ico"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg></span>
           <div>
-            <div class="top"><h3>Linha e objeto</h3><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Sem decisão</span></div>
-            <p class="why">Sem linha de base, não há linha para comparar com a compra.</p>
+            <div class="top"><h3>Linha e objeto</h3><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Não verificada</span></div>
+            <p class="why">Não verificada: plano sem aprovação. Sem linha de base, não há linha para comparar com a compra.</p>
           </div>
         </li>
         <li class="check warn">
           <span class="ico"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg></span>
           <div>
-            <div class="top"><h3>Classificação da despesa</h3><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Sem decisão</span></div>
-            <p class="why">A classificação da linha só vale depois do OK.</p>
+            <div class="top"><h3>Classificação da despesa</h3><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Não verificada</span></div>
+            <p class="why">Não verificada: plano sem aprovação. A classificação da linha só vale depois do OK.</p>
           </div>
         </li>
         <li class="check warn">
           <span class="ico"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg></span>
           <div>
-            <div class="top"><h3>Saldo da linha</h3><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Sem decisão</span></div>
-            <p class="why">O valor aprovado da linha só vale depois do OK.</p>
+            <div class="top"><h3>Saldo da linha</h3><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Não verificada</span></div>
+            <p class="why">Não verificada: plano sem aprovação. O valor aprovado da linha só vale depois do OK.</p>
           </div>
         </li>
         <li class="check ok">
@@ -1420,10 +1598,11 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
     <div>
       <p class="crumb">Projeto Exemplo · <span class="tag-example">EXEMPLO</span></p>
       <h1 id="h-fin" tabindex="-1">Financeiro</h1>
-      <p>Aprovado, realizado e saldo por classificação da despesa, em reais. O detalhe por linha, etapa, meta e mês está em <a href="#/execucao">Execução mensal</a>. Rendimentos ficam à parte.</p>
+      <p>Aprovado, realizado e saldo por classificação da despesa, em reais. O detalhe por linha, etapa, meta e mês está em <a href="#/execucao">Execução mensal</a>. Rendimentos ficam à parte. A conta entra pelo extrato do banco: <a href="#/extrato/escolher">importar o extrato</a> e <a href="#/conciliacao">conciliar</a> (só o líder).</p>
     </div>
-    <a class="btn accent lg" href="#/comprar"><svg class="i" aria-hidden="true"><use href="#i-bag"/></svg>Vou comprar</a>
+    <a class="btn accent lg" href="#/comprar" data-write><svg class="i" aria-hidden="true"><use href="#i-bag"/></svg>Vou comprar</a>
   </header>
+  <nav class="seg subnav" data-sub="fin" aria-label="Financeiro"></nav>
 
   <div class="stack">
     <div class="banner warn if-semok" role="status"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg><div><b>Plano sem OK.</b> Os lançamentos continuam sendo registrados, mas ficam &quot;sem linha&quot; e vão para as pendências. Previsto e saldo por classificação aparecem depois do OK. <a href="#/conferir">Conferir o plano</a></div></div>
@@ -1431,7 +1610,7 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
       <div class="card kpi"><span class="label">Orçamento aprovado</span><span class="value">R$ 100.000,00</span><span class="hint">soma das linhas da linha de base v2: 100%</span></div>
       <div class="card kpi"><span class="label">Realizado</span><span class="value">R$ 59.230,40</span><span class="hint">59,2% do orçamento</span></div>
       <div class="card kpi"><span class="label">Saldo das linhas</span><span class="value">R$ 40.769,60</span><span class="hint">aprovado − realizado</span></div>
-      <div class="card kpi"><span class="label">Saldo da conta</span><span class="value">R$ 41.025,10</span><span class="hint">inclui rendimentos de R$ 255,50</span></div>
+      <div class="card kpi"><span class="label">Saldo da conta, calculado</span><span class="value">R$ 41.025,10</span><span class="hint">inclui rendimentos de R$ 255,50 · extrato: R$ 41.399,30, diferença explicada (<a href="#/conciliacao">ver</a>)</span></div>
     </div>
 
     <section class="card" aria-labelledby="h-rub">
@@ -1488,15 +1667,15 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
         <div class="table-wrap">
           <table class="stack-m">
             <caption class="sr-only">Rendimentos de aplicação por mês, em reais</caption>
-            <thead><tr><th scope="col">Mês</th><th scope="col" class="num">Rendimento</th></tr></thead>
+            <thead><tr><th scope="col">Mês</th><th scope="col">Origem</th><th scope="col" class="num">Rendimento</th></tr></thead>
             <tbody>
-              <tr><td data-label="Mês">Setembro de 2026</td><td class="num" data-label="Rendimento">R$ 120,00</td></tr>
-              <tr><td data-label="Mês">Outubro de 2026</td><td class="num" data-label="Rendimento">R$ 135,50</td></tr>
+              <tr><td data-label="Mês">Setembro de 2026</td><td data-label="Origem">Extrato</td><td class="num" data-label="Rendimento">R$ 120,00</td></tr>
+              <tr><td data-label="Mês">Outubro de 2026</td><td data-label="Origem">Extrato</td><td class="num" data-label="Rendimento">R$ 135,50</td></tr>
             </tbody>
-            <tfoot><tr><th scope="row">Acumulado</th><td class="num" data-label="Rendimento">R$ 255,50</td></tr></tfoot>
+            <tfoot><tr><th scope="row">Acumulado, sem destinação</th><td></td><td class="num" data-label="Rendimento">R$ 255,50</td></tr></tfoot>
           </table>
         </div>
-        <p class="record" style="margin-top:var(--s-3)"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg><span>Rendimentos não entram no saldo de nenhuma classificação nem linha. O uso deles depende de autorização formal (2ª versão).</span></p>
+        <p class="record" style="margin-top:var(--s-3)"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg><span>Rendimentos vêm do extrato, ficam acumulados, sem destinação, e não entram no saldo de nenhuma classificação nem linha. O uso deles depende de autorização formal (2ª versão). <a href="#/rendimentos">Rendimentos e créditos</a> · 3 créditos a classificar.</span></p>
       </section>
 
       <section class="card" aria-labelledby="h-chk">
@@ -1513,20 +1692,22 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
       <div class="table-wrap">
         <table class="stack-m">
           <caption class="sr-only">Últimos lançamentos da conta do projeto</caption>
-          <thead><tr><th scope="col">Descrição</th><th scope="col">Data</th><th scope="col">Linha do plano</th><th scope="col" class="num">Valor</th><th scope="col">Checagem</th><th scope="col">Origem</th></tr></thead>
+          <thead><tr><th scope="col">Descrição</th><th scope="col">Data</th><th scope="col">Linha do plano</th><th scope="col" class="num">Valor</th><th scope="col">Checagem</th><th scope="col">Origem e conciliação</th></tr></thead>
           <tbody>
             <tr><td data-label="Descrição">Material X (exemplo)</td><td data-label="Data">20/11/2026</td><td data-label="Linha do plano"><span class="if-ok">2.1.1 · 339030</span><span class="badge b-warn if-semok"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Sem linha</span></td><td class="num" data-label="Valor">−R$ 3.200,00</td>
-              <td data-label="Checagem"><span class="badge b-err"><svg class="i" aria-hidden="true"><use href="#i-stop"/></svg>Comprada com checagem bloqueada</span></td><td data-label="Origem">Manual</td></tr>
+              <td data-label="Checagem"><span class="badge b-err"><svg class="i" aria-hidden="true"><use href="#i-stop"/></svg>Comprada com checagem bloqueada</span></td><td data-label="Origem e conciliação">Despesa sua <span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Conciliada com o extrato</span></td></tr>
             <tr><td data-label="Descrição">Reagente de exemplo (item A)</td><td data-label="Data">18/11/2026</td><td data-label="Linha do plano"><span class="if-ok">1.1.1 · 339030</span><span class="badge b-warn if-semok"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Sem linha</span></td><td class="num" data-label="Valor">−R$ 1.850,00</td>
-              <td data-label="Checagem"><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Checagem permitida vinculada</span></td><td data-label="Origem">Manual</td></tr>
+              <td data-label="Checagem"><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Checagem permitida vinculada</span></td><td data-label="Origem e conciliação">Despesa sua <span class="badge b-info dashed"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Sugestão pronta</span></td></tr>
             <tr><td data-label="Descrição">Serviço de análise (exemplo)</td><td data-label="Data">12/11/2026</td><td data-label="Linha do plano"><span class="if-ok">2.1.2 · 339039</span><span class="badge b-warn if-semok"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Sem linha</span></td><td class="num" data-label="Valor">−R$ 4.100,00</td>
-              <td data-label="Checagem"><span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>Sem checagem</span></td><td data-label="Origem">Manual</td></tr>
+              <td data-label="Checagem"><span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>Sem checagem</span></td><td data-label="Origem e conciliação">Despesa sua <span class="badge b-info dashed"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>Sugestão: confira a descrição</span></td></tr>
+            <tr><td data-label="Descrição">Pagamento em dinheiro: coleta de amostras (exemplo)</td><td data-label="Data">15/11/2026</td><td data-label="Linha do plano"><span class="if-ok">2.1.3 · 339014</span><span class="badge b-warn if-semok"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Sem linha</span></td><td class="num" data-label="Valor">−R$ 300,00</td>
+              <td data-label="Checagem"><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-minus"/></svg>Não se aplica</span></td><td data-label="Origem e conciliação">Manual, sem extrato <span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Justificada: pagamento em dinheiro</span></td></tr>
             <tr><td data-label="Descrição">Rendimento de aplicação</td><td data-label="Data">31/10/2026</td><td data-label="Linha do plano">Não se aplica</td><td class="num" data-label="Valor">+R$ 135,50</td>
-              <td data-label="Checagem"><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-minus"/></svg>Não se aplica</span></td><td data-label="Origem">Manual</td></tr>
+              <td data-label="Checagem"><span class="badge b-neutral"><svg class="i" aria-hidden="true"><use href="#i-minus"/></svg>Não se aplica</span></td><td data-label="Origem e conciliação">Extrato <span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Confirmado como rendimento</span></td></tr>
           </tbody>
         </table>
       </div>
-      <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Cada linha mostra a origem do lançamento. Correções são feitas por estorno, nunca por apagamento.</p>
+      <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Cada linha mostra a origem do lançamento (despesa sua, extrato ou manual) e se ele está conciliado. Correções são feitas por estorno, nunca por apagamento.</p>
     </section>
   </div>
 </section>
@@ -1539,30 +1720,39 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
     <div>
       <p class="crumb">Projeto Exemplo · <span class="tag-example">EXEMPLO</span></p>
       <h1 id="h-mat2" tabindex="-1">Maturidade tecnológica (TRL e MRL)</h1>
-      <p>Tecnologia avaliada: biofertilizante de resíduos (exemplo). A escala de referência ainda será definida; os 9 níveis abaixo são um exemplo de desenho.</p>
+      <p>Tecnologia avaliada: biofertilizante de resíduos (exemplo). TRL de 1 a 9 e MRL de 1 a 10. Os textos dos critérios de cada nível ainda estão a validar.</p>
     </div>
   </header>
 
   <div class="stack">
+    <section class="card" aria-labelledby="h-esc">
+      <div class="card-head"><h2 id="h-esc">Escala usada neste projeto</h2><span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-question"/></svg>Critérios a validar</span></div>
+      <dl class="facts">
+        <dt>TRL, tecnologia</dt><dd>9 níveis (1 a 9) · referência: ISO 16290</dd>
+        <dt>MRL, manufatura</dt><dd>10 níveis (1 a 10) · referência: escala de 10 níveis do DoD (EUA)</dd>
+        <dt>Textos dos critérios</dt><dd>provisórios, marcados &quot;critério a validar&quot;</dd>
+      </dl>
+      <p class="muted" style="margin-top:var(--s-2)">Os textos dos critérios de cada nível ainda não foram conferidos com a fonte. Eles aparecem como provisórios e nenhum deles é apresentado como texto oficial da norma ou do DoD. O número de níveis e os critérios vêm da configuração do projeto.</p>
+    </section>
     <div class="grid g-2">
       <section class="card" aria-labelledby="h-trl">
-        <div class="card-head"><h2 id="h-trl">TRL: maturidade da tecnologia</h2><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Oficial</span></div>
+        <div class="card-head"><h2 id="h-trl">TRL: maturidade da tecnologia</h2><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Confirmado pelo líder</span></div>
         <p class="kpi"><span class="value">Nível 4 <small class="muted" style="font-size:var(--fs-md);font-weight:600">→ meta: nível 6</small></span></p>
         <ol class="scale" aria-label="TRL: níveis de 1 a 9; atual 4; proposta 5; meta 6">
           <li class="done">1</li><li class="done">2</li><li class="done">3</li><li class="done cur" aria-current="step">4</li><li class="prop">5</li><li class="goal">6</li><li>7</li><li>8</li><li>9</li>
         </ol>
         <p class="muted" style="font-size:var(--fs-sm)">Cheio: alcançado · contorno grosso: atual · listrado: proposta · tracejado: meta.</p>
-        <p style="margin-top:var(--s-3)">Confirmado pelo líder em 10/09/2026, com 6 evidências.</p>
+        <p style="margin-top:var(--s-3)">Confirmado pelo líder em 10/09/2026, com 6 evidências. Critérios do nível ainda a validar.</p>
         <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Fonte: evidências ligadas aos critérios de cada nível. <a href="#/maturidade">Ver evidências</a></p>
       </section>
       <section class="card" aria-labelledby="h-mrl">
-        <div class="card-head"><h2 id="h-mrl">MRL: maturidade de manufatura</h2><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Oficial</span></div>
+        <div class="card-head"><h2 id="h-mrl">MRL: maturidade de manufatura</h2><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Confirmado pelo líder</span></div>
         <p class="kpi"><span class="value">Nível 3 <small class="muted" style="font-size:var(--fs-md);font-weight:600">→ meta: nível 5</small></span></p>
-        <ol class="scale" aria-label="MRL: níveis de 1 a 9; atual 3; meta 5">
-          <li class="done">1</li><li class="done">2</li><li class="done cur" aria-current="step">3</li><li>4</li><li class="goal">5</li><li>6</li><li>7</li><li>8</li><li>9</li>
+        <ol class="scale" style="--n:10" aria-label="MRL: níveis de 1 a 10; atual 3; meta 5">
+          <li class="done">1</li><li class="done">2</li><li class="done cur" aria-current="step">3</li><li>4</li><li class="goal">5</li><li>6</li><li>7</li><li>8</li><li>9</li><li>10</li>
         </ol>
         <p class="muted" style="font-size:var(--fs-sm)">Cheio: alcançado · contorno grosso: atual · tracejado: meta.</p>
-        <p style="margin-top:var(--s-3)">Confirmado pelo líder em 10/09/2026, com 3 evidências.</p>
+        <p style="margin-top:var(--s-3)">Confirmado pelo líder em 10/09/2026, com 3 evidências. Critérios do nível ainda a validar.</p>
         <p class="src"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Fonte: evidências ligadas aos critérios de cada nível.</p>
       </section>
     </div>
@@ -1570,23 +1760,24 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
     <section class="card" aria-labelledby="h-prop">
       <div class="card-head">
         <h2 id="h-prop">Proposta de nível TRL</h2>
-        <span class="badge b-info dashed"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Proposta, ainda não é oficial</span>
+        <span class="badge b-info dashed"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>Proposta, ainda não confirmada</span>
       </div>
-      <p>Com as evidências ligadas, a plataforma propõe <b>TRL 5</b>. Falta 1 critério para sustentar esse nível.</p>
+      <div class="banner warn" role="status"><svg class="i" aria-hidden="true"><use href="#i-question"/></svg><div><b>Proposta baseada em critérios ainda a validar.</b> Os textos dos critérios abaixo são provisórios. Você pode confirmar o nível mesmo assim; a plataforma registra junto que ele foi confirmado com critérios ainda a validar.</div></div>
+      <p style="margin-top:var(--s-3)">Com as evidências ligadas, a plataforma propõe <b>TRL 5</b>. Falta 1 critério para sustentar esse nível.</p>
       <ul class="todo" style="margin-top:var(--s-3)">
-        <li><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Com evidência</span><div class="txt"><b>Critério 5.1 (exemplo)</b>: validação em ambiente relevante<small>Evidência: relatório de ensaio de 02/11/2026 · <a href="#/maturidade">abrir</a></small></div></li>
-        <li><span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>Falta evidência</span><div class="txt"><b>Critério 5.2 (exemplo)</b>: repetibilidade dos resultados<small>Ligue um documento ou entrega de tarefa a este critério.</small></div></li>
+        <li><span class="badge b-ok"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Com evidência</span><div class="txt"><b>Critério 5.1 (exemplo)</b>: validação em ambiente relevante <span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-question"/></svg>Critério a validar</span><small>Evidência: relatório de ensaio de 02/11/2026 · <a href="#/maturidade">abrir</a></small></div></li>
+        <li><span class="badge b-warn"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>Falta evidência</span><div class="txt"><b>Critério 5.2 (exemplo)</b>: repetibilidade dos resultados <span class="badge b-warn dashed"><svg class="i" aria-hidden="true"><use href="#i-question"/></svg>Critério a validar</span><small>Ligue um documento ou entrega de tarefa a este critério.</small></div></li>
       </ul>
       <div class="row" style="margin-top:var(--s-4)">
-        <button class="btn" type="button">Confirmar nível 5</button>
-        <button class="btn ghost" type="button">Registrar outro nível</button>
-        <button class="btn ghost" type="button">Ligar evidência</button>
+        <button class="btn lider-only" type="button" data-write data-demo="Exemplo: o nível não foi confirmado. Seria registrado como confirmado com critérios ainda a validar.">Confirmar nível 5, mesmo com critérios a validar</button>
+        <button class="btn ghost lider-only" type="button" data-write data-demo="Exemplo: nada foi registrado. Nível fora da escala é recusado: TRL vai de 1 a 9 e MRL, de 1 a 10.">Registrar outro nível</button>
+        <button class="btn ghost" type="button" data-write data-demo="Exemplo: nenhuma evidência foi ligada.">Ligar evidência</button>
       </div>
-      <p class="muted" style="font-size:var(--fs-sm);margin-top:var(--s-2)">Só o líder confirma o nível oficial. Se você registrar um nível diferente da proposta, a justificativa é obrigatória.</p>
+      <p class="muted" style="font-size:var(--fs-sm);margin-top:var(--s-2)">Só o líder confirma o nível. Se você registrar um nível diferente da proposta, a justificativa é obrigatória. Nível fora da escala é recusado: o TRL vai de 1 a 9 e o MRL, de 1 a 10.</p>
     </section>
 
     <section class="card" aria-labelledby="h-hist">
-      <div class="card-head"><h2 id="h-hist">Histórico de avaliações oficiais</h2></div>
+      <div class="card-head"><h2 id="h-hist">Histórico de avaliações confirmadas pelo líder</h2></div>
       <div class="table-wrap">
         <table class="stack-m">
           <caption class="sr-only">Avaliações oficiais de TRL e MRL</caption>
@@ -1801,7 +1992,7 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
         <div><b>PDF e imagem são lidos por IA, fora da plataforma.</b> O conteúdo do arquivo é enviado a um provedor externo de IA, só o necessário e sob contrato que proteja os dados do projeto (provedor e contrato ainda a definir: Q-24). O texto do documento é tratado só como dado. Planilha é lida aqui, sem IA, e macros nunca são executadas.</div>
       </div>
       <div class="row">
-        <button class="btn accent lg" type="button" data-demo="Exemplo: nenhum arquivo foi enviado."><svg class="i" aria-hidden="true"><use href="#i-upload"/></svg>Enviar e ler o arquivo</button>
+        <button class="btn accent lg" type="button" data-write data-demo="Exemplo: nenhum arquivo foi enviado."><svg class="i" aria-hidden="true"><use href="#i-upload"/></svg>Enviar e ler o arquivo</button>
         <a class="btn ghost lg" href="#/plano">Cadastrar o plano à mão</a>
       </div>
       <p class="muted">O cadastro à mão gera a mesma minuta e passa pelas mesmas conferências e pelo mesmo OK. Sem IA disponível, ele e a planilha continuam funcionando.</p>
@@ -2103,7 +2294,7 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
       <label class="chk"><input type="checkbox" id="lidoTudo"><span>Li a minuta inteira, inclusive as linhas que não têm alerta (1.1.1, 1.1.2 e 2.1.1).</span></label>
       <p id="gateTxt" role="status"></p>
       <div class="row">
-        <button class="btn lg" type="button" id="btnOk" aria-disabled="true" aria-describedby="gateTxt"><svg class="i" aria-hidden="true"><use id="okIco" href="#i-lock"/></svg>Dar OK e liberar a execução</button>
+        <button class="btn lg" type="button" id="btnOk" data-write aria-disabled="true" aria-describedby="gateTxt"><svg class="i" aria-hidden="true"><use id="okIco" href="#i-lock"/></svg>Dar OK e liberar a execução</button>
         <a class="btn ghost lg" href="#/plano">Voltar sem dar o OK</a>
       </div>
       <p class="muted">O OK é decisão sua, como líder: a plataforma não aprova nada por conta própria. Ele trava a linha de base v1 (cópia do que está nesta tela, ligada ao arquivo original) e libera a execução e a checagem por linha. Depois, qualquer mudança é um ajuste versionado.</p>
@@ -2208,7 +2399,7 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
         </div>
         <dl class="facts"><dt>Decisor</dt><dd>Líder (exemplo): você</dd><dt>Efeito no total</dt><dd>Nenhum: R$ 500,00 saem de uma linha e entram em outra</dd></dl>
         <div class="row">
-          <button class="btn" type="button" id="adjGo">Aplicar como nova versão</button>
+          <button class="btn" type="button" id="adjGo" data-write>Aplicar como nova versão</button>
           <button class="btn ghost" type="button" data-demo="Exemplo: o rascunho não foi salvo.">Salvar como rascunho</button>
         </div>
         <p class="muted">Se o ajuste deixar o valor aprovado de uma linha abaixo do que já foi executado, a plataforma avisa e pede o seu &quot;ciente&quot; com justificativa. Membros não veem este formulário.</p>
@@ -2243,7 +2434,7 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
       <h1 id="h-ex" tabindex="-1">Execução mensal: previsto × executado</h1>
       <p>Quanto foi aprovado e quanto foi executado em cada linha, etapa, meta e no projeto, por mês ou por trimestre.</p>
     </div>
-    <a class="btn accent lg" href="#/comprar"><svg class="i" aria-hidden="true"><use href="#i-bag"/></svg>Vou comprar</a>
+    <a class="btn accent lg" href="#/comprar" data-write><svg class="i" aria-hidden="true"><use href="#i-bag"/></svg>Vou comprar</a>
   </header>
 
   <div class="stack">
@@ -2664,7 +2855,7 @@ legend { font-weight: 700; padding: 0 var(--s-2); }
   </div>
 </div>
 
-<div class="mobile-cta"><a class="btn accent lg" href="#/comprar"><svg class="i" aria-hidden="true"><use href="#i-bag"/></svg>Vou comprar</a></div>
+<div class="mobile-cta"><a class="btn accent lg" href="#/comprar" data-write><svg class="i" aria-hidden="true"><use href="#i-bag"/></svg>Vou comprar</a></div>
 <div class="toast" id="toast" role="status" hidden><svg class="i" aria-hidden="true"><use href="#i-info"/></svg><span id="toastTxt"></span></div>
 
 <noscript><style>.screen{display:block!important;margin-bottom:48px}.res{display:flex!important}[hidden]{display:flex!important}</style></noscript>
