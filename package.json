@@ -1,0 +1,17 @@
+{
+  "name": "gestprojet",
+  "version": "0.7.0",
+  "private": true,
+  "description": "GestProjet: protótipo navegável com assistente de IA (dados fictícios)",
+  "type": "module",
+  "engines": {
+    "node": ">=20.12"
+  },
+  "scripts": {
+    "start": "node servidor/server.mjs",
+    "test": "node --test servidor/app.test.mjs"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "1.14.0"
+  }
+}
