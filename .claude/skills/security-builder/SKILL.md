@@ -1,9 +1,9 @@
 ---
 name: security-builder
-description: "Cuida da segurança e conformidade da Gestprojet — LGPD, controle de acesso por papel e por projeto, proteção de dados financeiros e pessoais, trilha de auditoria, segurança dos agentes de IA e revisão de segurança do código. Use ao definir requisitos de segurança, montar a matriz de permissões, fazer análise de ameaças, revisar um diff ou pull request, preparar documentação LGPD (inventário de dados, RIPD) ou planejar resposta a incidentes."
+description: "Cuida da segurança e conformidade da GestProjet — LGPD, controle de acesso por papel e por projeto, proteção de dados financeiros e pessoais, trilha de auditoria, segurança dos agentes de IA e revisão de segurança do código. Use ao definir requisitos de segurança, montar a matriz de permissões, fazer análise de ameaças, revisar um diff ou pull request, preparar documentação LGPD (inventário de dados, RIPD) ou planejar resposta a incidentes."
 ---
 
-# security-builder: segurança e conformidade da Gestprojet
+# security-builder: segurança e conformidade da GestProjet
 
 Saída principal: `docs/06-seguranca.md`. Revisões de código: relatório na conversa ou em `docs/revisoes/AAAA-MM-DD-tema.md`.
 
@@ -14,7 +14,7 @@ A segurança entra **desde a primeira etapa**. Esta skill pode ser chamada logo 
 ### 1. Requisitos e arquitetura de segurança
 Produza `docs/06-seguranca.md` com:
 
-1. **Inventário de dados (LGPD):** dado · categoria (pessoal, sensível, financeiro, sigiloso/PI) · finalidade · base legal (art. 7º/11) · onde fica · quem acessa · retenção · descarte. Papéis: a instituição cliente costuma ser controladora; a Gestprojet, operadora. Confirme por contrato.
+1. **Inventário de dados (LGPD):** dado · categoria (pessoal, sensível, financeiro, sigiloso/PI) · finalidade · base legal (art. 7º/11) · onde fica · quem acessa · retenção · descarte. Papéis: a instituição cliente costuma ser controladora; a GestProjet, operadora. Confirme por contrato.
 2. **Direitos do titular:** como atender acesso, correção, portabilidade e eliminação, respeitando prazos de guarda exigidos por financiadores e órgãos de controle.
 3. **Matriz de permissões (RBAC + escopo de projeto):** papéis × ações × recursos. Padrão: mínimo privilégio, acesso negado por padrão, papéis por projeto (coordenador de um projeto não vê outro). Separação de funções: quem lança despesa não aprova a mesma despesa.
 4. **Autenticação:** MFA obrigatório para perfis com acesso financeiro ou administrativo; SSO institucional (SAML/OIDC) como opção; sessões com expiração; revogação imediata no desligamento.

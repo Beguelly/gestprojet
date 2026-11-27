@@ -1,15 +1,15 @@
 ---
 name: prd-builder
-description: "Constrói e mantém o documento mestre de requisitos do produto (PRD) da Gestprojet, a plataforma de gestão de projetos de pesquisa. Use quando o pedido envolver funcionalidades, público-alvo, personas, regras de negócio, modelo de assinatura por projeto, escopo de MVP, priorização ou critérios de aceite. É a primeira etapa do fluxo; as skills spec-builder, uxdesign-builder, workflow-builder, agent-skill-builder e security-builder partem do PRD."
+description: "Constrói e mantém o documento mestre de requisitos do produto (PRD) da GestProjet, a plataforma de gestão de projetos de pesquisa. Use quando o pedido envolver funcionalidades, público-alvo, personas, regras de negócio, modelo de assinatura por projeto, escopo de MVP, priorização ou critérios de aceite. É a primeira etapa do fluxo; as skills spec-builder, uxdesign-builder, workflow-builder, agent-skill-builder e security-builder partem do PRD."
 ---
 
-# prd-builder: requisitos do produto da Gestprojet
+# prd-builder: requisitos do produto da GestProjet
 
 Saída: `docs/01-prd.md`. Esse arquivo é a fonte de verdade do produto. As outras skills leem o PRD e não podem contradizê-lo; quando uma delas precisar mudar um requisito, a mudança volta para cá primeiro.
 
 ## Contexto fixo do produto
 
-- A Gestprojet gerencia projetos de pesquisa, desenvolvimento e inovação (PD&I) do início ao encerramento: proposta, execução científica, execução financeira, prestação de contas e resultados.
+- A GestProjet gerencia projetos de pesquisa, desenvolvimento e inovação (PD&I) do início ao encerramento: proposta, execução científica, execução financeira, prestação de contas e resultados.
 - O diferencial não é "mais um gerenciador de tarefas". É integrar, em uma só plataforma, **gestão científica**, **maturidade tecnológica (TRL/MRL)**, **execução financeira** e **conformidade com a instituição e o financiador**, sem depender de uma instituição ou agência específica.
 - Modelo comercial de partida: **assinatura por projeto**. Questione e documente as variações (planos, limites, quem paga, rubrica do projeto como fonte de pagamento, cobrança após o fim da vigência).
 - Referências que o produto deve respeitar: família ISO 21500 (gestão de projetos), escalas TRL/MRL, LGPD, regras de editais e termos de outorga das agências (FAPs, CNPq, FINEP, EMBRAPII, empresas, cooperação internacional).
@@ -30,7 +30,7 @@ Saída: `docs/01-prd.md`. Esse arquivo é a fonte de verdade do produto. As outr
 ## Modelo de `docs/01-prd.md`
 
 ```markdown
-# Gestprojet: PRD
+# GestProjet: PRD
 Versão: x.y · Data: AAAA-MM-DD · Status: rascunho | em revisão | aprovado
 
 ## 1. Visão e problema

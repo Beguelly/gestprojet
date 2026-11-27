@@ -1,9 +1,9 @@
 ---
 name: agent-skill-builder
-description: "Cria e revisa agentes e skills especializados da Gestprojet — tanto skills de apoio ao desenvolvimento (em .claude/skills) quanto os agentes de IA do produto, como avaliação de TRL/MRL, análise de editais, inteligência científica, prestação de contas e relatórios técnicos. Use quando o pedido for criar uma nova skill ou agente, definir o escopo e os limites de um agente, escrever seu SKILL.md, ou montar casos de teste para avaliar sua qualidade."
+description: "Cria e revisa agentes e skills especializados da GestProjet — tanto skills de apoio ao desenvolvimento (em .claude/skills) quanto os agentes de IA do produto, como avaliação de TRL/MRL, análise de editais, inteligência científica, prestação de contas e relatórios técnicos. Use quando o pedido for criar uma nova skill ou agente, definir o escopo e os limites de um agente, escrever seu SKILL.md, ou montar casos de teste para avaliar sua qualidade."
 ---
 
-# agent-skill-builder: agentes e skills da Gestprojet
+# agent-skill-builder: agentes e skills da GestProjet
 
 Entradas: `docs/01-prd.md` (RFs do módulo de IA), `docs/02-spec.md` (seção de IA), `docs/06-seguranca.md` (regras de IA).
 Saídas: `docs/05-agentes.md` (catálogo) e uma pasta por skill em `.claude/skills/<nome>/` com `SKILL.md` e, se útil, `references/` e `evals/`.
@@ -46,7 +46,7 @@ Crie uma por vez, na ordem de prioridade do PRD. Não crie todas de uma vez sem 
 ```markdown
 ---
 name: trl-mrl-evaluator
-description: Avalia o nível de maturidade tecnológica (TRL) e de manufatura (MRL) de um projeto da Gestprojet a partir das evidências cadastradas. Use quando pedirem para estimar, revisar ou justificar o TRL/MRL atual ou a meta.
+description: Avalia o nível de maturidade tecnológica (TRL) e de manufatura (MRL) de um projeto da GestProjet a partir das evidências cadastradas. Use quando pedirem para estimar, revisar ou justificar o TRL/MRL atual ou a meta.
 ---
 # Avaliação TRL/MRL
 ## Entradas

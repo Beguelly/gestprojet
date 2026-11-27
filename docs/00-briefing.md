@@ -1,4 +1,4 @@
-# Gestprojet: briefing do produto
+# GestProjet: briefing do produto
 
 Status: aprovado pelo dono (24/11/2026) · Data: 24/11/2026
 
