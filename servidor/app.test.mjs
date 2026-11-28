@@ -3,8 +3,13 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import http from 'node:http';
 import { readFile } from 'node:fs/promises';
-import { criarServidor, extrairRegras, montarMensagens, LIMITES } from './app.mjs';
+import { createHash } from 'node:crypto';
+import { criarServidor, extrairRegras, extrairContas, loginValido, paginaPublicada, montarMensagens, LIMITES } from './app.mjs';
 import { criarGerador, MODELO } from './ia.mjs';
+import { criarGeradorGoogle, MODELO_GOOGLE } from './ia-google.mjs';
+import { configurarIA } from './config.mjs';
+
+const lerPagina = () => readFile(new URL('../design/index.html', import.meta.url), 'utf8');
 
 const pedido = (extra = {}) => ({ pergunta: 'O que falta?', tela: { titulo: 'Painel', texto: 'Plano sem OK' }, historico: [], ...extra });
 
@@ -31,7 +36,7 @@ const dubleOk = async ({ aoTexto }) => {
 
 test('IA desligada: status falso e pergunta recusada', async () => {
   await comServidor({}, async (base) => {
-    assert.deepEqual(await (await fetch(`${base}/api/ia/status`)).json(), { ligada: false });
+    assert.deepEqual(await (await fetch(`${base}/api/ia/status`)).json(), { ligada: false, provedor: null });
     assert.equal((await enviar(base, pedido())).status, 503);
   });
 });
@@ -107,7 +112,7 @@ test('texto da tela não consegue fechar a marcação', () => {
 });
 
 test('regras do assistente estão na página', async () => {
-  const regras = extrairRegras(await readFile(new URL('../design/index.html', import.meta.url), 'utf8'));
+  const regras = extrairRegras(await lerPagina());
   assert.match(regras, /nunca/i);
 });
 
@@ -122,4 +127,83 @@ test('adaptador monta o pedido ao Claude', async () => {
   assert.equal(enviado.fallbacks, 'default');
   assert.deepEqual(enviado.betas, ['server-side-fallback-2026-07-01']);
   assert.equal(fim.motivo, 'end_turn');
+});
+
+const basic = (email, senha) => `Basic ${Buffer.from(`${email}:${senha}`).toString('base64')}`;
+
+test('login publicado: confere e-mail e senha pelo resumo', () => {
+  const hash = createHash('sha256').update('a@teste.local:certa:abc').digest('hex');
+  const contas = { sal: 'abc', contas: [{ email: 'a@teste.local', hash }] };
+  assert.equal(loginValido(basic('A@teste.local', 'certa'), contas), true);
+  assert.equal(loginValido(basic('a@teste.local', 'errada'), contas), false);
+  assert.equal(loginValido(basic('b@teste.local', 'certa'), contas), false);
+  assert.equal(loginValido(undefined, contas), false);
+});
+
+test('site publicado: sem login nada é entregue nem enviado à IA', async () => {
+  let chamadas = 0;
+  const gerar = async (args) => { chamadas++; return dubleOk(args); };
+  await comServidor({ gerar, exigirLogin: true }, async (base) => {
+    for (const caminho of ['/', '/api/ia/status', '/qualquer']) {
+      const r = await fetch(base + caminho);
+      assert.equal(r.status, 401, caminho);
+      assert.match(r.headers.get('www-authenticate'), /^Basic/);
+    }
+    assert.equal((await enviar(base, pedido())).status, 401);
+    assert.equal((await enviar(base, pedido(), { Authorization: basic('participante1@teste.local', 'errada') })).status, 401);
+    assert.equal(chamadas, 0);
+  });
+});
+
+test('tentativas de senha em série são limitadas', async () => {
+  await comServidor({ exigirLogin: true }, async (base) => {
+    let ultimo;
+    for (let i = 0; i <= LIMITES.loginsErradosPorMinuto; i++) {
+      ultimo = (await fetch(base, { headers: { Authorization: basic('x@teste.local', 'y') } })).status;
+    }
+    assert.equal(ultimo, 429);
+  });
+});
+
+test('página publicada sai sem portão do navegador e sem resumos de senha', async () => {
+  const original = await lerPagina();
+  const { contas, sal } = extrairContas(original);
+  const publicada = paginaPublicada(original);
+  assert.doesNotMatch(publicada, /class="gate-locked">/);
+  for (const c of contas) assert.ok(!publicada.includes(c.hash));
+  assert.ok(!publicada.includes(sal));
+});
+
+test('configuração: desligada por padrão e provedor escolhido', () => {
+  assert.equal(configurarIA({}).gerar, null);
+  assert.equal(configurarIA({ GEMINI_API_KEY: 'x', IA_PROVEDOR: 'google' }).gerar, null);
+  assert.equal(configurarIA({ IA_LIGADA: 'sim', IA_PROVEDOR: 'google' }).gerar, null);
+  assert.equal(configurarIA({ IA_LIGADA: 'sim', IA_PROVEDOR: 'outro' }).gerar, null);
+  const google = configurarIA({ IA_LIGADA: 'sim', IA_PROVEDOR: 'google', GEMINI_API_KEY: 'x' });
+  assert.equal(google.modelo, MODELO_GOOGLE);
+  assert.equal(typeof google.gerar, 'function');
+});
+
+const clienteGoogle = (partes, capturar = () => {}) => ({ models: { async generateContentStream(p) {
+  capturar(p);
+  return (async function* () { yield* partes; })();
+} } });
+
+test('adaptador do Google: pedido, texto e motivo de término', async () => {
+  let enviado;
+  let saida = '';
+  const partes = [{ text: 'a' }, { text: 'b', candidates: [{ finishReason: 'STOP' }] }];
+  const gerar = criarGeradorGoogle({ cliente: clienteGoogle(partes, (p) => { enviado = p; }) });
+  const fim = await gerar({ sistema: 's', mensagens: [{ role: 'user', content: 'u' }, { role: 'assistant', content: 'r' }], aoTexto: (t) => { saida += t; } });
+  assert.equal(saida, 'ab');
+  assert.equal(fim.motivo, 'end_turn');
+  assert.deepEqual(enviado.contents.map((c) => c.role), ['user', 'model']);
+  assert.equal(enviado.config.systemInstruction, 's');
+});
+
+test('adaptador do Google: bloqueio vira recusa e corte vira erro', async () => {
+  const rodar = (partes) => criarGeradorGoogle({ cliente: clienteGoogle(partes) })({ sistema: 's', mensagens: [], aoTexto() {} });
+  assert.equal((await rodar([{ promptFeedback: { blockReason: 'SAFETY' } }])).motivo, 'refusal');
+  assert.equal((await rodar([{ candidates: [{ finishReason: 'SAFETY' }] }])).motivo, 'refusal');
+  await assert.rejects(rodar([{ text: 'pela metade' }]));
 });

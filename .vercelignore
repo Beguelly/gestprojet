@@ -1,0 +1,14 @@
+# Só o necessário para rodar sobe para a Vercel.
+*
+!api
+!api/**
+!servidor
+!servidor/**
+servidor/app.test.mjs
+!design
+!design/index.html
+!vercel-estatico
+!vercel-estatico/**
+!package.json
+!package-lock.json
+!vercel.json

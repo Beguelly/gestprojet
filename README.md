@@ -21,13 +21,15 @@ Abra <http://localhost:3000> e entre com um dos acessos de teste (arquivo guarda
 
 Sem configuração, o assistente fica em **modo demonstração**: respostas prontas, que não são IA, e nada sai do computador.
 
-Para usar o Claude:
+1. Copie `.env.example` para `.env`.
+2. Escolha o provedor em `IA_PROVEDOR` e cole a chave:
+   - `google` (em uso hoje): chave de <https://aistudio.google.com/apikey> em `GEMINI_API_KEY`;
+   - `anthropic`: chave de <https://platform.claude.com> em `ANTHROPIC_API_KEY`.
+3. Mantenha `IA_LIGADA=sim`, pare o servidor (Ctrl+C) e rode `npm start` de novo.
 
-1. Crie uma chave em <https://platform.claude.com> (o uso é cobrado por consumo).
-2. Copie `.env.example` para `.env` e cole a chave em `ANTHROPIC_API_KEY`. Mantenha `IA_LIGADA=sim`.
-3. Pare o servidor (Ctrl+C) e rode `npm start` de novo.
+O `.env` está no `.gitignore`. Nunca coloque a chave no HTML, no repositório ou em um chat. Se uma chave vazar, revogue-a e crie outra.
 
-O `.env` está no `.gitignore`. Nunca coloque a chave no HTML, no repositório ou em um chat.
+**Plano gratuito do Gemini:** pelos termos do Google, o conteúdo enviado ao serviço gratuito pode ser usado para melhorar os produtos e lido por revisores humanos. Só o projeto do Google Cloud com faturamento ativo entra nas regras do serviço pago. Confira os termos vigentes em <https://ai.google.dev/gemini-api/terms>.
 
 ## O que o assistente faz
 
@@ -36,22 +38,43 @@ O `.env` está no `.gitignore`. Nunca coloque a chave no HTML, no repositório o
 - Rotula cada resposta como sugestão e informa a tela usada como base (RF-090).
 - A plataforma continua funcionando com a IA desligada (RF-091).
 
-### O que é enviado à Anthropic quando a IA está ligada
+### O que é enviado ao provedor quando a IA está ligada
 
 As regras do assistente, a pergunta, até três perguntas e respostas anteriores e o texto visível da tela aberta (com o nome do projeto e o papel simulado). Nenhum arquivo é enviado.
 
-## Segurança do servidor local
+## Site publicado
 
-- Escuta somente em `127.0.0.1` e recusa outros endereços e origens.
+Endereço: <https://gestprojet-prototipo.vercel.app>. O navegador pede e-mail e senha (os mesmos acessos de teste).
+
+É um **ambiente de demonstração com dados fictícios**, não a plataforma em produção: não há banco de dados, cadastro de usuários nem controle de custo por pessoa.
+
+Para publicar uma nova versão (é preciso ter acesso ao projeto na Vercel):
+
+```bash
+npx vercel deploy --prod
+```
+
+Variáveis do ambiente de produção na Vercel: `IA_LIGADA`, `IA_PROVEDOR`, `GEMINI_API_KEY` (secreta) e `NODEJS_HELPERS=0`. Para trocar a chave:
+
+```bash
+npx vercel env rm GEMINI_API_KEY production
+npx vercel env add GEMINI_API_KEY production --sensitive
+npx vercel deploy --prod
+```
+
+Para voltar à versão anterior: `npx vercel rollback`.
+
+## Segurança
+
+- No computador, o servidor escuta somente em `127.0.0.1` e recusa outros endereços e origens.
+- No site publicado, o servidor confere o login em todas as rotas, inclusive nas chamadas à IA.
 - Entrega apenas a página; nenhum outro arquivo do projeto é acessível.
-- Limita tamanho do pedido, 20 perguntas por minuto e 2 simultâneas.
+- Limita o tamanho do pedido, a 20 perguntas por minuto e 2 simultâneas. **No site publicado esses limites valem por instância do servidor**, não são um teto global: defina limites e alertas de gasto na conta do provedor.
 - Não registra perguntas nem respostas; só situação, modelo e quantidade de tokens.
-
-**Não publique este servidor na internet.** Ele não tem login real nem controle de custo por usuário (isso depende da T-104). O portão de e-mail e senha da página é apenas demonstrativo.
 
 ## Antes de usar com dados reais
 
-O PRD mantém o envio de conteúdo de projetos a provedor externo de IA **desligado até existir contrato com o provedor e RIPD** (RF-153, RN-051). Este assistente é um experimento com dados fictícios e ainda não está no PRD (veja a T-025 em `TASKS.md`).
+O PRD mantém o envio de conteúdo de projetos a provedor externo de IA **desligado até existir contrato com o provedor e RIPD** (RF-153, RN-051). Este assistente é um experimento com dados fictícios e ainda não está no PRD (veja a T-025 e a T-026 em `TASKS.md`). O PRD registra o Claude como provedor; o uso do Google é uma decisão provisória do dono, de 27/11/2026.
 
 ## Verificações
 
@@ -65,5 +88,6 @@ python design/verificar-contraste.py # contraste WCAG
 | Pasta | Conteúdo |
 |---|---|
 | `design/` | Protótipo (`index.html`) e logotipos |
-| `servidor/` | Servidor local, adaptador de IA (`ia.mjs`) e testes |
+| `servidor/` | Servidor, adaptadores de IA (`ia-google.mjs`, `ia.mjs`) e testes |
+| `api/` | Entrada do site publicado na Vercel |
 | `docs/` | Briefing, PRD, SPEC, UX, fluxos, segurança e ADRs |

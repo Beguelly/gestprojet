@@ -1,6 +1,8 @@
-// Servidor local do protótipo: entrega design/index.html e faz a ponte com a IA.
+// Servidor do protótipo: entrega design/index.html e faz a ponte com a IA.
 // A chave fica só aqui, no servidor; o navegador nunca a recebe.
+// Dois usos: local (só este computador) e publicado (exigirLogin, com login conferido aqui).
 import http from 'node:http';
+import { createHash, timingSafeEqual } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 
 const PAGINA = new URL('../design/index.html', import.meta.url);
@@ -14,11 +16,13 @@ export const LIMITES = {
   turno: 8000,
   porMinuto: 20,
   simultaneos: 2,
+  loginsErradosPorMinuto: 20,
 };
 
 const CABECALHOS = {
   'X-Content-Type-Options': 'nosniff',
   'Referrer-Policy': 'no-referrer',
+  'X-Robots-Tag': 'noindex, nofollow',
   'Cache-Control': 'no-store',
 };
 
@@ -38,6 +42,35 @@ export function extrairRegras(html) {
   const achado = html.match(/<script type="text\/plain" id="ia-regras">([\s\S]*?)<\/script>/);
   if (!achado) throw new Error('Bloco de regras do assistente não encontrado em design/index.html');
   return achado[1].trim();
+}
+
+// As contas de teste já estão na página como resumos (hash); no site publicado o servidor as confere.
+export function extrairContas(html) {
+  const bloco = html.match(/var CONTAS_TESTE = \{[\s\S]*?\r?\n {2}\};/)?.[0] ?? '';
+  const sal = bloco.match(/salt: '([0-9a-f]+)'/)?.[1];
+  const contas = [...bloco.matchAll(/email: '([^']+)', hash: '([0-9a-f]{64})'/g)].map(([, email, hash]) => ({ email, hash }));
+  if (!sal || !contas.length) throw new Error('Contas de teste não encontradas em design/index.html');
+  return { sal, contas };
+}
+
+export function loginValido(cabecalho, { sal, contas }) {
+  const codigo = /^Basic ([A-Za-z0-9+/=]+)$/.exec(cabecalho ?? '')?.[1];
+  if (!codigo) return false;
+  const par = Buffer.from(codigo, 'base64').toString('utf8');
+  const corte = par.indexOf(':');
+  if (corte < 1) return false;
+  const email = par.slice(0, corte).trim().toLowerCase();
+  const resumo = createHash('sha256').update(`${email}:${par.slice(corte + 1)}:${sal}`).digest();
+  return contas.some((c) => c.email === email && timingSafeEqual(resumo, Buffer.from(c.hash, 'hex')));
+}
+
+// Com login no servidor, a página sai sem o portão do navegador e sem os resumos das senhas.
+export function paginaPublicada(html) {
+  return html
+    .replace('<html lang="pt-BR" class="gate-locked">', '<html lang="pt-BR">')
+    .replace(/(var CONTAS_TESTE = \{[\s\S]*?contas: )\[[\s\S]*?\]/, '$1[]')
+    .replace(/salt: '[0-9a-f]+'/, "salt: ''")
+    .replace('</head>', '<style>#logoutBtn { display: none; }</style>\n</head>');
 }
 
 function texto(valor, maximo, nome, { vazio = false } = {}) {
@@ -88,14 +121,20 @@ function responder(res, status, dados) {
 
 /**
  * @param gerar função do adaptador de IA, ou null quando a IA está desligada.
+ * @param exigirLogin true no site publicado: confere e-mail e senha em todas as rotas.
  */
-export function criarServidor({ gerar = null, mensagemDeErro = () => 'Não foi possível gerar a resposta.', registrar = () => {} } = {}) {
+export function criarTratador({
+  gerar = null, provedor = null, exigirLogin = false,
+  mensagemDeErro = () => 'Não foi possível gerar a resposta.', registrar = () => {},
+} = {}) {
+  let errados = [];
   let recentes = [];
   let emAndamento = 0;
 
   async function perguntar(req, res) {
     const origem = req.headers.origin;
-    if (origem && origem !== `http://${req.headers.host}`) throw new PedidoInvalido(403, 'Origem não permitida.');
+    const esperada = `${exigirLogin ? 'https' : 'http'}://${req.headers.host}`;
+    if (origem && origem !== esperada) throw new PedidoInvalido(403, 'Origem não permitida.');
     if (!/^application\/json\b/i.test(req.headers['content-type'] ?? '')) throw new PedidoInvalido(415, 'Envie JSON.');
     if (!gerar) throw new PedidoInvalido(503, 'A IA está desligada neste servidor.');
 
@@ -133,20 +172,39 @@ export function criarServidor({ gerar = null, mensagemDeErro = () => 'Não foi p
     }
   }
 
-  return http.createServer(async (req, res) => {
-    try {
-      // Só aceita acesso pelo próprio computador (também barra DNS rebinding).
+  async function conferirAcesso(req, res) {
+    if (!exigirLogin) {
+      // Uso local: só aceita acesso pelo próprio computador (também barra DNS rebinding).
       const porta = req.socket.localPort;
       if (![`localhost:${porta}`, `127.0.0.1:${porta}`].includes(req.headers.host)) {
         throw new PedidoInvalido(403, 'Endereço não permitido.');
       }
+      return true;
+    }
+    const contas = extrairContas(await readFile(PAGINA, 'utf8'));
+    if (loginValido(req.headers.authorization, contas)) return true;
+    if (req.headers.authorization) {
+      const agora = Date.now();
+      errados = errados.filter((t) => agora - t < 60_000);
+      errados.push(agora);
+      if (errados.length > LIMITES.loginsErradosPorMinuto) throw new PedidoInvalido(429, 'Muitas tentativas. Aguarde um minuto.');
+    }
+    res.setHeader('WWW-Authenticate', 'Basic realm="GestProjet - acesso de teste", charset="UTF-8"');
+    responder(res, 401, { erro: 'Acesso restrito aos participantes do teste.' });
+    return false;
+  }
+
+  return async function tratar(req, res) {
+    try {
+      if (!(await conferirAcesso(req, res))) return;
       const caminho = new URL(req.url, 'http://localhost').pathname;
       if (req.method === 'GET' && (caminho === '/' || caminho === '/index.html')) {
-        const html = await readFile(PAGINA);
+        const original = await readFile(PAGINA, 'utf8');
+        const html = exigirLogin ? paginaPublicada(original) : original;
         res.writeHead(200, { ...CABECALHOS, 'Content-Type': 'text/html; charset=utf-8', 'Content-Security-Policy': CSP });
         return res.end(html);
       }
-      if (req.method === 'GET' && caminho === '/api/ia/status') return responder(res, 200, { ligada: Boolean(gerar) });
+      if (req.method === 'GET' && caminho === '/api/ia/status') return responder(res, 200, { ligada: Boolean(gerar), provedor: gerar ? provedor : null });
       if (req.method === 'POST' && caminho === '/api/ia') return await perguntar(req, res);
       throw new PedidoInvalido(404, 'Não encontrado.');
     } catch (erro) {
@@ -155,5 +213,9 @@ export function criarServidor({ gerar = null, mensagemDeErro = () => 'Não foi p
       registrar(`erro interno tipo=${erro?.constructor?.name}`);
       return responder(res, 500, { erro: 'Erro interno.' });
     }
-  });
+  };
+}
+
+export function criarServidor(opcoes) {
+  return http.createServer(criarTratador(opcoes));
 }
