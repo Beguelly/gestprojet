@@ -3,6 +3,7 @@
 // Dois usos: local (só este computador) e publicado (exigirLogin, com login conferido aqui).
 import http from 'node:http';
 import { createHash, timingSafeEqual } from 'node:crypto';
+import { validarConvite, textoConvite, arquivoAgenda, ConviteInvalido } from './convites.mjs';
 import { readFile } from 'node:fs/promises';
 
 const PAGINA = new URL('../design/index.html', import.meta.url);
@@ -17,6 +18,7 @@ export const LIMITES = {
   porMinuto: 20,
   simultaneos: 2,
   loginsErradosPorMinuto: 20,
+  mensagensPorHora: 60,
 };
 
 const CABECALHOS = {
@@ -125,17 +127,90 @@ function responder(res, status, dados) {
  */
 export function criarTratador({
   gerar = null, provedor = null, exigirLogin = false,
+  whatsapp = null, email = null, mensagemDeErroEmail = () => 'Não foi possível enviar o e-mail.',
+  pausa = () => new Promise((ok) => setTimeout(ok, 2000 + Math.random() * 2000)),
   mensagemDeErro = () => 'Não foi possível gerar a resposta.', registrar = () => {},
 } = {}) {
+  // Envio automático só no uso local: no site publicado, qualquer participante poderia usar suas contas.
+  const zap = exigirLogin ? null : whatsapp;
+  const correio = exigirLogin ? null : email;
+  let enviadas = [];
+  let enviando = false;
   let errados = [];
   let recentes = [];
   let emAndamento = 0;
 
-  async function perguntar(req, res) {
+  // Barra pedidos disparados por outros sites.
+  function conferirPost(req) {
     const origem = req.headers.origin;
     const esperada = `${exigirLogin ? 'https' : 'http'}://${req.headers.host}`;
     if (origem && origem !== esperada) throw new PedidoInvalido(403, 'Origem não permitida.');
     if (!/^application\/json\b/i.test(req.headers['content-type'] ?? '')) throw new PedidoInvalido(415, 'Envie JSON.');
+  }
+
+  const integracoes = () => ({
+    whatsapp: zap ? { disponivel: true, ...zap.situacao() } : { disponivel: false },
+    email: correio ? { disponivel: true, remetente: correio.remetente } : { disponivel: false },
+  });
+
+  async function convidar(req, res) {
+    conferirPost(req);
+    if (!zap && !correio) throw new PedidoInvalido(503, 'O envio automático não está disponível neste endereço.');
+    let convite;
+    try {
+      convite = validarConvite(await lerCorpo(req));
+    } catch (erro) {
+      if (erro instanceof ConviteInvalido) throw new PedidoInvalido(400, erro.message);
+      throw erro;
+    }
+    const { reuniao, participantes, canais } = convite;
+    if (canais.includes('email') && !correio) throw new PedidoInvalido(503, 'O e-mail automático não está configurado.');
+    if (canais.includes('whatsapp') && zap?.situacao().estado !== 'conectado') throw new PedidoInvalido(409, 'Conecte o WhatsApp antes de enviar.');
+
+    const total = participantes.reduce((n, p) => n + canais.filter((c) => (c === 'email' ? p.email : p.telefone)).length, 0);
+    if (!total) throw new PedidoInvalido(400, 'Nenhum participante tem o contato do canal escolhido.');
+    if (enviando) throw new PedidoInvalido(429, 'Já há um envio em andamento.');
+    enviadas = enviadas.filter((t) => Date.now() - t < 3_600_000);
+    if (enviadas.length + total > LIMITES.mensagensPorHora) throw new PedidoInvalido(429, `Limite de ${LIMITES.mensagensPorHora} mensagens por hora.`);
+
+    enviando = true;
+    const resultados = [];
+    let primeiroZap = true;
+    try {
+      const agenda = arquivoAgenda(reuniao);
+      for (const p of participantes) {
+        for (const canal of canais) {
+          const contato = canal === 'email' ? p.email : p.telefone;
+          if (!contato) {
+            resultados.push({ nome: p.nome, canal, ok: false, erro: 'Sem contato cadastrado.' });
+            continue;
+          }
+          try {
+            enviadas.push(Date.now());
+            if (canal === 'email') {
+              await correio.enviar({ para: contato, assunto: `Convite: ${reuniao.titulo}`, texto: textoConvite(reuniao, p.nome), agenda });
+            } else {
+              // Intervalo entre mensagens: envio em rajada aumenta o risco de bloqueio do número.
+              if (!primeiroZap) await pausa();
+              primeiroZap = false;
+              await zap.enviar(contato, textoConvite(reuniao, p.nome));
+            }
+            resultados.push({ nome: p.nome, canal, ok: true });
+          } catch (erro) {
+            registrar(`convite erro canal=${canal} tipo=${erro?.code ?? erro?.constructor?.name}`);
+            resultados.push({ nome: p.nome, canal, ok: false, erro: canal === 'email' ? mensagemDeErroEmail(erro) : erro.publica ?? 'Não foi possível enviar pelo WhatsApp.' });
+          }
+        }
+      }
+    } finally {
+      enviando = false;
+    }
+    registrar(`convites enviados=${resultados.filter((r) => r.ok).length} falhas=${resultados.filter((r) => !r.ok).length}`);
+    responder(res, 200, { resultados });
+  }
+
+  async function perguntar(req, res) {
+    conferirPost(req);
     if (!gerar) throw new PedidoInvalido(503, 'A IA está desligada neste servidor.');
 
     const mensagens = montarMensagens(await lerCorpo(req));
@@ -206,6 +281,14 @@ export function criarTratador({
       }
       if (req.method === 'GET' && caminho === '/api/ia/status') return responder(res, 200, { ligada: Boolean(gerar), provedor: gerar ? provedor : null });
       if (req.method === 'POST' && caminho === '/api/ia') return await perguntar(req, res);
+      if (req.method === 'GET' && caminho === '/api/integracoes') return responder(res, 200, integracoes());
+      if (req.method === 'POST' && (caminho === '/api/whatsapp/conectar' || caminho === '/api/whatsapp/sair')) {
+        conferirPost(req);
+        if (!zap) throw new PedidoInvalido(503, 'O WhatsApp automático não está disponível neste endereço.');
+        await (caminho.endsWith('sair') ? zap.sair() : zap.conectar());
+        return responder(res, 200, integracoes());
+      }
+      if (req.method === 'POST' && caminho === '/api/convites') return await convidar(req, res);
       throw new PedidoInvalido(404, 'Não encontrado.');
     } catch (erro) {
       if (res.headersSent) return res.end();

@@ -4,7 +4,7 @@
 !api/**
 !servidor
 !servidor/**
-servidor/app.test.mjs
+servidor/*.test.mjs
 !design
 !design/index.html
 !vercel-estatico

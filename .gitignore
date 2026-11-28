@@ -5,3 +5,4 @@ node_modules/
 acessos-teste*.txt
 *.log
 .vercel
+.whatsapp-sessao/
