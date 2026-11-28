@@ -1,9 +1,9 @@
 ---
 name: spec-builder
-description: "Escreve as especificações técnicas da Gestprojet a partir do PRD — arquitetura, modelo de dados, APIs, integrações, uso de inteligência artificial, infraestrutura e decisões técnicas (ADRs). Use quando o pedido for sobre como construir o sistema: stack, banco de dados, endpoints, multi-tenant, filas, armazenamento de documentos, integrações com agências, bancos ou ORCID/Lattes, ou arquitetura dos agentes de IA."
+description: "Escreve as especificações técnicas da GestProjet a partir do PRD — arquitetura, modelo de dados, APIs, integrações, uso de inteligência artificial, infraestrutura e decisões técnicas (ADRs). Use quando o pedido for sobre como construir o sistema: stack, banco de dados, endpoints, multi-tenant, filas, armazenamento de documentos, integrações com agências, bancos ou ORCID/Lattes, ou arquitetura dos agentes de IA."
 ---
 
-# spec-builder: especificações técnicas da Gestprojet
+# spec-builder: especificações técnicas da GestProjet
 
 Entrada obrigatória: `docs/01-prd.md`. Se não existir, pare e recomende rodar `prd-builder`.
 Saídas: `docs/02-spec.md` e decisões em `docs/adr/NNNN-titulo.md`.
@@ -28,7 +28,7 @@ Saídas: `docs/02-spec.md` e decisões em `docs/adr/NNNN-titulo.md`.
 ## Modelo de `docs/02-spec.md`
 
 ```markdown
-# Gestprojet: especificação técnica
+# GestProjet: especificação técnica
 Versão · Data · PRD de referência (versão)
 
 ## 1. Visão geral da arquitetura   (diagrama de contexto e de contêineres)

@@ -1,6 +1,8 @@
-# Gestprojet: fluxos de trabalho da 1ª versão
+# GestProjet: fluxos de trabalho da 1ª versão
 
 Versão: 0.2.1 · Data: 2026-11-25 · Status: rascunho alinhado ao PRD v0.2.1 **aprovado** em 25/11/2026 (tarefa T-022c, parte fluxos; aguarda revisão). A v0.2 era da T-020 e a v0.1 da T-015.
+
+> `[NOVO v0.2.2]` `[PROPOSTA]` (T-024, Q-50 em aberto): responsabilidade opcional da meta (padrão: líder), responsável próprio de etapa/tarefa e visibilidade do responsável em plano, progresso e execução mensal (RF-154, RN-054). A emenda v0.2.2 do PRD é **proposta não aprovada**; a v0.2.1 continua aprovada e inalterada. Nenhum trecho abaixo resolve Q-50.
 
 Fonte: `docs/01-prd.md` v0.2.1 (**aprovado pelo dono em 25/11/2026**, T-022b; seções "Impactos da v0.2.1" e 10) e `docs/00-briefing.md`. Este documento descreve **como o trabalho acontece dentro da plataforma** (modo processo da skill `workflow-builder`). Não repete os critérios de aceite do PRD; aponta para eles.
 
@@ -10,6 +12,7 @@ Fonte: `docs/01-prd.md` v0.2.1 (**aprovado pelo dono em 25/11/2026**, T-022b; se
 - **Depende de Q-xx:** o fluxo foi desenhado para funcionar com qualquer resposta à questão **ainda em aberto** (PRD, seção 10). Este documento não escolhe nenhuma opção. As questões resolvidas em 25/11/2026 (PRD, seção 10.3) aparecem como decididas. A seção 14 resume, por questão, o que muda em cada fluxo.
 - **`[SUPOSIÇÃO]`:** ponto que o PRD não define e que este documento precisou preencher para o fluxo fechar. Vale até o dono corrigir. A seção 15 lista os que viram pergunta ao PRD. `[DECIDIDO 25/11/2026]` marca o que o dono já respondeu.
 - **Mudanças da v0.2.1 deste documento `[NOVO v0.2.1]`:** fluxo 4 reescrito (extrato OFX ou CSV, mapeamento, importação, duplicidade, conciliação sugerida com confirmação da pessoa, exceções, rendimentos pelo extrato, lançamento manual); fluxo 3 (precedência do bloqueio, D25 resolvida; item sem linha decidido); fluxo 7 (teste de 30 dias, atraso em somente leitura); fluxo 8 (varredura antes de guardar, leitura por IA desligada, conferência por risco e amostra `[ALTERADO 25/11/2026]` agora só para planilha e cadastro manual, com 100% das linhas em minuta lida por IA, comparação de nova importação, gravidade decidida); fluxo 9 (linha com despesas só é zerada; formatos do anexo); fluxo 10 (resumo substituído, mês conferido como marca que não trava); fluxo 12 (itens de conciliação e de mês conferido, "não verificável sem checagem"); seções 13 a 16 atualizadas, com nomes de eventos alinhados à seção 8.3 de `docs/06-seguranca.md`.
+- `[NOVO v0.2.2]` `[PROPOSTA]`: inclusões da emenda v0.2.2 do PRD (T-024, Q-50 em aberto; RF-154, RN-054), ligadas à responsabilidade de meta, etapa e tarefa e à visibilidade do responsável. A v0.2.1 não foi reaberta e os trechos aprovados seguem como estavam; RF-154, RN-054 e Q-50 não renumeram os identificadores v0.2.1.
 - **Mudanças da T-022d (25/11/2026) `[DECIDIDO 25/11/2026]`:** (1) provedor de IA = Claude (Anthropic); Q-24 com resposta parcial, a leitura de PDF e imagem segue desligada até contrato e RIPD (fluxo 8, seção 14.2); (2) sem exigência de região dos dados no Brasil (nenhum fluxo muda; Q-49 e RNF-25 na seção 14.2); (3) fluxo 8: conferência de **100% das linhas** quando a minuta é lida por IA e amostra só para planilha e cadastro manual (RF-126, RN-053, Q-46 resolvida); resumo "conferi M de M linhas" em IA; eventos `minuta.amostra_sorteada` e `minuta.conferida` ajustados.
 - **Mudanças da v0.2 deste documento:** fluxos novos 8 a 12 (importação do plano e linha de base, ajuste versionado, execução mensal e fechamento do período, gestão enxuta, checklist de saúde e fases); fluxos 1, 2, 3 e 4 revisados para o plano Meta → Etapa → Linha. As seções de apoio passaram de 8-12 para 13-17 (decisões humanas, dependências, divergências, catálogo de auditoria, lista de verificação). Os números dos fluxos 1 a 7 não mudaram.
 - **Termos:** "rubrica" nas partes não alteradas lê-se "classificação da despesa" (RN-026). Quem financia é o "financiador"; "pagador" só existe na assinatura (RN-036).
@@ -25,11 +28,11 @@ Fonte: `docs/01-prd.md` v0.2.1 (**aprovado pelo dono em 25/11/2026**, T-022b; se
 | # | Fluxo | RF principais | RN principais | Depende de |
 |---|---|---|---|---|
 | 1 `[v0.2]` `[v0.2.1]` | Ciclo de vida do projeto | RF-001, RF-004, RF-013, RF-020, RF-040, RF-104, RF-136, RF-137 | RN-001, RN-018, RN-020, RN-021, RN-024, RN-034 | Q-12, Q-17 |
-| 2 `[v0.2]` | Plano de trabalho: metas, etapas e linhas | RF-010 a RF-013, RF-024, RF-120 a RF-122, RF-132, RF-135 | RN-025, RN-026, RN-027, RN-033 | Q-20, Q-25, Q-29 |
+| 2 `[v0.2]` `[NOVO v0.2.2]` `[PROPOSTA]` | Plano de trabalho: metas, etapas e linhas | RF-010 a RF-013, RF-024, RF-120 a RF-122, RF-132, RF-135 | RN-025, RN-026, RN-027, RN-033 | Q-20, Q-25, Q-29, Q-50 `[NOVO v0.2.2]` `[PROPOSTA]` |
 | 3 `[v0.2]` `[v0.2.1]` | Despesa com checagem antes da compra, contra a linha do plano | RF-041 a RF-043, RF-050 a RF-055, RF-060 a RF-067, RF-130 | RN-004 a RN-008, RN-010, RN-012 a RN-015, RN-020, RN-024, RN-029, RN-032, RN-038, RN-043 | Q-01, Q-10, Q-11, Q-15, Q-19 |
 | 4 `[v0.2]` `[REESCRITO v0.2.1]` | Conta do projeto: extrato (OFX ou CSV), conciliação e rendimentos | RF-050 a RF-055, RF-146 a RF-149 | RN-009 a RN-011, RN-014, RN-020, RN-025, RN-039 a RN-042 | Q-09, Q-35, Q-36, Q-48 |
 | 5 `[v0.2.1]` | Avaliação TRL/MRL | RF-070 a RF-074, RF-012, RF-090 | RN-014, RN-016, RN-052 | Q-03, Q-37 |
-| 6 | Entrada e saída de membros | RF-030 a RF-034, RF-110, RF-111 | RN-001 a RN-003, RN-022 | Q-09 |
+| 6 `[NOVO v0.2.2]` `[PROPOSTA]` | Entrada e saída de membros | RF-030 a RF-034, RF-110, RF-111 | RN-001 a RN-003, RN-022 | Q-09, Q-50 `[NOVO v0.2.2]` `[PROPOSTA]` |
 | 7 `[v0.2.1]` | Assinatura por projeto | RF-100 a RF-105 | RN-017 a RN-019 | Q-04 (empresa processadora), Q-12, Q-16, Q-17, Q-18 |
 | 8 `[NOVO v0.2]` `[v0.2.1]` | Importação do plano, conferência, OK e linha de base v1 | RF-120 a RF-128, RF-150, RF-153, RF-090, RF-091 | RN-014, RN-015, RN-025 a RN-031, RN-035, RN-037, RN-045, RN-051, RN-053 | Q-23, Q-24 (parcial), Q-25, Q-39, T-304 (Q-46 resolvida) |
 | 9 `[NOVO v0.2]` `[v0.2.1]` | Ajuste versionado da linha de base | RF-129, RF-121, RF-127 | RN-025, RN-027, RN-028, RN-031, RN-047 | Q-42 |
@@ -172,6 +175,8 @@ stateDiagram-v2
     end note
 ```
 
+> `[NOVO v0.2.2]` `[PROPOSTA]` (RF-154, RN-054, Q-50): a **meta pode ter responsável opcional** (padrão: líder), sem estado novo para a meta. Etapa e tarefa **mantêm responsável próprio** e os estados acima, inalterados. Responsabilidade não é estado: a meta pode ter responsável mesmo sem estado próprio.
+
 **Aceite da entrega** (RF-135, só o líder registra; o membro anexa a evidência).
 
 ```mermaid
@@ -197,13 +202,13 @@ stateDiagram-v2
 
 Progresso da meta = média simples das etapas; do projeto = média simples das metas `[SUPOSIÇÃO]`; a ponderação depende de Q-29 (o fluxo não muda, só a fórmula). Etapa sem medida definida não entra na média e aparece nas pendências. Mudar a medida depois que a etapa começou fica registrado com motivo.
 
-Meta e projeto não têm estado próprio; mostram "não iniciada", "em andamento" ou "concluída" derivados das etapas `[SUPOSIÇÃO]`. A etapa pode ser de gestão administrativa e financeira com uma linha única (RF-120).
+Meta e projeto não têm estado próprio; mostram "não iniciada", "em andamento" ou "concluída" derivados das etapas `[SUPOSIÇÃO]` `[NOVO v0.2.2]` `[PROPOSTA]` (Q-50): isso **não impede** a meta de ter responsável — responsabilidade é dado diferente de estado (RF-154, RN-054). Nenhum estado novo é criado. A etapa pode ser de gestão administrativa e financeira com uma linha única (RF-120).
 
 ### 2.3 Passos
 
-1. Líder cria ou importa as **metas** (número e título) e, dentro delas, as **etapas** (título, descrição, responsável, início, prazo, entrega esperada, critério de aceitação, medida de progresso) e as **linhas** (fluxo 8). **Tarefas** são sub-itens opcionais da etapa, sem valor financeiro (RF-010).
+1. Líder cria ou importa as **metas** (número, título e, `[NOVO v0.2.2]` `[PROPOSTA]` (RF-154, RN-054, Q-50), **responsável opcional — padrão: líder**) e, dentro delas, as **etapas** (título, descrição, responsável, início, prazo, entrega esperada, critério de aceitação, medida de progresso) e as **linhas** (fluxo 8). **Tarefas** são sub-itens opcionais da etapa, sem valor financeiro (RF-010). Etapa e tarefa mantêm responsável próprio (RF-010, RF-012). `[NOVO v0.2.2]` `[PROPOSTA]` (Q-50): o responsável de meta, etapa ou tarefa aparece **em texto** no plano, no progresso e na execução mensal; sem novo cadastro de pessoas nem novo dado pessoal.
 2. Líder define **marcos** (RF-011), por exemplo entregas ao financiador, ligados a etapas ou metas. Quando a etapa usa a medida "marcos", eles formam o progresso.
-3. Responsável atualiza a situação, anota andamento e anexa a entrega (RF-012). O membro (registra) não toca em linhas nem valores.
+3. O **responsável da etapa ou da tarefa** atualiza a situação, anota andamento e anexa a entrega (RF-012); o **líder registra o aceite** da entrega (RF-135). O membro (registra) não toca em linhas nem valores.
 4. Sistema, todo dia: marca "atrasada" a etapa ou tarefa vencida e não concluída (RF-010); recalcula progresso; emite alertas (RF-013); calcula "dias sem atualização" do plano (RF-024). Totais de linha, etapa, meta e projeto são sempre calculados pela soma, nunca digitados (RN-025).
 5. Ao concluir a etapa, o líder registra o aceite da entrega (aceita, aceita com pendência, não aceita), com nota e evidência (RF-135). A pendência de "aceita com pendência" fica visível até ser marcada como resolvida.
 6. A entrega anexada pode servir de evidência TRL/MRL (fluxo 5, RF-071).
@@ -224,7 +229,7 @@ RN-022 (acesso só ao projeto), RN-025 (a soma fecha), RN-026 (classificação c
 | Evento | Quando | Origem |
 |---|---|---|
 | `tarefa.concluida` | Conclusão, com autor e data (RF-012) | critério de aceite do RF-012 |
-| `plano.item_criado`, `plano.item_alterado` (valor anterior e novo, incluindo prazo e responsável) | Criação e alteração operacional de etapa, tarefa e marco. Mudança de linha, valor ou classificação depois do OK **não** passa por aqui: é `ajuste.*` (fluxo 9) | proposto |
+| `plano.item_criado`, `plano.item_alterado` (valor anterior e novo, incluindo prazo e responsável) | Criação e alteração operacional de etapa, tarefa e marco. `[NOVO v0.2.2]` `[PROPOSTA]` (RF-154, RN-054, Q-50): a **meta** entra nesta mesma linha; **só o líder** troca o responsável de meta, etapa ou tarefa, e a troca é registrada em `plano.item_alterado`, com valor anterior e novo, **sem evento novo**. Mudança de linha, valor ou classificação depois do OK **não** passa por aqui: é `ajuste.*` (fluxo 9) | proposto |
 | `tarefa.atrasada` | Marcação automática | proposto (pode ser só derivada, sem registro) |
 | `marco.criado`, `marco.alterado`, `marco.concluido` | Marcos | proposto |
 | `etapa.medida_definida`, `etapa.medida_alterada` (motivo) `[NOVO v0.2]` | Medida de progresso (RF-132) | proposto |
@@ -240,12 +245,14 @@ RN-022 (acesso só ao projeto), RN-025 (a soma fecha), RN-026 (classificação c
 | Líder | Etapas e tarefas atrasadas, marcos nos próximos 15 dias, plano sem atualização há mais de 30 dias (RF-003, RF-011, RF-024) | Painel e pendências |
 | Líder | Etapa sem medida de progresso; etapa sem critério de aceitação ou sem data; "aceita com pendência" não resolvida (RF-132, RF-135) `[NOVO v0.2]` | Painel e pendências |
 | Responsável novo | Etapa ou tarefa atribuída a ele `[SUPOSIÇÃO]` | Na plataforma |
+| Líder `[NOVO v0.2.2]` `[PROPOSTA]` (RF-154, RN-054, Q-50) | Item (meta, etapa ou tarefa) "sem responsável ativo" | Pendência na plataforma `[SUPOSIÇÃO]`; sem prazo novo |
+| Responsável novo da meta `[NOVO v0.2.2]` `[PROPOSTA]` (RF-154, RN-054, Q-50) | Meta atribuída a ele | Na plataforma `[SUPOSIÇÃO]`; sem prazo novo |
 
 ### 2.8 Caminhos de exceção
 
 - **Prazo fora da vigência do projeto:** a plataforma avisa e pede confirmação (RF-010).
 - **Membro "visualiza" tenta alterar:** recusado (RF-012). **Membro (registra) tenta alterar linha, valor ou classificação:** ação indisponível; o caminho é pedir ao líder (RF-010, RF-129).
-- **Responsável perde o acesso** (fluxo 6): as etapas e tarefas dele continuam no plano com o nome dele e viram pendência "sem responsável ativo" para o líder reatribuir `[SUPOSIÇÃO]`.
+- **Responsável perde o acesso** (fluxo 6): `[NOVO v0.2.2]` `[PROPOSTA]` (RF-154, RN-054, Q-50) metas (quando têm responsável), etapas e tarefas dele continuam no plano com o nome dele e viram pendência "sem responsável ativo" para o líder reatribuir. Os registros feitos pela pessoa permanecem com o nome dela `[SUPOSIÇÃO]`.
 - **Projeto encerrado ou suspenso (assinatura em atraso):** edição recusada; somente leitura, sem apagar dados (fluxos 1 e 7).
 - **Prazo vencido e etapa reprogramada para o futuro:** volta de "atrasada" para "em andamento" `[SUPOSIÇÃO]`.
 - **Dois membros editam a mesma etapa ao mesmo tempo:** vale a última gravação, com os dois registros na auditoria `[SUPOSIÇÃO]`; deve ser tratado na SPEC.
@@ -259,7 +266,7 @@ RN-022 (acesso só ao projeto), RN-025 (a soma fecha), RN-026 (classificação c
 
 ### 2.9 Rastreio
 
-RF-003, RF-010, RF-011, RF-012, RF-013, RF-024, RF-033, RF-071, RF-120, RF-121, RF-122, RF-132, RF-135 · RN-003, RN-022, RN-025, RN-026, RN-027, RN-033 · Q-20, Q-25, Q-29.
+RF-003, RF-010, RF-011, RF-012, RF-013, RF-024, RF-033, RF-071, RF-120, RF-121, RF-122, RF-132, RF-135 · RN-003, RN-022, RN-025, RN-026, RN-027, RN-033 · Q-20, Q-25, Q-29. `[NOVO v0.2.2]` `[PROPOSTA]` (Q-50): RF-154, RN-054.
 
 ---
 
@@ -925,7 +932,8 @@ stateDiagram-v2
 
 - **Alterar nível (RF-031):** de "registra" para "visualiza", por exemplo. A próxima escrita do membro é recusada.
 - **Revogar (RF-032):** em até 60 segundos o membro não lê nem escreve (RN-002, RNF-05); sessão aberta, endereços diretos, buscas e arquivos anexados deixam de responder. Os registros que ele fez continuam no projeto, com o nome dele.
-- **Pendências do membro que saiu:** tarefas dele ficam "sem responsável ativo" para o líder reatribuir `[SUPOSIÇÃO]` (fluxo 2). Checagens, despesas e evidências dele permanecem.
+- **Pendências do membro que saiu:** `[NOVO v0.2.2]` `[PROPOSTA]` (RF-154, RN-054, Q-50) metas (quando têm responsável), etapas e tarefas dele ficam "sem responsável ativo" para o líder reatribuir (fluxo 2). Checagens, despesas e evidências dele permanecem, com o nome dele nos registros históricos `[SUPOSIÇÃO]`.
+- `[NOVO v0.2.2]` `[PROPOSTA]` (RF-154, RN-054, Q-50): a lista da equipe (RF-034) continua sendo a **única** fonte de responsáveis de meta, etapa e tarefa; não há cadastro novo de pessoas nem campo de RH. O padrão "líder" não cria pessoa nem dado pessoal.
 - **Reentrada:** novo convite; o histórico da pessoa no projeto continua ligado ao mesmo usuário `[SUPOSIÇÃO]`.
 
 ### 6.5 Regras de negócio aplicadas
@@ -952,7 +960,7 @@ Nenhuma evidência documental no PRD. O próprio registro de auditoria é a evid
 | Convidado | Convite com link | E-mail (RF-030) |
 | Líder | Convite aceito ou expirado `[SUPOSIÇÃO]` | Na plataforma |
 | Membro | Mudança de nível ou revogação `[SUPOSIÇÃO]` | E-mail; o PRD não diz; decisão de privacidade com o `seguranca` |
-| Líder | Tarefas sem responsável ativo depois da revogação | Pendência no painel `[SUPOSIÇÃO]` |
+| Líder | `[NOVO v0.2.2]` `[PROPOSTA]` (RF-154, RN-054, Q-50): metas (quando têm responsável), etapas e tarefas sem responsável ativo depois da revogação | Pendência no painel `[SUPOSIÇÃO]`; sem prazo novo |
 
 ### 6.9 Caminhos de exceção
 
@@ -970,7 +978,7 @@ Nenhuma evidência documental no PRD. O próprio registro de auditoria é a evid
 
 ### 6.10 Rastreio
 
-RF-030 a RF-034, RF-110, RF-111, RF-112, RF-114 · RN-001, RN-002, RN-003, RN-019, RN-022 · RNF-05 · Q-09.
+RF-030 a RF-034, RF-110, RF-111, RF-112, RF-114 · RN-001, RN-002, RN-003, RN-019, RN-022 · RNF-05 · Q-09. `[NOVO v0.2.2]` `[PROPOSTA]` (Q-50): RF-154, RN-054.
 
 ---
 
@@ -1991,6 +1999,7 @@ Situação em 25/11/2026 (PRD v0.2.1 aprovado, com as decisões da T-022d): **T-
 | Q-47 `[NOVO v0.2.1]` | DP-06: membro não edita datas de etapa nem valores da linha de base | 2, 9 | Proposta adotada: datas e valores só por ajuste do líder. |
 | Q-48 `[NOVO v0.2.1]` | Critérios de conciliação: janela de data, tolerância de valor, um débito para várias despesas, prazo de "despesa sem extrato" | 4, 12 | Todos são parâmetros com valor proposto (5 dias, tolerância zero, 30 dias). |
 | Q-49 `[NOVO 25/11/2026]` | Residência dos dados: o dono não exige dados no Brasil (RNF-25); se um edital, convênio ou instituição pública impuser residência (inclusive para o processamento da IA), muda a região ou o projeto fica fora do piloto? | Nenhum fluxo muda (a região é configuração de implantação); afeta o fluxo 8 só quando a leitura por IA for ligada | Os fluxos não dependem da região; o `seguranca` registra os países de tratamento e a revisão jurídica (T-901) confirma a transferência internacional. |
+| Q-50 `[NOVO v0.2.2]` `[PROPOSTA]` | T-024: responsabilidade opcional da meta (padrão líder), responsável próprio de etapa/tarefa, visibilidade em plano/progresso/execução mensal e troca só pelo líder com auditoria em `plano.item_alterado` (RF-154, RN-054). Emenda v0.2.2 do PRD **não aprovada**; decisão pendente do dono | 2, 6 | Fluxos funcionam com a resposta que o dono der; os trechos marcados `[PROPOSTA]` não alteram regras aprovadas da v0.2.1. |
 
 Também são parâmetros por edital (RN-007): rubricas, itens permitidos e vedados, faixas e quantidade de cotações, limites e validade da cotação.
 
@@ -2073,6 +2082,8 @@ Resumo de D1 a D17: **1 resolvida (D14), 3 parciais (D4, D13, D15), 13 em aberto
 | D25 | Decidida: item vedado (ou sem cotações mínimas, limite excedido, fora da vigência) é bloqueado mesmo sem plano aprovado; só o permitido fica "pendente: plano sem aprovação" (RN-006, RN-029, RN-043) | Q-38 | **Resolvida em 25/11/2026** |
 
 Resumo: **2 resolvidas (D19, D25), 6 propostas adotadas aguardando o dono (D18, D20, D21, D22, D23, D24).** Divergências do `seguranca` DP-01 a DP-09 foram tratadas no PRD (DP-01 resolvida; DP-07 é a conferência da minuta, Q-46 `[RESOLVIDA 25/11/2026]`: 100% em IA, amostra em planilha e cadastro manual; DP-06 é Q-47).
+
+`[NOVO v0.2.2]` `[PROPOSTA]`: Q-50 (emenda v0.2.2 do PRD, T-024) segue como **decisão pendente do dono**; não altera D18 a D25 nem a v0.2.1 aprovada.
 
 ---
 

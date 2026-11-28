@@ -1,9 +1,9 @@
 ---
 name: uxdesign-builder
-description: "Define a experiência do usuário da Gestprojet — identidade visual, tokens de design (cores, tipografia, espaçamento), navegação, mapa de telas, dashboards e componentes de interface. Use para criar ou revisar o guia de UX/UI, desenhar fluxos de tela, wireframes, painéis de acompanhamento de projeto, financeiro e TRL/MRL, ou avaliar acessibilidade."
+description: "Define a experiência do usuário da GestProjet — identidade visual, tokens de design (cores, tipografia, espaçamento), navegação, mapa de telas, dashboards e componentes de interface. Use para criar ou revisar o guia de UX/UI, desenhar fluxos de tela, wireframes, painéis de acompanhamento de projeto, financeiro e TRL/MRL, ou avaliar acessibilidade."
 ---
 
-# uxdesign-builder: experiência do usuário da Gestprojet
+# uxdesign-builder: experiência do usuário da GestProjet
 
 Entradas: `docs/01-prd.md` (personas e RFs) e, se houver, `docs/02-spec.md`.
 Saídas: `docs/03-ux.md` e, quando pedido, protótipos em `design/` (HTML estático ou componentes).
@@ -29,7 +29,7 @@ Saídas: `docs/03-ux.md` e, quando pedido, protótipos em `design/` (HTML estát
 ## Modelo de `docs/03-ux.md`
 
 ```markdown
-# Gestprojet: guia de UX e interface
+# GestProjet: guia de UX e interface
 
 ## 1. Princípios (os 7 acima, ajustados ao PRD)
 ## 2. Identidade visual

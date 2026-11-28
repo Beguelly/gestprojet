@@ -1,9 +1,9 @@
 ---
 name: workflow-builder
-description: "Modela os fluxos de trabalho da Gestprojet (ciclo de vida do projeto, tarefas, aprovações, remanejamentos, prestação de contas, automações e notificações) e também gera o plano de implementação em lista de tarefas para o time de desenvolvimento. Use para desenhar processos e máquinas de estado, definir quem aprova o quê, criar automações e alertas, ou quebrar o PRD/spec em backlog e sprints."
+description: "Modela os fluxos de trabalho da GestProjet (ciclo de vida do projeto, tarefas, aprovações, remanejamentos, prestação de contas, automações e notificações) e também gera o plano de implementação em lista de tarefas para o time de desenvolvimento. Use para desenhar processos e máquinas de estado, definir quem aprova o quê, criar automações e alertas, ou quebrar o PRD/spec em backlog e sprints."
 ---
 
-# workflow-builder: fluxos e plano de trabalho da Gestprojet
+# workflow-builder: fluxos e plano de trabalho da GestProjet
 
 Entradas: `docs/01-prd.md`, `docs/02-spec.md`, e `docs/03-ux.md` quando houver.
 Saídas: `docs/04-workflows.md` (processos do produto) e `docs/backlog.md` (tarefas de desenvolvimento).
@@ -22,7 +22,7 @@ Para cada fluxo, descreva:
 - Eventos de auditoria gerados (alinhar com `security-builder`).
 - Notificações (quem recebe, por qual canal, com que antecedência).
 
-Fluxos mínimos da Gestprojet:
+Fluxos mínimos da GestProjet:
 1. **Ciclo de vida do projeto:** proposta → aprovado → contratado (termo de outorga) → em execução → prorrogado/suspenso → em prestação de contas final → encerrado/arquivado.
 2. **Plano de trabalho:** metas → atividades → tarefas, com responsável, prazo e entrega.
 3. **Despesa:** solicitação → verificação de saldo na rubrica → aprovação → pagamento → comprovante → conciliação com extrato.
